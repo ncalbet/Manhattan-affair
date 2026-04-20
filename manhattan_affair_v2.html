@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔍 The Manhattan Affair — 4t ESO</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0b08;--surface:#14120e;--s2:#1c1915;--s3:#25211a;--border:#3d3828;
+  --text:#e8dfc8;--muted:#8a7d68;--ok:#4a7c5a;--err:#9b2c2c;--r:10px;
+  --accent:#c8922a;--accent-bg:rgba(200,146,42,.07);--accent-border:rgba(200,146,42,.22);
+  --gold:#d4a840;--red:#9b2c2c;--teal:#2a7a8a;--purple:#6b46c1;
+  --paper-bg:#f0e6c8;--paper-text:#1a1410;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,serif;min-height:100vh;font-size:16px;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");}
+
+/* ── ONBOARDING ── */
+#onboarding{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;
+  background:radial-gradient(ellipse at 30% 50%,rgba(200,146,42,.09) 0%,transparent 55%),
+             radial-gradient(ellipse at 70% 20%,rgba(155,44,44,.07) 0%,transparent 55%),var(--bg)}
+.ob-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.75rem 2.5rem;width:100%;max-width:540px;text-align:center}
+.ob-dots{display:flex;justify-content:center;gap:.5rem;margin-bottom:2rem}
+.ob-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s}
+.ob-dot.active{background:var(--accent);width:24px;border-radius:4px}
+.ob-slide{display:none}.ob-slide.active{display:block}
+.ob-emoji{font-size:3.5rem;margin-bottom:1rem;display:block}
+.ob-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;
+  background:linear-gradient(135deg,var(--accent),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:.75rem}
+.ob-text{color:var(--muted);font-size:.95rem;line-height:1.75;margin-bottom:1.5rem}
+.ob-text b{color:var(--text)}
+.ob-missions{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.5rem;text-align:left}
+.ob-mission{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:.6rem .85rem}
+.ob-mission .mn{font-weight:700;color:var(--text);font-size:.8rem}
+.ob-mission .md{color:var(--muted);font-size:.78rem}
+.ob-ranks{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.5rem}
+.ob-rank{display:flex;align-items:center;gap:.75rem;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:.5rem .85rem;text-align:left}
+.ob-rank .ri{font-size:1.3rem;width:30px;text-align:center}
+.ob-rank .rn{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--gold);font-weight:700}
+.ob-rank .rx{font-size:.73rem;color:var(--muted)}
+.ob-skills{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.5rem;text-align:left}
+.ob-skill{display:flex;align-items:center;gap:.75rem;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:.5rem .85rem}
+.ob-skill .sk{font-size:1.1rem;width:24px;text-align:center}
+.ob-skill .sn{font-weight:700;font-size:.82rem}
+.ob-skill .sd{font-size:.74rem;color:var(--muted)}
+.ob-nav{display:flex;gap:.75rem;justify-content:center}
+.btn-ob-prev{background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:.65rem 1.25rem;font-family:'Crimson Pro',serif;font-size:.9rem;cursor:pointer;transition:border-color .15s}
+.btn-ob-prev:hover{border-color:var(--accent)}
+.btn-ob-next{background:linear-gradient(135deg,var(--accent),#a06e18);color:#fff;border:none;border-radius:8px;padding:.65rem 1.6rem;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;cursor:pointer;transition:transform .15s}
+.btn-ob-next:hover{transform:translateY(-1px)}
+.btn-ob-start{background:linear-gradient(135deg,var(--gold),#a06e18);color:#0d0b08;border:none;border-radius:10px;padding:.8rem 2rem;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn-ob-start:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(212,168,64,.35)}
+.ob-skip{background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer;margin-top:1rem;display:block;width:100%;text-align:center;text-decoration:underline}
+
+/* ── LOGIN ── */
+#login{min-height:100vh;display:none;align-items:center;justify-content:center;padding:2rem;
+  background:radial-gradient(ellipse at 25% 55%,rgba(200,146,42,.08) 0%,transparent 55%),var(--bg)}
+.lcard{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:460px;text-align:center}
+.lflag{font-size:2.5rem;margin-bottom:.4rem;display:block}
+.llogo{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;
+  background:linear-gradient(135deg,var(--accent),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
+.lsub{color:var(--muted);font-size:.73rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:2rem;margin-top:.3rem}
+.field{margin-bottom:1rem;text-align:left}
+.field label{display:block;font-size:.73rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem;font-weight:600}
+.field input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:.7rem .95rem;color:var(--text);font-family:'Crimson Pro',serif;font-size:.95rem;transition:border-color .2s}
+.field input:focus{outline:none;border-color:var(--accent)}
+.email-warn{display:none;background:rgba(155,44,44,.12);border:1px solid rgba(155,44,44,.35);border-radius:8px;padding:.6rem .9rem;font-size:.82rem;color:#fca5a5;margin-top:.5rem;line-height:1.5;text-align:left}
+.btn-start{width:100%;background:linear-gradient(135deg,var(--gold),#a06e18);color:#0d0b08;border:none;border-radius:10px;padding:.9rem;font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;cursor:pointer;margin-top:.5rem;transition:transform .15s,box-shadow .15s}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(212,168,64,.3)}
+.login-loading{display:none;text-align:center;color:var(--muted);font-size:.87rem;margin-top:.75rem}
+
+/* ── RESUME ── */
+#resume{min-height:100vh;display:none;align-items:center;justify-content:center;padding:2rem;
+  background:radial-gradient(ellipse at 30% 50%,rgba(200,146,42,.09) 0%,transparent 55%),var(--bg)}
+.res-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:500px;text-align:center}
+.res-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--gold);margin-bottom:.35rem}
+.res-sub{color:var(--muted);font-size:.88rem;margin-bottom:1.5rem}
+.res-missions{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.5rem;text-align:left}
+.res-mission{display:flex;align-items:center;gap:.75rem;padding:.55rem .9rem;border-radius:8px;border:1px solid var(--border);background:var(--s2);font-size:.86rem}
+.res-mission.done{border-color:rgba(74,124,90,.35);background:rgba(74,124,90,.07)}
+.res-mission .rm-icon{font-size:1.1rem;width:20px;text-align:center}
+.res-mission .rm-name{flex:1;font-weight:600}
+.res-mission .rm-xp{font-size:.77rem;font-weight:700;color:var(--ok)}
+.btn-resume{width:100%;background:linear-gradient(135deg,var(--gold),#a06e18);color:#0d0b08;border:none;border-radius:10px;padding:.85rem;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;cursor:pointer;transition:transform .15s}
+.btn-resume:hover{transform:translateY(-2px)}
+
+/* ── APP SHELL ── */
+#app{display:none;min-height:100vh;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:.6rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:1rem}
+.topbar-logo{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:900;
+  background:linear-gradient(135deg,var(--accent),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap}
+.topbar-right{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.chip{background:var(--s2);border:1px solid var(--border);border-radius:100px;padding:.28rem .85rem;font-size:.8rem;color:var(--muted);white-space:nowrap}
+.chip b{color:var(--text)}
+.level-chip{background:var(--s2);border:1px solid var(--border);border-radius:100px;padding:.28rem .75rem;font-size:.74rem;color:var(--muted);white-space:nowrap}
+.xp-chip{background:var(--s2);border:1px solid rgba(212,168,64,.3);border-radius:100px;padding:.28rem 1rem;display:flex;align-items:center;gap:.5rem;white-space:nowrap}
+.xp-chip .xri{font-size:.95rem}.xp-chip .xrl{font-size:.76rem;font-weight:700;color:var(--gold)}
+.xp-chip .xrv{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700}
+.xp-chip .xru{font-size:.7rem;color:var(--muted)}
+.app-body{display:flex;flex:1}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;min-height:calc(100vh - 51px);background:var(--surface);border-right:1px solid var(--border);padding:1.1rem .85rem;position:sticky;top:51px;height:calc(100vh - 51px);overflow-y:auto;flex-shrink:0}
+.sb-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:.6rem;padding:0 .4rem;font-weight:700}
+.stab{display:flex;align-items:center;gap:.6rem;padding:.6rem .6rem;border-radius:8px;cursor:pointer;transition:background .15s;margin-bottom:.2rem;border:1px solid transparent}
+.stab:hover:not(.locked){background:var(--s2)}
+.stab.active{background:var(--accent-bg);border-color:var(--accent-border)}
+.stab.locked{opacity:.4;cursor:not-allowed}
+.stab.done .tab-icon{color:var(--ok)}
+.tab-icon{font-size:1.05rem;width:20px;text-align:center;flex-shrink:0}
+.tab-info{flex:1;min-width:0}
+.tab-name{font-size:.76rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stab.active .tab-name{color:var(--gold)}
+.tab-num{font-size:.63rem;color:var(--muted)}
+.tab-xp{font-size:.68rem;font-weight:700;color:var(--ok);white-space:nowrap}
+.sb-divider{height:1px;background:var(--border);margin:.75rem 0}
+.sb-xp-block{padding:.85rem;background:var(--s2);border:1px solid var(--border);border-radius:10px;margin-top:.5rem}
+.sb-rank-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+.sb-rank-ico{font-size:1.4rem}.sb-rank-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--gold)}
+.sb-xp-count{font-size:.76rem;color:var(--muted);margin-bottom:.35rem}
+.sb-xp-count b{color:var(--text)}
+.xp-bar-wrap{background:var(--s3);border-radius:100px;height:6px;overflow:hidden;margin-bottom:.4rem}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:100px;transition:width .8s cubic-bezier(.34,1.56,.64,1);width:0%}
+.sb-next-rank{font-size:.66rem;color:var(--muted);margin-bottom:.65rem}
+.sb-skills{display:flex;flex-direction:column;gap:.3rem}
+.sb-skill-row{display:flex;align-items:center;justify-content:space-between;font-size:.73rem}
+.sb-skill-name{color:var(--muted)}.sb-skill-val{font-weight:700}
+.sv-lang{color:var(--accent)}.sv-ps{color:var(--ok)}.sv-comm{color:var(--gold)}
+
+/* ── CONTENT ── */
+.content{flex:1;padding:1.75rem 2rem;max-width:860px;min-width:0}
+.session-wrap{display:none}.session-wrap.active{display:block}
+
+/* ── BOSS MESSAGE ── */
+.boss-card{display:flex;align-items:flex-start;gap:1rem;background:rgba(200,146,42,.05);border:1px solid rgba(200,146,42,.2);border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:1.5rem}
+.boss-avatar{font-size:2.2rem;flex-shrink:0}
+.boss-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:.3rem}
+.boss-text{font-size:.9rem;color:#cdc0a8;line-height:1.7}
+.boss-text b{color:var(--gold)}
+
+/* ── MISSION BANNER ── */
+.mission-banner{border-radius:14px;overflow:hidden;margin-bottom:1.5rem;background:var(--accent-bg);border:1px solid var(--accent-border)}
+.mission-img{width:100%;height:200px;object-fit:cover;display:block;opacity:.75;filter:sepia(20%) contrast(1.05)}
+.mission-intro{padding:1.15rem 1.35rem}
+.snum{font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);font-weight:700;margin-bottom:.2rem}
+.stitle{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;line-height:1;margin-bottom:.5rem}
+.sdesc{color:var(--muted);font-size:.9rem;line-height:1.65}
+
+/* ── VIDEO CARD ── */
+.video-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1.25rem}
+.vc-header{display:flex;align-items:center;gap:.85rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--border)}
+.vc-num{background:var(--red);color:#fff;font-family:'Playfair Display',serif;font-size:.75rem;font-weight:700;padding:.2rem .55rem;border-radius:4px}
+.vc-info{flex:1}
+.vc-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.15rem}
+.vc-title{font-size:.92rem;font-weight:700;color:var(--text)}
+.vc-duration{font-size:.72rem;color:var(--muted)}
+.vc-embed{width:100%;aspect-ratio:16/9;background:#000;border:none;display:block}
+.vc-placeholder{padding:1.25rem;text-align:center}
+.vc-ph-icon{font-size:2.5rem;margin-bottom:.5rem;display:block}
+.vc-ph-text{font-size:.85rem;color:var(--muted);margin-bottom:.85rem;line-height:1.5}
+.vc-script-toggle{background:none;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'Crimson Pro',serif;font-size:.82rem;padding:.3rem .8rem;cursor:pointer;transition:border-color .15s}
+.vc-script-toggle:hover{border-color:var(--accent)}
+.vc-script{display:none;text-align:left;margin-top:.85rem;background:var(--s3);border-radius:8px;padding:.9rem 1rem;font-size:.85rem;color:#bdb09a;line-height:1.75;border:1px solid var(--border)}
+.vc-script.show{display:block}
+.vc-instruction{font-size:.82rem;color:var(--muted);font-style:italic;margin-bottom:.85rem;padding:.6rem .85rem;background:rgba(200,146,42,.05);border-radius:6px;border:1px solid rgba(200,146,42,.15)}
+
+/* ── DOCUMENT FORMATS ── */
+/* Missing person / leaflet */
+.leaflet{background:var(--paper-bg);color:var(--paper-text);border:2px solid #8a7040;border-radius:8px;padding:1.5rem 1.75rem;margin-bottom:1.25rem;font-family:'Crimson Pro',serif;position:relative}
+.leaflet::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");border-radius:6px;pointer-events:none}
+.leaflet-header{text-align:center;border-bottom:2px solid #8a7040;padding-bottom:1rem;margin-bottom:1rem}
+.leaflet-missing{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;letter-spacing:.1em;color:#1a1410;line-height:1}
+.leaflet-name{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:#2a1a0a;margin-top:.25rem}
+.leaflet-body{font-size:.9rem;line-height:1.75;color:#2a2018}
+.leaflet-body strong{color:#1a1410;font-weight:700}
+.leaflet-row{display:flex;gap:.5rem;margin-bottom:.25rem}
+.leaflet-label{font-weight:700;min-width:110px;color:#1a1410}
+.leaflet-footer{border-top:1px solid #8a7040;margin-top:1rem;padding-top:.75rem;font-size:.78rem;color:#4a3a28;text-align:center;line-height:1.6}
+
+/* Envelope / sealed letter */
+.envelope-wrap{margin-bottom:1.25rem}
+.envelope-btn{display:flex;align-items:center;gap:.85rem;background:var(--s2);border:1px solid rgba(200,146,42,.35);border-radius:10px;padding:.9rem 1.2rem;cursor:pointer;transition:border-color .2s,background .2s;width:100%}
+.envelope-btn:hover{border-color:var(--gold);background:rgba(200,146,42,.05)}
+.envelope-icon{font-size:1.8rem;flex-shrink:0}
+.envelope-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:.15rem}
+.envelope-title{font-size:.9rem;font-weight:700;color:var(--text)}
+.envelope-hint{font-size:.75rem;color:var(--muted);margin-top:.1rem;font-style:italic}
+.envelope-content{display:none;margin-top:.75rem;background:var(--paper-bg);color:var(--paper-text);border:1px solid #8a7040;border-radius:8px;padding:1.5rem 1.75rem;font-family:'Crimson Pro',serif;font-size:.9rem;line-height:1.85;position:relative}
+.envelope-content::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n2)' opacity='0.03'/%3E%3C/svg%3E");border-radius:6px;pointer-events:none}
+.envelope-content.open{display:block;animation:envOpen .3s ease}
+@keyframes envOpen{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.envelope-sig{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#2a1a0a;font-style:italic;margin-top:.75rem}
+.envelope-meta{font-size:.78rem;color:#6a5a40;margin-bottom:1rem;font-style:italic;border-bottom:1px solid #c8b48a;padding-bottom:.6rem}
+
+/* Classified dossier */
+.dossier{background:var(--s3);border:1px solid rgba(155,44,44,.3);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.25rem;font-family:'Courier New',monospace;font-size:.83rem;line-height:1.85;color:#cdc0a8;position:relative}
+.dossier::before{content:'CONFIDENTIAL';position:absolute;top:.6rem;right:.85rem;font-size:.65rem;letter-spacing:.18em;color:rgba(155,44,44,.6);font-weight:700;border:1px solid rgba(155,44,44,.35);padding:.12rem .45rem;border-radius:3px}
+.dossier-header{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:.5rem;margin-bottom:.85rem}
+.dossier-section{margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px dashed var(--border)}
+.dossier-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.dossier-who{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:.35rem}
+.dossier-where{font-size:.7rem;color:var(--muted);margin-bottom:.5rem;font-style:italic}
+.dossier-speaker{color:var(--accent);font-weight:700;margin-top:.5rem;font-size:.85rem}
+.dossier-note{background:rgba(200,146,42,.07);border-left:3px solid var(--accent);padding:.5rem .75rem;margin-top:.85rem;font-size:.8rem;color:#d4c090;border-radius:0 4px 4px 0}
+
+/* Newspaper */
+.newspaper{background:var(--paper-bg);color:var(--paper-text);border:1px solid #8a7040;border-radius:8px;padding:1.35rem 1.6rem;margin-bottom:1.25rem;font-family:'Crimson Pro',serif}
+.np-masthead{text-align:center;font-family:'Playfair Display',serif;border-bottom:3px double #8a7040;padding-bottom:.5rem;margin-bottom:.75rem}
+.np-date{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:#4a3a28}
+.np-name{font-size:1.6rem;font-weight:900;letter-spacing:.05em;color:#1a1410}
+.np-headline{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:900;color:#1a1410;line-height:1.2;margin-bottom:.2rem}
+.np-sub{font-size:.82rem;color:#4a3a28;font-style:italic;margin-bottom:.6rem;border-bottom:1px solid #c8b48a;padding-bottom:.45rem}
+.np-byline{font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#4a3a28;margin-bottom:.75rem}
+.np-body{font-size:.88rem;line-height:1.8;color:#2a2018}
+.np-body p{margin-bottom:.7rem}
+.np-body p:last-child{margin-bottom:0}
+.np-aside{font-style:italic;border-top:1px solid #c8b48a;margin-top:.75rem;padding-top:.65rem;font-size:.85rem;color:#4a3a28}
+
+/* Theory box */
+.theory-box{background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:var(--r);margin-bottom:1.25rem;overflow:hidden}
+.th-hdr{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.1rem;cursor:pointer;user-select:none}
+.th-hdr-l{display:flex;align-items:center;gap:.6rem;font-weight:700;color:var(--accent);font-size:.92rem}
+.th-chevron{color:var(--accent);font-size:.75rem;transition:transform .25s}
+.theory-box.open .th-chevron{transform:rotate(180deg)}
+.th-body{display:none;padding:0 1.25rem 1.25rem;border-top:1px solid var(--accent-border)}
+.theory-box.open .th-body{display:block}
+.th-body h3{font-family:'Playfair Display',serif;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin:1rem 0 .45rem;font-weight:700}
+.th-body h4{font-size:.88rem;color:var(--accent);margin:.8rem 0 .3rem;font-weight:700}
+.th-body p{color:#bdb09a;font-size:.9rem;line-height:1.8;margin-bottom:.6rem}
+.th-body ul{color:#bdb09a;font-size:.9rem;line-height:1.8;padding-left:1.2rem;margin-bottom:.6rem}
+.th-body ul li{margin-bottom:.2rem}
+.th-body strong{color:var(--text)}
+.th-table{width:100%;border-collapse:collapse;font-size:.86rem;margin:.6rem 0}
+.th-table th{background:rgba(255,255,255,.05);color:var(--accent);padding:.5rem .8rem;text-align:left;font-size:.74rem;text-transform:uppercase;letter-spacing:.07em}
+.th-table td{padding:.48rem .8rem;border-bottom:1px solid var(--border);color:#bdb09a}
+.th-table tr:last-child td{border-bottom:none}
+.th-table td:first-child{color:var(--text);font-weight:700}
+.ex-box{background:var(--s2);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;padding:.6rem 1rem;margin:.4rem 0;font-size:.88rem;color:#ddd0b4;line-height:1.7}
+.err-box{background:rgba(155,44,44,.08);border-left:3px solid var(--err);border-radius:0 6px 6px 0;padding:.6rem 1rem;margin:.4rem 0;font-size:.88rem;color:#fca5a5;line-height:1.7}
+.note-box{background:rgba(212,168,64,.07);border:1px solid rgba(212,168,64,.2);border-radius:8px;padding:.7rem 1rem;margin:.6rem 0;font-size:.85rem;color:#e8d87a;line-height:1.6}
+.kw-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem .85rem;margin:.45rem 0}
+.kw-item{font-size:.85rem;color:#bdb09a}
+.kw-item b{color:var(--gold)}
+
+/* Hints */
+.hint-cat{background:rgba(155,44,44,.06);border:1px solid rgba(155,44,44,.2);border-radius:7px;padding:.5rem .85rem;margin-bottom:.7rem;font-size:.82rem;color:#fca5a5;line-height:1.5;display:none}
+.hint-cat.show{display:block}
+.hint-eng{background:rgba(200,146,42,.07);border:1px solid rgba(200,146,42,.2);border-radius:7px;padding:.5rem .85rem;margin-bottom:.7rem;font-size:.82rem;color:#d4a840;line-height:1.5;display:none}
+.hint-eng.show{display:block}
+.hint-toggle{background:none;border:1px solid rgba(200,146,42,.3);border-radius:6px;color:var(--accent);font-family:'Crimson Pro',serif;font-size:.78rem;padding:.2rem .7rem;cursor:pointer;margin-bottom:.7rem;transition:background .15s}
+.hint-toggle:hover{background:rgba(200,146,42,.1)}
+
+/* Exercises */
+.exblock{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:1.1rem;overflow:hidden;transition:border-color .3s}
+.exblock.ex-done{border-color:rgba(74,124,90,.3)}
+.ex-hdr{padding:.8rem 1.1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.65rem;flex-wrap:wrap}
+.ex-badge{color:#fff;font-family:'Playfair Display',serif;font-size:.78rem;font-weight:700;padding:.18rem .55rem;border-radius:4px;flex-shrink:0}
+.ex-title{font-weight:700;font-size:.92rem}
+.skill-tag{font-size:.72rem;font-weight:700;padding:.15rem .55rem;border-radius:100px;white-space:nowrap}
+.sk-lang{background:rgba(200,146,42,.15);color:var(--accent);border:1px solid rgba(200,146,42,.3)}
+.sk-ps{background:rgba(74,124,90,.12);color:var(--ok);border:1px solid rgba(74,124,90,.3)}
+.sk-comm{background:rgba(212,168,64,.12);color:var(--gold);border:1px solid rgba(212,168,64,.3)}
+.ex-xp{margin-left:auto;font-size:.73rem;font-weight:700;color:var(--gold);background:rgba(212,168,64,.1);border:1px solid rgba(212,168,64,.2);padding:.18rem .6rem;border-radius:100px;white-space:nowrap}
+.ex-teacher{margin-left:auto;font-size:.73rem;color:var(--muted);background:var(--s3);padding:.18rem .6rem;border-radius:100px;white-space:nowrap}
+.ex-body{padding:1.1rem}
+.ex-instr{font-size:.86rem;color:var(--muted);margin-bottom:.9rem;font-style:italic;line-height:1.5}
+.qitem{margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid var(--border)}
+.qitem:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.qtxt{font-size:.9rem;margin-bottom:.55rem;line-height:1.6}
+.qtxt strong{color:var(--gold)}
+.opts{display:flex;flex-direction:column;gap:.35rem}
+.opt{display:flex;align-items:center;gap:.55rem;padding:.45rem .7rem;border-radius:6px;border:1px solid var(--border);cursor:pointer;transition:background .15s,border-color .15s;font-size:.87rem}
+.opt:hover{background:var(--s2);border-color:var(--muted)}
+.opt input[type=radio]{accent-color:var(--gold);flex-shrink:0}
+.opt.c-ans{background:rgba(74,124,90,.12);border-color:var(--ok)!important}
+.opt.w-ans{background:rgba(155,44,44,.1);border-color:var(--err)!important}
+.ans-sel,.ans-inp{background:var(--s3);border:1px solid var(--border);border-radius:6px;padding:.45rem .7rem;color:var(--text);font-family:'Crimson Pro',serif;font-size:.87rem;transition:border-color .2s}
+.ans-sel:focus,.ans-inp:focus{outline:none;border-color:var(--gold)}
+.ans-sel.ok,.ans-inp.ok{border-color:var(--ok);background:rgba(74,124,90,.09)}
+.ans-sel.ko,.ans-inp.ko{border-color:var(--err);background:rgba(155,44,44,.08)}
+.ans-sel option{background:var(--s3)}
+.ans-inp{width:220px}
+.fsent{font-size:.9rem;line-height:2.8;display:flex;flex-wrap:wrap;align-items:center;gap:.25rem}
+.tf-row{display:flex;align-items:center;gap:.85rem;margin-top:.4rem;flex-wrap:wrap}
+.tf-btn{padding:.38rem 1.1rem;border-radius:6px;border:1px solid var(--border);background:var(--s3);color:var(--text);font-family:'Crimson Pro',serif;font-size:.86rem;font-weight:600;cursor:pointer;transition:all .15s}
+.tf-btn:hover{border-color:var(--gold)}
+.tf-btn.sel-t{background:rgba(74,124,90,.15);border-color:var(--ok);color:var(--ok)}
+.tf-btn.sel-f{background:rgba(155,44,44,.12);border-color:var(--err);color:var(--err)}
+.tf-btn.rev-ok{background:rgba(74,124,90,.18);border-color:var(--ok)}
+.tf-btn.rev-ko{background:rgba(155,44,44,.15);border-color:var(--err)}
+.open-inp{width:100%;background:var(--s3);border:1px solid var(--border);border-radius:7px;padding:.55rem .8rem;color:var(--text);font-family:'Crimson Pro',serif;font-size:.88rem;resize:vertical;min-height:65px;line-height:1.6}
+.open-inp:focus{outline:none;border-color:var(--gold)}
+.wbank{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:.9rem;padding:.65rem .85rem;background:var(--s3);border-radius:8px;border:1px dashed var(--border)}
+.wchip{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.2rem .65rem;font-size:.8rem;color:var(--gold);font-style:italic}
+.fb{display:inline-flex;align-items:center;font-size:.74rem;padding:.12rem .45rem;border-radius:4px;margin-left:.4rem;font-weight:600;vertical-align:middle}
+.fb.ok{background:rgba(74,124,90,.18);color:var(--ok)}
+.fb.ko{background:rgba(155,44,44,.15);color:var(--err)}
+.correct-hint{font-size:.78rem;color:var(--ok);margin-top:.25rem}
+.match-table{width:100%;border-collapse:collapse}
+.match-table td{padding:.5rem .4rem;font-size:.87rem;vertical-align:middle}
+.match-def{color:#bdb09a;padding-right:.75rem;width:50%}
+.match-def span{color:var(--muted);font-size:.73rem;margin-right:.35rem;font-weight:700}
+
+/* Decision */
+.decision-scene{background:var(--s2);border:1px solid rgba(74,124,90,.2);border-radius:10px;padding:1.1rem;margin-bottom:1rem}
+.char-bubble{display:flex;align-items:flex-start;gap:.85rem;margin-bottom:1rem}
+.char-avatar{font-size:1.8rem;flex-shrink:0;width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:var(--s3);border-radius:50%}
+.char-name{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:.25rem}
+.char-text{font-size:.9rem;color:#cdc0a8;line-height:1.65;background:var(--s3);border-radius:0 8px 8px 8px;padding:.7rem .9rem;font-style:italic}
+.dec-options{display:flex;flex-direction:column;gap:.5rem}
+.dec-btn{background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:.65rem 1rem;text-align:left;cursor:pointer;font-family:'Crimson Pro',serif;font-size:.88rem;color:var(--text);transition:border-color .15s,background .15s;display:flex;align-items:flex-start;gap:.7rem}
+.dec-btn:hover:not(:disabled){border-color:var(--accent);background:var(--accent-bg)}
+.dec-btn .dec-letter{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--muted);width:20px;flex-shrink:0;margin-top:.1rem}
+.dec-btn.chosen-best{border-color:var(--ok);background:rgba(74,124,90,.1)}
+.dec-btn.chosen-bad{border-color:var(--err);background:rgba(155,44,44,.08)}
+.dec-btn.reveal-best{border-color:rgba(74,124,90,.5);background:rgba(74,124,90,.06)}
+.dec-feedback{display:none;margin-top:.9rem;border-radius:8px;padding:.75rem 1rem;font-size:.88rem;line-height:1.65}
+.dec-feedback.show{display:block}
+.dec-feedback.good{background:rgba(74,124,90,.1);border:1px solid rgba(74,124,90,.3);color:#86efac}
+.dec-feedback.bad{background:rgba(155,44,44,.08);border:1px solid rgba(155,44,44,.3);color:#fca5a5}
+.dec-feedback b{color:var(--text)}
+
+/* Notebook task */
+.notebook-task{background:rgba(212,168,64,.05);border:2px solid rgba(212,168,64,.25);border-radius:12px;padding:1.25rem 1.35rem;margin-bottom:1rem}
+.nb-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem}
+.nb-icon{font-size:1.8rem}
+.nb-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);font-weight:700}
+.nb-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--text);font-weight:700}
+.nb-prompt{font-size:.86rem;color:#bdb09a;line-height:1.7;margin-bottom:.85rem}
+.nb-bullets{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.85rem}
+.nb-bullet{background:var(--s3);border:1px solid var(--border);border-radius:100px;padding:.22rem .7rem;font-size:.77rem;color:var(--muted)}
+.nb-textarea{width:100%;min-height:140px;background:var(--s2);border:1px solid rgba(212,168,64,.25);border-radius:8px;padding:.75rem 1rem;color:var(--text);font-family:'Crimson Pro',serif;font-size:.9rem;line-height:1.7;resize:vertical}
+.nb-textarea:focus{outline:none;border-color:var(--gold)}
+
+/* Notebook page */
+#nb-page{flex:1;padding:1.75rem 2rem;max-width:860px;display:none}
+.nb-page-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold);margin-bottom:.3rem}
+.nb-page-sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+.nb-entry{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:1rem;overflow:hidden}
+.nb-entry-hdr{padding:.75rem 1.1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.6rem}
+.nb-entry-num{font-family:'Playfair Display',serif;font-size:.85rem;color:var(--gold);font-weight:700}
+.nb-entry-title{font-weight:700;font-size:.9rem}
+.nb-entry-body{padding:1rem 1.1rem;font-size:.9rem;color:#bdb09a;line-height:1.75;white-space:pre-wrap;font-family:'Crimson Pro',serif}
+.nb-entry-empty{padding:1rem 1.1rem;font-size:.86rem;color:var(--muted);font-style:italic}
+.btn-download-nb{background:linear-gradient(135deg,var(--gold),#a06e18);color:#0d0b08;border:none;border-radius:10px;padding:.75rem 1.85rem;font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;cursor:pointer;transition:transform .15s}
+.btn-download-nb:hover{transform:translateY(-1px)}
+
+/* Submit footer */
+.sfooter{margin-top:1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.btn-quest{background:linear-gradient(135deg,var(--gold),#a06e18);color:#0d0b08;border:none;border-radius:10px;padding:.8rem 1.85rem;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn-quest:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,168,64,.35)}
+.btn-quest:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.mission-status{font-size:.84rem;color:var(--muted)}
+.btn-nxt{background:var(--s2);border:1px solid var(--border);border-radius:10px;color:var(--text);padding:.8rem 1.3rem;font-family:'Crimson Pro',serif;font-weight:700;font-size:.9rem;cursor:pointer;display:none;align-items:center;gap:.4rem;transition:border-color .15s}
+.btn-nxt.show{display:flex}
+.btn-nxt:hover{border-color:var(--gold)}
+.send-status{display:none;align-items:center;gap:.5rem;font-size:.82rem;padding:.5rem .85rem;border-radius:8px;border:1px solid var(--border);background:var(--s2)}
+.send-status.show{display:flex}
+.send-status.sending{color:var(--muted)}
+.send-status.sent{color:var(--ok);border-color:rgba(74,124,90,.35);background:rgba(74,124,90,.07)}
+.send-status.error{color:#f59e0b;border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.07)}
+.spinner{width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Exercise footer */
+.ex-footer{display:flex;align-items:center;gap:.85rem;margin-top:1rem;padding-top:.85rem;border-top:1px solid var(--border);flex-wrap:wrap}
+.btn-check{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.6rem 1.35rem;font-family:'Crimson Pro',serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:transform .15s,opacity .15s}
+.btn-check:hover{transform:translateY(-1px);opacity:.9}
+.btn-check:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-save-open{background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:.6rem 1.35rem;font-family:'Crimson Pro',serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:border-color .15s}
+.btn-save-open:hover{border-color:var(--gold)}
+.check-result{font-size:.84rem;color:var(--muted)}
+.check-result.good{color:var(--ok)}.check-result.saved{color:var(--gold)}
+
+/* Mission complete */
+.mission-complete{display:none;background:linear-gradient(135deg,rgba(212,168,64,.07),rgba(200,146,42,.04));border:1px solid rgba(212,168,64,.28);border-radius:14px;padding:1.4rem 1.6rem;margin-top:1.25rem;animation:mcIn .45s cubic-bezier(.34,1.56,.64,1)}
+.mission-complete.show{display:block}
+@keyframes mcIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+.mc-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.mc-icon{font-size:2.2rem}
+.mc-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--gold);line-height:1}
+.mc-subtitle{font-size:.82rem;color:var(--muted);margin-top:.15rem}
+.mc-stats{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:.85rem}
+.mc-stat{text-align:center;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:.65rem 1rem}
+.mc-stat-val{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;line-height:1}
+.mc-stat-val.xpv{color:var(--gold)}.mc-stat-val.autov{color:var(--ok)}.mc-stat-val.totv{color:var(--accent)}
+.mc-stat-lbl{font-size:.68rem;color:var(--muted);margin-top:.15rem;text-transform:uppercase;letter-spacing:.08em}
+.mc-skills{display:flex;gap:.6rem;margin-bottom:.75rem;flex-wrap:wrap}
+.mc-skill-chip{padding:.3rem .75rem;border-radius:100px;font-size:.79rem;font-weight:700}
+.mc-rank-row{display:flex;align-items:center;gap:.75rem}
+.rank-up-msg{display:inline-flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,rgba(212,168,64,.15),rgba(200,146,42,.1));border:1px solid rgba(212,168,64,.35);border-radius:8px;padding:.4rem .9rem;font-size:.84rem;font-weight:700;color:var(--gold);margin-top:.65rem;animation:glowPulse 1.5s ease infinite}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 8px rgba(212,168,64,.2)}50%{box-shadow:0 0 20px rgba(212,168,64,.5)}}
+.mc-nb-remind{background:rgba(212,168,64,.07);border:1px solid rgba(212,168,64,.2);border-radius:8px;padding:.65rem .9rem;font-size:.84rem;color:#e8d87a;margin-top:.75rem;display:flex;align-items:center;gap:.6rem}
+
+/* Cliffhanger overlay */
+#cliffhanger{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:#000;animation:chFadeIn .6s ease}
+#cliffhanger.show{display:flex}
+@keyframes chFadeIn{from{opacity:0}to{opacity:1}}
+.ch-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.2;filter:sepia(50%)}
+.ch-content{position:relative;z-index:1;max-width:700px;padding:3rem 2.5rem;text-align:center}
+.ch-eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.22em;color:var(--accent);font-weight:700;margin-bottom:1rem}
+.ch-rule{width:60px;height:1px;background:var(--accent);margin:0 auto 1rem}
+.ch-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--gold);line-height:1.1;margin-bottom:1.5rem}
+.ch-text{font-family:'Crimson Pro',serif;font-size:1rem;color:#cdc0a8;line-height:1.9;margin-bottom:2rem;text-align:left;background:rgba(0,0,0,.45);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;border-radius:0 8px 8px 0}
+.ch-text em{color:var(--gold);font-style:italic}
+.ch-btn{background:linear-gradient(135deg,var(--gold),#a06e18);color:#0d0b08;border:none;border-radius:10px;padding:.85rem 2.25rem;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.ch-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(212,168,64,.4)}
+.ch-skip{background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer;margin-top:1.25rem;display:block;width:100%;text-align:center;text-decoration:underline;font-family:'Crimson Pro',serif}
+
+/* Final summary */
+.final-summary{background:linear-gradient(135deg,rgba(107,70,193,.1),rgba(200,146,42,.07));border:1px solid rgba(107,70,193,.3);border-radius:14px;padding:1.5rem 1.6rem;margin-top:1.25rem}
+.fs-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.fs-icon{font-size:2.5rem}
+.fs-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--gold);line-height:1}
+.fs-sub{font-size:.82rem;color:var(--muted);margin-top:.15rem}
+.fs-body{font-size:.9rem;color:#cdc0a8;line-height:1.75;margin-bottom:1rem}
+.fs-checklist{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
+.fs-check{display:flex;align-items:flex-start;gap:.6rem;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:.55rem .85rem;font-size:.86rem;color:#cdc0a8}
+.fs-check .fsc-num{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--gold);width:22px;flex-shrink:0}
+
+/* Closing screen */
+.closing-screen{display:none;position:fixed;inset:0;z-index:2000;background:#000;align-items:center;justify-content:center;flex-direction:column;padding:2rem}
+.closing-screen.show{display:flex}
+.closing-line{font-family:'Crimson Pro',serif;font-size:1.05rem;color:#cdc0a8;line-height:2.2;text-align:center;opacity:0;animation:fadeInLine .8s ease forwards}
+.closing-line.italic{font-style:italic;color:#8a7d68}
+.closing-line.bold{font-weight:700;color:var(--gold);font-size:1.15rem}
+.closing-line.stamp{font-family:'Courier New',monospace;font-size:.85rem;color:rgba(155,44,44,.7);letter-spacing:.12em;text-transform:uppercase;margin-top:1rem}
+@keyframes fadeInLine{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.closing-dismiss{background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Crimson Pro',serif;font-size:.85rem;padding:.5rem 1.2rem;cursor:pointer;margin-top:2rem;transition:border-color .2s;opacity:0;animation:fadeInLine .8s 4s ease forwards}
+.closing-dismiss:hover{border-color:var(--gold);color:var(--text)}
+
+@media(max-width:680px){.sidebar{display:none}.content{padding:1rem}.kw-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ONBOARDING -->
+<div id="onboarding">
+  <div class="ob-card">
+    <div class="ob-dots" id="ob-dots">
+      <div class="ob-dot active"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div>
+    </div>
+    <div class="ob-slide active" id="ob-s1">
+      <span class="ob-emoji">🔍</span>
+      <div class="ob-title">The Manhattan Affair</div>
+      <div class="ob-text"><b>New York City. November 1933.</b><br><br>A wealthy woman has vanished from the Hotel Astoria. A ransom note arrives at police headquarters. The city holds its breath.<br><br>The case lands on your desk. You are the detective.<br><br><b>Find Eleanor Hartwell — before it is too late.</b></div>
+    </div>
+    <div class="ob-slide" id="ob-s2">
+      <span class="ob-emoji">📂</span>
+      <div class="ob-title">Your Investigation</div>
+      <div class="ob-text">Four missions stand between you and the truth. Complete them in order.</div>
+      <div class="ob-missions">
+        <div class="ob-mission"><div class="mn">🏨 Mission 1 — The Astoria Hotel</div><div class="md">Crime vocabulary · Reported speech basics</div></div>
+        <div class="ob-mission"><div class="mn">📋 Mission 2 — Voices &amp; Lies</div><div class="md">Reporting verbs · Witness statements</div></div>
+        <div class="ob-mission"><div class="mn">🎷 Mission 3 — The Velvet Room</div><div class="md">Reported commands &amp; offers · Modal deduction</div></div>
+        <div class="ob-mission"><div class="mn">⚖️ Mission 4 — The Verdict</div><div class="md">Spiral review · Case closure · Your decision</div></div>
+        <div class="ob-mission"><div class="mn">★ Epilogue — We Know Where You Are</div><div class="md">Bonus chapter for fast finishers</div></div>
+      </div>
+    </div>
+    <div class="ob-slide" id="ob-s3">
+      <span class="ob-emoji">⭐</span>
+      <div class="ob-title">XP &amp; Ranks</div>
+      <div class="ob-text">Earn XP and rise through the detective ranks:</div>
+      <div class="ob-ranks">
+        <div class="ob-rank"><span class="ri">🎫</span><span class="rn">Rookie Detective</span><span class="rx">0–19 XP</span></div>
+        <div class="ob-rank"><span class="ri">🔎</span><span class="rn">Private Eye</span><span class="rx">20–44 XP</span></div>
+        <div class="ob-rank"><span class="ri">⭐</span><span class="rn">Investigator</span><span class="rx">45–64 XP</span></div>
+        <div class="ob-rank"><span class="ri">🎖️</span><span class="rn">Chief Detective</span><span class="rx">65–84 XP</span></div>
+        <div class="ob-rank"><span class="ri">👑</span><span class="rn">Legendary Detective</span><span class="rx">85–100 XP</span></div>
+      </div>
+      <div class="ob-skills">
+        <div class="ob-skill"><span class="sk">🧠</span><div><div class="sn" style="color:#c8922a">Language XP</div><div class="sd">Grammar &amp; vocabulary — auto-corrected</div></div></div>
+        <div class="ob-skill"><span class="sk">🧩</span><div><div class="sn" style="color:#4a7c5a">Problem Solving XP</div><div class="sd">Decision scenarios — choose wisely</div></div></div>
+        <div class="ob-skill"><span class="sk">🗣️</span><div><div class="sn" style="color:#d4a840">Communication</div><div class="sd">Written reports — graded by your teacher</div></div></div>
+      </div>
+    </div>
+    <div class="ob-slide" id="ob-s4">
+      <span class="ob-emoji">📓</span>
+      <div class="ob-title">Your Detective's Notebook</div>
+      <div class="ob-text">After each mission you write a report. Your notebook builds case by case — and becomes the script for your <b>final video presentation</b>.</div>
+      <div class="ob-skills">
+        <div class="ob-skill"><span class="sk">✍️</span><div><div class="sn" style="color:#d4a840">Build it mission by mission</div><div class="sd">Each mission adds one report to your file</div></div></div>
+        <div class="ob-skill"><span class="sk">📓</span><div><div class="sn" style="color:#d4a840">View it anytime</div><div class="sd">Click "Detective's Notebook" in the sidebar</div></div></div>
+        <div class="ob-skill"><span class="sk">🎥</span><div><div class="sn" style="color:#d4a840">Final video script</div><div class="sd">Your notebook becomes your Mission 4 presentation</div></div></div>
+      </div>
+      <div class="ob-text" style="margin-bottom:.5rem">Progress is <b>saved automatically</b>. Close and return anytime using your school email.</div>
+      <button class="btn-ob-start" onclick="enterApp()">🔍 Begin the Investigation</button>
+    </div>
+    <div class="ob-nav" id="ob-nav">
+      <button class="btn-ob-prev" onclick="obPrev()">← Back</button>
+      <button class="btn-ob-next" onclick="obNext()">Next →</button>
+    </div>
+    <button class="ob-skip" onclick="enterApp()">Skip intro</button>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="lcard">
+    <span class="lflag">🔍</span>
+    <div class="llogo">The Manhattan Affair</div>
+    <div class="lsub">4t ESO · English Detective Project</div>
+    <div class="field"><label>Full Name</label>
+      <input id="inp-name" type="text" placeholder="e.g. Joan Garcia Llopis" autocomplete="off"></div>
+    <div class="field"><label>School Email</label>
+      <input id="inp-email" type="email" placeholder="cognom.nom@institutmatadepera.cat" autocomplete="off" oninput="validateEmail()">
+      <div class="email-warn" id="email-warn"></div></div>
+    <button class="btn-start" onclick="tryLogin()">⚔️ Open the Case File</button>
+    <div class="login-loading" id="login-loading"><span class="spinner" style="display:inline-block;vertical-align:middle;margin-right:.5rem"></span> Loading your case files…</div>
+  </div>
+</div>
+
+<!-- RESUME -->
+<div id="resume">
+  <div class="res-card">
+    <div class="res-title">Welcome back, Detective 👋</div>
+    <div class="res-sub" id="res-sub">Your case files have been loaded.</div>
+    <div class="res-missions" id="res-missions"></div>
+    <button class="btn-resume" onclick="launchApp()">Resume Investigation →</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-logo">🔍 The Manhattan Affair</div>
+    <div class="topbar-right">
+      <div class="chip">Detective: <b id="chip-name"></b></div>
+      <div class="level-chip" id="level-chip">—</div>
+      <div class="xp-chip">
+        <span class="xri" id="tb-rank-ico">🎫</span>
+        <span class="xrl" id="tb-rank-lbl">Rookie</span>
+        <span class="xrv" id="tb-xp">0</span>
+        <span class="xru">XP</span>
+      </div>
+    </div>
+  </div>
+  <div class="app-body">
+    <div class="sidebar">
+      <div class="sb-label">Investigation</div>
+      <div id="stabs"></div>
+      <div class="sb-divider"></div>
+      <div class="stab" id="stab-nb" onclick="showNotebook()">
+        <div class="tab-icon">📓</div>
+        <div class="tab-info"><div class="tab-name">Detective's Notebook</div><div class="tab-num">My case reports</div></div>
+      </div>
+      <div class="sb-xp-block" style="margin-top:.75rem">
+        <div class="sb-rank-row">
+          <span class="sb-rank-ico" id="sb-rank-ico">🎫</span>
+          <span class="sb-rank-name" id="sb-rank-name">Rookie Detective</span>
+        </div>
+        <div class="sb-xp-count">Total XP: <b id="sb-xp-count">0</b> / 100</div>
+        <div class="xp-bar-wrap"><div class="xp-bar-fill" id="sb-xp-fill"></div></div>
+        <div class="sb-next-rank" id="sb-next-rank">Next rank at 20 XP</div>
+        <div class="sb-divider" style="margin:.6rem 0"></div>
+        <div class="sb-skills">
+          <div class="sb-skill-row"><span class="sb-skill-name">🧠 Language</span><span class="sb-skill-val sv-lang" id="sk-lang-val">0 XP</span></div>
+          <div class="sb-skill-row"><span class="sb-skill-name">🧩 Problem Solving</span><span class="sb-skill-val sv-ps" id="sk-ps-val">0 XP</span></div>
+          <div class="sb-skill-row"><span class="sb-skill-name">🗣️ Communication</span><span class="sb-skill-val sv-comm" id="sk-comm-val">Pending</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="content" id="content-area"></div>
+    <div id="nb-page">
+      <div class="nb-page-title">📓 Detective's Notebook</div>
+      <div class="nb-page-sub">Your accumulated case reports. These become the script for your final video presentation.</div>
+      <div id="nb-entries"></div>
+      <button class="btn-download-nb" onclick="downloadNotebook()">⬇ Download Notebook</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLIFFHANGER OVERLAY -->
+<div id="cliffhanger">
+  <div class="ch-bg" id="ch-bg"></div>
+  <div class="ch-content">
+    <div class="ch-eyebrow" id="ch-eyebrow">END OF MISSION</div>
+    <div class="ch-rule"></div>
+    <div class="ch-title" id="ch-title"></div>
+    <div class="ch-text" id="ch-text"></div>
+    <button class="ch-btn" id="ch-btn" onclick="closeCliffhanger()">Continue →</button>
+    <button class="ch-skip" onclick="closeCliffhanger()">Skip</button>
+  </div>
+</div>
+
+<!-- CLOSING SCREEN (Epilogue ending) -->
+<div class="closing-screen" id="closing-screen">
+  <div id="closing-lines"></div>
+  <button class="closing-dismiss" onclick="document.getElementById('closing-screen').classList.remove('show')">Close</button>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════════════════
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwaRiemCH0J8xtO3K4cB8E6AAE5s1LeIuka7wNt6lhnX0pTO9HiT1Evp3zwLphgHUpU5g/exec';
+
+const RANKS = [
+  {min:0,  title:'Rookie Detective',    icon:'🎫', next:20},
+  {min:20, title:'Private Eye',         icon:'🔎', next:45},
+  {min:45, title:'Investigator',        icon:'⭐', next:65},
+  {min:65, title:'Chief Detective',     icon:'🎖️', next:85},
+  {min:85, title:'Legendary Detective', icon:'👑', next:null},
+];
+
+const MISSION_COLORS = {
+  1:{accent:'#c8922a',bg:'rgba(200,146,42,.07)',border:'rgba(200,146,42,.22)'},
+  2:{accent:'#2a7a8a',bg:'rgba(42,122,138,.07)',border:'rgba(42,122,138,.22)'},
+  3:{accent:'#9b2c2c',bg:'rgba(155,44,44,.07)',border:'rgba(155,44,44,.22)'},
+  4:{accent:'#6b46c1',bg:'rgba(107,70,193,.07)',border:'rgba(107,70,193,.22)'},
+  5:{accent:'#4a7c5a',bg:'rgba(74,124,90,.07)',border:'rgba(74,124,90,.22)'},
+};
+
+// ══════════════════════════════════════════════════════
+//  STUDENT DATA  email → level ('rookie'|'detective'|'senior')
+// ══════════════════════════════════════════════════════
+const STUDENT_DATA = {
+  'aguilar.marta@institutmatadepera.cat':   'detective',
+  'boix.daniela@institutmatadepera.cat':    'detective',
+  'brana.nora@institutmatadepera.cat':      'detective',
+  'caparros.lia@institutmatadepera.cat':    'rookie',
+  'espinosa.marc@institutmatadepera.cat':   'detective',
+  'fernandez.judith@institutmatadepera.cat':'detective',
+  'gonzalez.pau@institutmatadepera.cat':    'senior',
+  'gonzalez.bruno@institutmatadepera.cat':  'detective',
+  'grau.nuria@institutmatadepera.cat':      'detective',
+  'ligero.david@institutmatadepera.cat':    'detective',
+  'macias.carla@institutmatadepera.cat':    'rookie',
+  'martin.ariadna@institutmatadepera.cat':  'detective',
+  'oliveres.arlet@institutmatadepera.cat':  'detective',
+  'ortuno.arian@institutmatadepera.cat':    'detective',
+  'prat.biel@institutmatadepera.cat':       'detective',
+  'prat.aran@institutmatadepera.cat':       'detective',
+  'rodriguez.genis@institutmatadepera.cat': 'senior',
+  'rubia.lucas@institutmatadepera.cat':     'detective',
+  'sanchez.gabriel@institutmatadepera.cat': 'detective',
+  'asensio.carla@institutmatadepera.cat':   'detective',
+  'bernabeu.joan@institutmatadepera.cat':   'detective',
+  'castillo.roger@institutmatadepera.cat':  'detective',
+  'cusido.jan@institutmatadepera.cat':      'detective',
+  'ferrero.marina@institutmatadepera.cat':  'detective',
+  'garcia.marti@institutmatadepera.cat':    'detective',
+  'gil.pau@institutmatadepera.cat':         'senior',
+  'girol.marc@institutmatadepera.cat':      'detective',
+  'gomez.bernat@institutmatadepera.cat':    'rookie',
+  'iglesias.nil@institutmatadepera.cat':    'detective',
+  'latorre.lluis@institutmatadepera.cat':   'detective',
+  'lopez.africa@institutmatadepera.cat':    'detective',
+  'malgosa.martina@institutmatadepera.cat': 'detective',
+  'martin.marc@institutmatadepera.cat':     'detective',
+  'martin.bet@institutmatadepera.cat':      'detective',
+  'milla.mylene@institutmatadepera.cat':    'rookie',
+  'peiro.oriol@institutmatadepera.cat':     'detective',
+  'riba.juli@institutmatadepera.cat':       'detective',
+  'sociats.roc@institutmatadepera.cat':     'detective',
+  'vancells.nora@institutmatadepera.cat':   'detective',
+  'vergara.marc@institutmatadepera.cat':    'detective',
+  'nestor.calbet@institutmatadepera.cat':   'senior',
+};
+
+// ══════════════════════════════════════════════════════
+//  SESSIONS DATA
+// ══════════════════════════════════════════════════════
+const SESSIONS = [
+
+// ─── MISSION 1 ───────────────────────────────────────
+{
+  num:1, id:'s1', icon:'🏨', title:'The Astoria Hotel',
+  image:'https://images.unsplash.com/photo-1551882547-ff40c63fe2fa?w=700&q=80',
+  imageAlt:'Art deco hotel lobby 1930s',
+  intro:'November 1933. The call comes in at seven in the morning. A woman has disappeared from the Hotel Astoria. A ransom note has arrived. The case is yours, Detective.',
+  bossMsg:'Eleanor Hartwell. Thirty-four years old. Wife of George Hartwell — railroad money, substantial. Last confirmed sighting: the hotel bar, Tuesday evening. A ransom note came by morning mail. I need you at the Astoria in thirty minutes. Be discreet — the Hartwell family has more lawyers than friends.',
+  youtubeId:'',
+  videoTitle:'Inspector Morrison — Case Briefing',
+  videoDuration:'~90 seconds',
+  videoInstruction:'Watch the briefing carefully. You will need this information for Exercise 3.',
+  videoScript:`Eleanor Hartwell. Thirty-four years old. Wife of George Hartwell — railroad money, substantial. Last confirmed sighting: the hotel bar, Tuesday evening, ten o'clock. Went up to her room at half past ten. That is the last we know.\n\nGeorge Hartwell reported her missing at seven Wednesday morning. Her coat was still in the room. Her gloves. Her purse. A woman does not walk out of a hotel in November without her coat.\n\nA ransom note came by morning mail. Typed, no fingerprints, demands fifty thousand dollars. It was postmarked Tuesday evening — before she disappeared. Somebody planned this carefully.\n\nI want you at the Astoria. Start with the staff. Be discreet — the Hartwell family has more lawyers than friends.`,
+  cliffhanger:{
+    eyebrow:'End of Mission 1',
+    title:'THE MATCHBOOK',
+    text:`You are almost at the door when a young bellboy appears at your elbow. He speaks quietly, without looking at you.\n\n"I have seen that receptionist before, Detective. Not here. On 52nd Street. A place called the Velvet Room."\n\nHe presses something into your hand <em>as if he had been waiting to do it</em> and walks away without another word.\n\nYou open your palm. A matchbook. On the inside cover, written in careful handwriting:\n\n<em>Velvet Imports LLC. Rosa Caruso.</em>`,
+    image:'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=700&q=80',
+    nextLabel:'Continue to Mission 2 →',
+  },
+  theory:`<h3>1. What is Reported Speech?</h3>
+<p>When we report what someone said, we change the verb tense. This is called <strong>backshift</strong>.</p>
+<table class="th-table">
+<tr><th>Direct Speech</th><th>→</th><th>Reported Speech</th></tr>
+<tr><td>"I <b>am</b> here." (Present Simple)</td><td>→</td><td>She said she <b>was</b> there. (Past Simple)</td></tr>
+<tr><td>"I <b>saw</b> her leave." (Past Simple)</td><td>→</td><td>She said she <b>had seen</b> her leave. (Past Perfect)</td></tr>
+<tr><td>"I <b>will help</b>." (Future)</td><td>→</td><td>He said he <b>would help</b>. (Conditional)</td></tr>
+</table>
+<h3>2. Said vs Told</h3>
+<div class="ex-box">
+<b>say</b> → no object needed: "She <b>said</b> (that) she was tired."<br>
+<b>tell</b> → always needs an object: "She <b>told me</b> (that) she was tired."
+</div>
+<div class="err-box">❌ "She told that she was tired." → ✓ "She <b>told me</b> that she was tired."</div>
+<h3>3. Pronoun &amp; Time Changes</h3>
+<div class="kw-grid">
+<div class="kw-item">now → <b>then</b></div>
+<div class="kw-item">today → <b>that day</b></div>
+<div class="kw-item">yesterday → <b>the day before</b></div>
+<div class="kw-item">tomorrow → <b>the next day</b></div>
+<div class="kw-item">here → <b>there</b></div>
+<div class="kw-item">this → <b>that</b></div>
+</div>`,
+  exercises:[
+    {id:'ex1',type:'match',title:'Crime Scene Vocabulary',skill:'lang',pts:6,
+     hint:'Think about the role each word plays in a criminal investigation.',
+     hintCat:'Pensa en el paper que té cada paraula en una investigació policial. Busca les paraules clau a la definició.',
+     instr:'Match each crime term with its correct definition.',
+     opts:['evidence','alibi','suspect','witness','ransom','motive'],
+     items:[
+      {def:'A reason why someone might commit a crime',ans:'motive'},
+      {def:'A person who may have committed the crime',ans:'suspect'},
+      {def:'Proof that someone was in another place when the crime happened',ans:'alibi'},
+      {def:'Money demanded in exchange for releasing a captive',ans:'ransom'},
+      {def:'Objects or information that prove what happened',ans:'evidence'},
+      {def:'A person who saw or heard what happened',ans:'witness'},
+     ]},
+    {id:'ex2',type:'true-false',title:'Reading: Missing Person Notice',skill:'lang',pts:4,
+     hint:'Read the missing person notice carefully. Pay attention to specific numbers and dates.',
+     hintCat:'Llegeix el text atentament. Para atenció als detalls específics: edats, dates i llocs.',
+     instr:'According to the missing person notice, are these statements True or False?',
+     items:[
+      {q:'Eleanor Hartwell was 34 years old when she disappeared.',ans:'true'},
+      {q:'She was last seen on a Wednesday evening.',ans:'false'},
+      {q:'Her coat and gloves were found in the hotel room.',ans:'true'},
+      {q:'A reward of $500 is offered for information.',ans:'false'},
+     ]},
+    {id:'ex3',type:'radio-mc',title:'Video Comprehension',skill:'lang',pts:4,
+     hint:'Base your answers on what you heard in Inspector Morrison\'s briefing.',
+     hintCat:'Les respostes es basen en el vídeo de l\'Inspector Morrison. Recorda el que ha dit.',
+     instr:'Choose the correct answer based on the video.',
+     items:[
+      {q:'What time was Eleanor Hartwell last seen at the hotel bar?',
+       opts:['At 9:00 PM','At 10:00 PM','At 11:00 PM','At 7:00 AM'],ans:1},
+      {q:'What does Morrison find suspicious about Eleanor\'s belongings?',
+       opts:['Her jewellery was missing','Her passport was taken','Her coat, gloves and purse were still in the room','Her room key had been used'],ans:2},
+      {q:'When was the ransom note mailed?',
+       opts:['The morning after Eleanor disappeared','Three days before','Tuesday evening — before Eleanor disappeared','Wednesday afternoon'],ans:2},
+      {q:'What does Morrison ask the detective to do first?',
+       opts:['Contact the press','Talk to the staff at the hotel','Arrest George Hartwell','Search Eleanor\'s room'],ans:1},
+     ]},
+    {id:'ex4',type:'radio-mc',title:'Basic Reported Speech',skill:'lang',pts:4,
+     hint:'Remember the backshift rule: Present Simple → Past Simple · Past Simple → Past Perfect · will → would.',
+     hintCat:'Recorda el canvi de temps: Present Simple → Past Simple · Past Simple → Past Perfect · will → would. Canvia també els pronoms.',
+     instr:'Choose the correct reported speech form.',
+     items:[
+      {q:'"I am at the desk all night." — The receptionist said that he ___ at the desk all night.',
+       opts:['is','was','had been','will be'],ans:1},
+      {q:'"My wife is missing." — George Hartwell told the police that his wife ___ missing.',
+       opts:['is','was','had been','would be'],ans:1},
+      {q:'"I saw a woman near the service stairs." — The maid said that she ___ a woman near the service stairs.',
+       opts:['sees','saw','had seen','has seen'],ans:2},
+      {q:'"I will investigate this immediately." — Morrison said that he ___ investigate it immediately.',
+       opts:['will','would','could','should'],ans:1},
+     ]},
+    {id:'ex5',type:'decision',title:'First Lead: Where Do You Start?',skill:'ps',pts:3,
+     charEmoji:'👔',charName:'Inspector Morrison',
+     scenario:'You have two immediate leads. George Hartwell, the husband, is at the hotel and wants to speak to you immediately. But the note left under your door says the night receptionist behaved strangely and made a phone call during his midnight break.',
+     instr:'As the detective, which lead do you prioritise first?',
+     options:[
+      {text:'Interview George Hartwell first — he is the husband and has important information.',
+       outcome:'Hartwell is cooperative but controlled. Every answer is measured, his lawyer present throughout. Meanwhile, the receptionist finishes his shift and leaves. You have missed your window.',xp:1,best:false},
+      {text:'Track down the receptionist before he leaves and ask about the midnight phone call.',
+       outcome:'Excellent instinct. You catch him before he can compose himself. Under calm questioning, he admits he stepped away for thirty minutes and made a call. He also mentions that Hartwell came down to the lobby at 11:15 PM — something the husband never mentioned. +3 Problem Solving XP.',xp:3,best:true},
+      {text:'Contact the press to put public pressure on the kidnappers.',
+       outcome:'A serious error. The story runs within the hour. The kidnappers go silent. Hartwell is furious. Never release information to the press in an active case.',xp:0,best:false},
+     ]},
+  ],
+  notebookTitle:'Mission 1: Incident Report',
+  notebookPrompt:'Write a short incident report (5–6 sentences) about the disappearance of Eleanor Hartwell. Include the key facts: who she is, when and where she was last seen, and the first clues you have found. Use the past tense throughout.',
+  notebookBullets:['Name, age and description of the missing person','When and where she was last seen','Key evidence found (ransom note, belongings...)','Names of first witnesses and what they said','Your initial assessment'],
+},
+
+// ─── MISSION 2 ───────────────────────────────────────
+{
+  num:2, id:'s2', icon:'📋', title:'Voices &amp; Lies',
+  image:'https://images.unsplash.com/photo-1517971053567-8bde93bc6a58?w=700&q=80',
+  imageAlt:'Documents and evidence on a desk',
+  intro:'Three witnesses. Three different stories. Somebody in that hotel is not telling the truth. The lab has also come back with a result on the ransom note — and a name keeps appearing.',
+  bossMsg:'Good work on the hotel. Now I need you to go through those three witness statements line by line. Somebody is lying — find the contradiction. And that name on the matchbook — Velvet Imports LLC, Rosa Caruso — I want to know who this person is.',
+  youtubeId:'',
+  videoTitle:'Inspector Morrison — Three Witnesses',
+  videoDuration:'~75 seconds',
+  videoInstruction:'Listen carefully. What does Morrison want you to focus on?',
+  videoScript:`Three witnesses. Three different stories. Somebody in that hotel is not telling the truth — and I need you to find out who.\n\nThe night receptionist says he saw nothing unusual. But George Hartwell came down to that lobby at eleven-fifteen, and Hartwell never mentioned it. Not once.\n\nThe lab has been looking at the ransom note. The paper is unusual — high quality, not the kind you buy at any corner store. They are running more tests.\n\nTalk to the other witnesses. A guest on the fourth floor heard something that night. A hotel maid saw something near the service stairs. Get their statements. Compare them. Somebody is lying — find the contradiction.`,
+  cliffhanger:{
+    eyebrow:'End of Mission 2',
+    title:'THE WATERMARK',
+    text:`The lab technician calls at seven in the morning.\n\n"Detective. We examined the ransom note under UV light. There is a watermark in the paper — very faint, but unmistakable."\n\nA pause.\n\n"The stationery belongs to a company. Velvet Imports LLC."\n\nYou already know that name.\n\n"There is something else," she says. "The company has no address, no employees, no tax records. But there is a registered agent."\n\nAnother pause.\n\n<em>"A woman named Rosa Caruso."</em>`,
+    image:'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=700&q=80',
+    nextLabel:'Continue to Mission 3 →',
+  },
+  theory:`<h3>1. Reporting Verbs — More Than Just "Said"</h3>
+<p>Instead of always using <b>said</b>, use specific verbs that show <em>how</em> something was said:</p>
+<table class="th-table">
+<tr><th>Verb</th><th>Meaning</th><th>Structure</th></tr>
+<tr><td><b>claim</b></td><td>say sth is true (we may doubt it)</td><td>claimed (that) + clause</td></tr>
+<tr><td><b>admit</b></td><td>confess something</td><td>admitted (that) / admitted + -ing</td></tr>
+<tr><td><b>deny</b></td><td>say something is NOT true</td><td>denied + -ing (NOT "denied that he did")</td></tr>
+<tr><td><b>insist</b></td><td>say something firmly, repeatedly</td><td>insisted (that) + clause</td></tr>
+<tr><td><b>suggest</b></td><td>propose an idea</td><td>suggested + -ing / (that) + clause</td></tr>
+<tr><td><b>warn</b></td><td>tell sb about a danger</td><td>warned sb (that) / warned sb not to</td></tr>
+<tr><td><b>accuse</b></td><td>blame sb for sth</td><td>accused sb of + -ing</td></tr>
+<tr><td><b>explain</b></td><td>give a reason</td><td>explained (that) + clause</td></tr>
+</table>
+<h3>2. Key Error to Avoid</h3>
+<div class="err-box">❌ "He denied that he was there." → ✓ "He denied <b>being</b> there." (deny + -ing!)</div>
+<div class="ex-box">"I was NOT at the Velvet Room." → He <b>denied being</b> at the Velvet Room.<br>"Yes, I made the call." → She <b>admitted making</b> the call.</div>`,
+  exercises:[
+    {id:'ex1',type:'match',title:'Reporting Verbs — Meanings',skill:'lang',pts:6,
+     hint:'Focus on the attitude behind each verb. "Deny" is negative, "admit" is confessing, "insist" is forceful.',
+     hintCat:'Fixa\'t en l\'actitud darrere cada verb. "Deny" és negatiu, "admit" és confessar, "insist" és dir-ho amb força.',
+     instr:'Match each reporting verb with its correct meaning.',
+     opts:['say sth is true (but we may not believe it)','confess or acknowledge something','say that something did NOT happen','say something firmly, again and again','propose a course of action','tell someone about a possible danger'],
+     items:[
+      {def:'claim',ans:'say sth is true (but we may not believe it)'},
+      {def:'admit',ans:'confess or acknowledge something'},
+      {def:'deny',ans:'say that something did NOT happen'},
+      {def:'insist',ans:'say something firmly, again and again'},
+      {def:'suggest',ans:'propose a course of action'},
+      {def:'warn',ans:'tell someone about a possible danger'},
+     ]},
+    {id:'ex2',type:'txt-blanks',title:'Transform to Reported Speech',skill:'lang',pts:4,
+     hint:'Apply the backshift: Present Simple → Past Simple · Past Simple → Past Perfect · will → would. Change pronouns too.',
+     hintCat:'Aplica el backshift: Pres. Simple → Past Simple · Past Simple → Past Perfect · will → would. Canvia els pronoms.',
+     instr:'Write the correct reported speech form of the verb in brackets.',
+     items:[
+      {before:'Hartwell said: "I went to bed at ten o\'clock." → Hartwell said that he',verb:'(go)',after:'to bed at ten o\'clock.',ans:['had gone']},
+      {before:'The guest said: "I heard voices in the corridor." → The guest told us she',verb:'(hear)',after:'voices in the corridor.',ans:['had heard']},
+      {before:'The maid said: "The woman does not look frightened." → The maid said the woman',verb:'(not / look)',after:'frightened.',ans:["did not look","didn't look"]},
+      {before:'Morrison said: "This case will be solved." → Morrison said the case',verb:'(solve)',after:'.',ans:['would be solved']},
+     ]},
+    {id:'ex3',type:'radio-mc',title:'Choose the Correct Reporting Verb',skill:'lang',pts:4,
+     hint:'Think about the structure after each verb. "Deny" needs -ing. "Warn" needs an object. "Suggest" can use -ing.',
+     hintCat:'Fixa\'t en l\'estructura. "Deny" necessita -ing. "Warn" necessita objecte. "Suggest" pot anar amb -ing.',
+     instr:'Choose the most appropriate reporting verb.',
+     items:[
+      {q:'"I was NOT at the Velvet Room that night!" → He ___ being at the Velvet Room.',
+       opts:['insisted','denied','admitted','suggested'],ans:1},
+      {q:'"Why don\'t we check the hotel telephone records?" → She ___ checking the telephone records.',
+       opts:['denied','warned','suggested','insisted'],ans:2},
+      {q:'"Be careful — this involves dangerous people." → He ___ us that it involved dangerous people.',
+       opts:['suggested','warned','denied','admitted'],ans:1},
+      {q:'"Yes, I did step away from the desk for thirty minutes." → The receptionist ___ stepping away.',
+       opts:['denied','insisted','warned','admitted'],ans:3},
+     ]},
+    {id:'ex4',type:'decision',title:'Finding the Contradiction',skill:'ps',pts:3,
+     charEmoji:'📋',charName:'Your Case File',
+     scenario:'After reading the three witness statements, you notice a critical contradiction. Hartwell states he returned to their room at 10 PM and Eleanor was asleep. But the night receptionist told you Hartwell came down to the lobby at 11:15 PM and asked if his wife had come downstairs. Someone is not telling the truth.',
+     instr:'What is your next move?',
+     options:[
+      {text:'Confront Hartwell directly with the contradiction — show him the receptionist\'s account.',
+       outcome:'Hartwell stays calm. His lawyer intervenes immediately. You have shown your hand too early. He will prepare a cover story before you can gather more evidence.',xp:1,best:false},
+      {text:'Return to the receptionist and press for more specific details — times, phone calls, anything unusual.',
+       outcome:'Excellent. Under further questioning, the receptionist admits he heard an argument in the corridor at eleven. He also admits he called a number on 52nd Street at midnight — because someone had asked him to report when Hartwell came downstairs. A crucial breakthrough. +3 PS XP.',xp:3,best:true},
+      {text:'Focus only on the maid\'s account — she saw Eleanor leave voluntarily.',
+       outcome:'Useful, but you still haven\'t explained Hartwell\'s false timeline. You need to go back to the receptionist first.',xp:1,best:false},
+     ]},
+  ],
+  notebookTitle:'Mission 2: Witness Summary',
+  notebookPrompt:'Write a summary (5–6 sentences) of the three witness statements. Use reported speech and a range of reporting verbs. End with your assessment: who is not telling the truth, and why does it matter?',
+  notebookBullets:['Report what each witness said using: claimed, insisted, admitted, denied, explained...','At least 3 different reporting verbs','Correctly backshifted verbs','Your conclusion: who is lying and what does it mean?'],
+},
+
+// ─── MISSION 3 ───────────────────────────────────────
+{
+  num:3, id:'s3', icon:'🎷', title:'The Velvet Room',
+  image:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=700&q=80',
+  imageAlt:'1930s jazz club atmospheric lighting',
+  intro:'52nd Street. Behind a door with no sign, in a jazz club with no public record of its ownership, the real story of Eleanor Hartwell begins to take shape. And the world is much larger than you thought.',
+  bossMsg:'The ransom note paper traces to Velvet Imports LLC — a ghost company registered to a woman named Rosa Caruso. Look into her. Carefully, and through the right channels. Her name has appeared before in files I cannot access anymore. That tells me something.',
+  youtubeId:'',
+  videoTitle:'Inspector Morrison — Follow the Thread',
+  videoDuration:'~75 seconds',
+  videoInstruction:'Listen carefully. What does Morrison know that he is not saying?',
+  videoScript:`The lab confirmed it. The ransom note paper traces back to Velvet Imports LLC — a ghost company registered to a woman named Rosa Caruso.\n\nI want you to look into her. Carefully, and through the right channels. Caruso is not somebody I know well. But her name has come up before, in files I cannot access anymore. That tells me something.\n\nFind out what she knows about Eleanor Hartwell. And do not jump to conclusions before you have the full picture. In this city, the obvious answer is rarely the whole answer.`,
+  cliffhanger:{
+    eyebrow:'End of Mission 3',
+    title:'STOP LOOKING',
+    text:`You are back at your desk. It is past midnight.\n\nThe telephone rings.\n\nA woman's voice. Calm. Unhurried.\n\n"You went to the Velvet Room tonight, Detective. I know what you ordered."\n\nA pause.\n\n"Eleanor Hartwell was never in danger. She was exactly where she chose to be."\n\n"Then why the ransom note?" you ask.\n\n"To give her time. And to find out something important."\n\n"What?"\n\n<em>"Whether you were worth trusting."</em>\n\nThe line goes dead.\n\nOn your desk, under a folder you do not remember moving, there is an envelope. No postmark. Inside: a photograph. Eleanor. Smiling. On the back, four words:\n\n<em>She is safe. Come alone.</em>`,
+    image:'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=700&q=80',
+    nextLabel:'Continue to Mission 4 →',
+  },
+  theory:`<h3>1. Reported Commands &amp; Requests</h3>
+<p>Use <b>told / asked + object + (not) to + infinitive</b></p>
+<table class="th-table">
+<tr><th>Direct Speech</th><th>Reported Speech</th></tr>
+<tr><td>"Stop asking questions!" (command)</td><td>She <b>told me to stop</b> asking questions.</td></tr>
+<tr><td>"Please show me the file." (request)</td><td>He <b>asked me to show</b> him the file.</td></tr>
+<tr><td>"Don't follow me!" (negative command)</td><td>She <b>told me not to follow</b> her.</td></tr>
+</table>
+<h3>2. Reported Offers &amp; Suggestions</h3>
+<table class="th-table">
+<tr><th>Type</th><th>Direct</th><th>Reported</th></tr>
+<tr><td><b>Offer</b></td><td>"I'll explain everything."</td><td>She <b>offered to explain</b> everything.</td></tr>
+<tr><td><b>Suggestion</b></td><td>"Let's check the records."</td><td>She <b>suggested checking</b> the records.</td></tr>
+<tr><td><b>Refusal</b></td><td>"I won't talk."</td><td>He <b>refused to talk</b>.</td></tr>
+</table>
+<h3>3. Modal Verbs of Deduction</h3>
+<table class="th-table">
+<tr><th>Modal</th><th>Certainty</th><th>Example (past)</th></tr>
+<tr><td><b>must have</b></td><td>Almost certain ✓</td><td>"She <b>must have planned</b> this."</td></tr>
+<tr><td><b>can't have</b></td><td>Almost certain ✗</td><td>"He <b>can't have left</b> alone."</td></tr>
+<tr><td><b>might / could have</b></td><td>Possible</td><td>"He <b>could have taken</b> it."</td></tr>
+</table>
+<div class="note-box">💡 Past deduction: <b>modal + have + past participle</b> — "She must <b>have planned</b> this." / "He can't <b>have seen</b> her."</div>`,
+  exercises:[
+    {id:'ex1',type:'match',title:'Media &amp; Press Vocabulary',skill:'lang',pts:6,
+     hint:'Think about roles and concepts in journalism and news reporting.',
+     hintCat:'Pensa en els rols i conceptes del periodisme. Algunes paraules ja les coneixes del vocabulari diari.',
+     instr:'Match each media term with its correct definition.',
+     opts:['the title of a news story in large letters','a journalist reporting from a specific location','a news story published before any rival','private information given to a journalist','an official meeting where journalists ask questions','a programme transmitted on radio or television'],
+     items:[
+      {def:'headline',ans:'the title of a news story in large letters'},
+      {def:'correspondent',ans:'a journalist reporting from a specific location'},
+      {def:'scoop',ans:'a news story published before any rival'},
+      {def:'tipoff',ans:'private information given to a journalist'},
+      {def:'press conference',ans:'an official meeting where journalists ask questions'},
+      {def:'broadcast',ans:'a programme transmitted on radio or television'},
+     ]},
+    {id:'ex2',type:'radio-mc',title:'Reported Commands, Requests &amp; Offers',skill:'lang',pts:4,
+     hint:'Commands and requests: told/asked + object + (not) to + infinitive. Offers: offered to. Suggestions: suggested + -ing.',
+     hintCat:'Ordres: told/asked + objecte + (not) to + infinitiu. Oferiments: offered to. Suggeriments: suggested + -ing.',
+     instr:'Choose the correct reported form.',
+     items:[
+      {q:'"Stop asking questions about my clients!" → She told the detective ___.',
+       opts:['stopping questions','to stop asking questions','stop asking questions','that he stops asking'],ans:1},
+      {q:'"Please don\'t mention my name to the press." → He asked the detective ___.',
+       opts:['not to mention his name','to not mention his name to press','not mentioning his name','that he not mention'],ans:0},
+      {q:'"I\'ll provide all the documentation you need." → She offered ___.',
+       opts:['providing the documentation','that she provides it','to provide all the documentation','provide it'],ans:2},
+      {q:'"Why don\'t we look at the hotel telephone records?" → She suggested ___.',
+       opts:['to look at the records','looking at the records','that we look at them','look at the records'],ans:1},
+     ]},
+    {id:'ex3',type:'sel-blanks',title:'Modal Verbs of Deduction',skill:'lang',pts:4,
+     hint:'Must have = almost certain positive. Can\'t have = almost certain negative. Might/could have = possible.',
+     hintCat:'Must have = gairebé segur (positiu). Can\'t have = gairebé segur (negatiu). Might/could have = possible.',
+     instr:'Complete each deduction with the correct modal from the word bank.',
+     bank:["must have","can't have","might have","must","can't"],
+     items:[
+      {before:'The ransom note was postmarked before Eleanor disappeared. It',ans:"must have",after:'been planned well in advance.'},
+      {before:'Eleanor\'s coat was still in the room. She',ans:"can't have",after:'left in the cold without a plan.'},
+      {before:'The receptionist called that number at midnight. He',ans:"must",after:'know something he is not telling us.'},
+      {before:'The file on Caruso was last accessed the day before the disappearance. Someone',ans:"might have",after:'been watching the case before it even started.'},
+     ]},
+    {id:'ex4',type:'decision',title:'How to Approach Rosa Caruso?',skill:'ps',pts:3,
+     charEmoji:'🎷',charName:'The Velvet Room',
+     scenario:'You have connected Rosa Caruso to the ransom note paper and to the receptionist\'s midnight phone call. She is clearly involved. But you still do not know whether she is helping the kidnappers — or helping Eleanor. You decide to go to the Velvet Room that evening, on your own initiative.',
+     instr:'Choose the most professionally correct course of action.',
+     options:[
+      {text:'Go in badge first, announce yourself as NYPD, and demand to speak to Caruso immediately.',
+       outcome:'The lawyer appears in four minutes. Caruso says nothing. You are out of the building in twenty. Going in without preparation against someone this careful is always a mistake.',xp:0,best:false},
+      {text:'Go as a private citizen. Order a drink. Watch and listen. Let them wonder why you are there.',
+       outcome:'Exactly right. You spend two hours at the Velvet Room. You notice three things: who comes and goes, who avoids eye contact, and that someone at the back table has been watching you since the moment you walked in. You leave with more than you came with. +3 PS XP.',xp:3,best:true},
+      {text:'Request surveillance on the Velvet Room and wait for solid evidence before going.',
+       outcome:'Cautious, but you lose time. By the time surveillance is authorised, Caruso has already made her move. Sometimes waiting is the wrong choice.',xp:1,best:false},
+     ]},
+  ],
+  notebookTitle:'Mission 3: Field Report',
+  notebookPrompt:'Write a short field report (5–6 sentences) about what you have discovered. Include what you know about the Velvet Room and Rosa Caruso. Use media vocabulary and modal verbs of deduction.',
+  notebookBullets:['Professional, formal tone','Use media vocabulary: investigation, evidence, source...','Report what witnesses said using reported speech','Include what you deduce using modals: must have, could have, can\'t have'],
+},
+
+// ─── MISSION 4 ───────────────────────────────────────
+{
+  num:4, id:'s4', icon:'⚖️', title:'The Verdict',
+  image:'https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=700&q=80',
+  imageAlt:'Law books and justice scales',
+  intro:'Everything is on the table. The evidence. The lies. The photograph. The recording. There is only one question left: what really happened to Eleanor Hartwell — and what do you do with the answer?',
+  bossMsg:'I have read every report you have filed. George Hartwell came to see me this morning — with two lawyers and a man I did not recognise. They used the word "closed" four times in fifteen minutes. I told them we follow the evidence. Before you write your final report, there is one more thing you need to hear.',
+  youtubeId:'',
+  videoTitle:'Inspector Morrison — The Truth',
+  videoDuration:'~90 seconds',
+  videoInstruction:'Listen carefully. Morrison knows more than he is saying.',
+  videoScript:`I have read every report you have filed. Every one of them.\n\nGeorge Hartwell came to see me this morning. With two lawyers and a man I did not recognise. They want this case closed. Today. They used the word closed four times in fifteen minutes.\n\nI told them we follow the evidence.\n\nThe evidence says Eleanor Hartwell left that hotel voluntarily. It says somebody helped her. And it says George Hartwell lied to us from the first morning.\n\nBefore you write your final report, there is one more thing you need to see. It arrived at the lab this morning. An audio recording — recovered from a surveillance device in Suite 401. Nobody knows who placed it there.\n\nListen to it carefully. Then tell me what you think really happened.`,
+  cliffhanger:{
+    eyebrow:'Case Closed',
+    title:'SIX MONTHS LATER',
+    text:`On a warm Tuesday morning, when the city has finally forgotten winter, something arrives.\n\nAn envelope. No postmark. No return address.\n\nInside: a single typed line.\n\n<em>"We know where you are, Detective."</em>\n\nBelow it, a symbol you have never seen before — but somehow recognise.\n\nThe Falcone family crest.`,
+    image:'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=700&q=80',
+    nextLabel:'★ Open the Epilogue',
+    isEpilogue:true,
+  },
+  theory:`<h3>Spiral Review — Everything You Have Learned</h3>
+<p>This is your final mission. Before writing your verdict, here is a summary of all the grammar:</p>
+<table class="th-table">
+<tr><th>Grammar Point</th><th>Key Rule</th><th>Example from this case</th></tr>
+<tr><td><b>Reported Speech</b></td><td>Backshift verb tenses. Change pronouns.</td><td>"She said she <b>had made</b> her decision."</td></tr>
+<tr><td><b>Reporting Verbs</b></td><td>claim / deny / admit / insist / suggest / warn</td><td>"He <b>denied being</b> in the lobby."</td></tr>
+<tr><td><b>Reported Commands</b></td><td>told/asked + object + (not) to + infinitive</td><td>"She told him <b>not to follow</b> her."</td></tr>
+<tr><td><b>Reported Offers</b></td><td>offered / refused / suggested + to / -ing</td><td>"She <b>offered to provide</b> documentation."</td></tr>
+<tr><td><b>Modal Deduction</b></td><td>must / can\'t / might + have + past participle</td><td>"She <b>must have planned</b> this for months."</td></tr>
+</table>
+<div class="note-box">💡 <b>For your final video:</b> Try to include at least one example of each grammar point from your Detective's Notebook entries.</div>`,
+  exercises:[
+    {id:'ex1',type:'sel-blanks',title:'Spiral: Reporting Verbs in Context',skill:'lang',pts:4,
+     hint:'Choose the verb that best matches the attitude of the speaker in each context.',
+     hintCat:'Escull el verb que millor s\'adapta a l\'actitud del parlant. Recorda les estructures de cada verb.',
+     instr:'Complete each sentence with the most appropriate reporting verb.',
+     bank:['insisted','denied','admitted','warned','claimed'],
+     items:[
+      {before:'George Hartwell',ans:'denied',after:'being in the hotel lobby at 11:15 PM, even when the receptionist confirmed it.'},
+      {before:'The maid eventually',ans:'admitted',after:'that she had helped Eleanor reach the service exit.'},
+      {before:'Caruso\'s lawyer',ans:'insisted',after:'that his client had cooperated fully with investigators.'},
+      {before:'An anonymous source',ans:'warned',after:'the detective that they were "getting dangerously close to something very powerful."'},
+     ]},
+    {id:'ex2',type:'radio-mc',title:'Spiral: Modal Verbs of Deduction',skill:'lang',pts:4,
+     hint:'Must have = almost certain. Can\'t have = impossible. Might/could have = possible.',
+     hintCat:'Must have = gairebé segur. Can\'t have = impossible. Might/could have = possible.',
+     instr:'Choose the correct modal verb of deduction.',
+     items:[
+      {q:'The ransom note was sent before Eleanor disappeared. Whoever sent it ___ known in advance exactly when she would leave.',
+       opts:['might have','must have','can\'t have','should have'],ans:1},
+      {q:'The receptionist denied making any call, but the hotel log shows a call at midnight. He ___ been telling the truth.',
+       opts:['must have','could have','can\'t have','might have'],ans:2},
+      {q:'The recording shows Eleanor calmly saying "I have made my decision." She ___ been acting under physical force.',
+       opts:['must have','might have','can\'t have','could have'],ans:2},
+      {q:'Caruso arranged everything with such precision. She ___ been planning this for a long time.',
+       opts:["can't have",'must have','might not have','need not have'],ans:1},
+     ]},
+    {id:'ex3',type:'txt-blanks',title:'Spiral: Reported Speech — The Case in Words',skill:'lang',pts:4,
+     hint:'Apply the full backshift. Check: does the reporting verb need an object? Is the pronoun correct?',
+     hintCat:'Aplica el backshift complet. Comprova: el verb necessita objecte? Els pronoms són correctes?',
+     instr:'Complete each reported speech sentence with the correct form of the verb.',
+     items:[
+      {before:'Eleanor said: "I have made my decision." → Eleanor said that she',verb:'(make)',after:'her decision.',ans:['had made']},
+      {before:'The receptionist told us: "Hartwell comes to the lobby at 11:15." → He told us that Hartwell',verb:'(come)',after:'to the lobby at 11:15.',ans:['had come']},
+      {before:'A witness said: "I saw Eleanor leave through the service stairs." → The witness said she',verb:'(see)',after:'Eleanor leave through the service stairs.',ans:['had seen']},
+      {before:'Morrison told the team: "The case is almost closed." → He told the team that the case',verb:'(be)',after:'almost closed.',ans:['was']},
+     ]},
+    {id:'ex4',type:'decision',title:'The Final Verdict',skill:'ps',pts:5,
+     charEmoji:'⚖️',charName:'Your Decision',
+     scenario:'You have the recording. You have Hamilton\'s note explaining that Eleanor was an operative placed inside the Falcone family — she married George Hartwell eleven years ago, but her loyalty was always to Rosa Caruso\'s organisation. When George discovered the truth, Eleanor had no choice but to leave immediately. Caruso extracted her. The ransom note bought forty-eight hours. Now you must decide what goes in your final report.',
+     instr:'What is your final decision?',
+     options:[
+      {text:'A — Close the case correctly. Full report: Eleanor left voluntarily, Hartwell lied to investigators. You do not mention Caruso or the organisations. Hartwell faces charges for lying to police.',
+       outcome:'Morrison reads the report in silence. "This will not make certain people happy." "No," you say. "It won\'t." He signs it anyway. You are a good detective. But good detectives in this city have a habit of making enemies.',xp:5,best:true},
+      {text:'B — Accept Caruso\'s offer. Close the case without mentioning Hartwell\'s lies. In return, you receive the first envelope — your first job for Rosa Caruso.',
+       outcome:'The envelope arrives the next morning. Inside, a name and an address. Your first job for Rosa Caruso. The name is someone you know.',xp:3,best:false},
+      {text:'C — Request a transfer out of New York. Present a minimal report and leave the city.',
+       outcome:'Morrison does not ask questions. He signs the transfer that afternoon. You are on a train by nightfall. You think you are leaving it all behind. You are wrong.',xp:2,best:false},
+     ]},
+    {id:'ex5',type:'open-text',title:'Case Analysis',skill:'comm',pts:4,
+     instr:'Answer in full sentences. Your teacher will read and grade your answer.',
+     items:[
+      {q:'In your opinion, was Rosa Caruso right to help Eleanor Hartwell disappear? Was Eleanor a victim, an operative, or something more complex? Use evidence from all four missions to support your view.'},
+     ]},
+  ],
+  notebookTitle:'Mission 4: Closing Statement',
+  notebookPrompt:'Write your final closing statement (5–6 sentences) as the detective. Explain what really happened, what evidence led you to this conclusion, and what you recommend should happen. Use reported speech, modal verbs and vocabulary from all four missions.',
+  notebookBullets:['What really happened — the full truth','Key evidence that brought you to this conclusion','"She claimed that..." / "This must have been..."','Your recommendation: what happens to each person'],
+  hasFinalSummary:true,
+},
+
+// ─── EPILOGUE ───────────────────────────────────────
+{
+  num:5, id:'s5', icon:'★', title:'We Know Where You Are',
+  image:'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=700&q=80',
+  imageAlt:'Letter and magnifying glass on dark desk',
+  intro:'Six months have passed. The case is closed. Filed. Finished. And yet here, on a warm Tuesday morning, something has found its way to your desk. The Falcone family has not forgotten.',
+  bossMsg:'I told you the Hartwell case was closed. I stand by that. But if you have received something — and I have a feeling you have — then read it carefully. Think before you act. My door is open. It always has been.',
+  youtubeId:'',
+  videoTitle:'Inspector Morrison — Six Months Later',
+  videoDuration:'~75 seconds',
+  videoInstruction:'Listen to Morrison. What is he not saying directly?',
+  videoScript:`I wanted to check in. Six months is a long time, and this city has a way of catching up with people.\n\nThe Hartwell case is closed. Officially. Nobody has reopened it and nobody will — not from our side. What happens outside this precinct is another matter.\n\nYou did good work. Careful work. The kind that does not always get recognised because the people who would recognise it are the same people who preferred you did not look too closely.\n\nI will just say this — if something arrives that you do not understand, do not act immediately. Think first. The people who act immediately in this city are usually the ones who do not last.\n\nMy door is open. It always has been.`,
+  isEpilogue:true,
+  theory:`<h3>Complete Grammar Review — The Manhattan Affair</h3>
+<p>Well done, Detective. You have reached the epilogue. Here is everything you have practised:</p>
+<table class="th-table">
+<tr><th>Skill</th><th>What you practised</th></tr>
+<tr><td><b>Reported Speech</b></td><td>Backshift, pronoun and time expression changes</td></tr>
+<tr><td><b>Reporting Verbs</b></td><td>claim / deny / admit / insist / suggest / warn / accuse / explain</td></tr>
+<tr><td><b>Reported Commands</b></td><td>told/asked + object + (not) to + infinitive</td></tr>
+<tr><td><b>Reported Offers</b></td><td>offered / refused / suggested + to / -ing</td></tr>
+<tr><td><b>Modal Deduction</b></td><td>must / can\'t / might + have + past participle</td></tr>
+<tr><td><b>Media Vocabulary</b></td><td>headline, correspondent, scoop, broadcast, tipoff, press conference</td></tr>
+<tr><td><b>Crime Vocabulary</b></td><td>evidence, alibi, suspect, witness, motive, ransom, clue</td></tr>
+</table>`,
+  exercises:[
+    {id:'ex1',type:'match',title:'Grammar Concepts — Final Review',skill:'lang',pts:4,
+     hint:'Match each grammar term with the rule that defines it.',
+     hintCat:'Relaciona cada terme gramatical amb la regla que el defineix. Pensa en el que has après durant les quatre missions.',
+     instr:'Match each grammar term with its correct definition.',
+     opts:['reporting what someone said by changing verb tenses','moving a verb one tense back in reported speech','a verb like claim or deny that introduces reported speech','told/asked + object + (not) to + infinitive'],
+     items:[
+      {def:'Reported Speech',ans:'reporting what someone said by changing verb tenses'},
+      {def:'Backshift',ans:'moving a verb one tense back in reported speech'},
+      {def:'Reporting Verb',ans:'a verb like claim or deny that introduces reported speech'},
+      {def:'Reported Command',ans:'told/asked + object + (not) to + infinitive'},
+     ]},
+    {id:'ex2',type:'true-false',title:'Reading: The Letters',skill:'lang',pts:4,
+     hint:'Read both letters carefully. Pay attention to what is stated, what is implied, and what is left unsaid.',
+     hintCat:'Llegeix les dues cartes atentament. Para atenció al que es diu, al que s\'insinua i al que no es diu.',
+     instr:'According to the two letters, are these statements True or False?',
+     items:[
+      {q:'Hamilton says he has worked with Caruso for seven years.',ans:'true'},
+      {q:'Hamilton is planning to stay in New York.',ans:'false'},
+      {q:'Caruso says the envelope from the Falcones was a direct threat.',ans:'false'},
+      {q:'According to Caruso, silence without intention looks like fear.',ans:'true'},
+     ]},
+    {id:'ex3',type:'open-text',title:'Your Reaction — Free Analysis',skill:'comm',pts:5,
+     instr:'Answer in full sentences. Your teacher will grade this.',
+     items:[
+      {q:'Hamilton describes himself as "a witness, a record-keeper — someone who writes down what happens so that it is not forgotten." Looking back at all four missions, do you think this is an honest description of what he did? Use at least two specific examples from his notes to support your answer.'},
+     ]},
+  ],
+  notebookTitle:'Epilogue: New Lead',
+  notebookPrompt:'You have read both letters. You know the Falcone family has found you. Write 4–5 sentences in the detective\'s voice: what do you know now, what do you feel, and what are you waiting for? Include at least one modal verb of deduction and one example of reported speech.',
+  notebookBullets:['What you now understand that you didn\'t in November','What you deduce from the Falcone envelope','Modal verb of deduction + reported speech','What comes next — or what you are waiting for'],
+  closingLines:[
+    {text:'Grace Hamilton left New York on the morning of Wednesday, 16 May 1934.', delay:0},
+    {text:'His last column for the Daily Mirror was never published.', delay:1200, italic:true},
+    {text:'Eleanor Hartwell was never found.', delay:2800},
+    {text:'Officially.', delay:4000, italic:true},
+    {text:'Rosa Caruso continued to manage the Velvet Room.', delay:5600},
+    {text:'Morrison remained at Midtown North Precinct.', delay:7000},
+    {text:'Neither of them mentioned the Hartwell case again.', delay:8400, italic:true},
+    {text:'The Falcone family sent no further messages that spring.', delay:10200},
+    {text:'That was the part that should have reassured you.', delay:11800},
+    {text:"It didn't.", delay:13200, italic:true, bold:true},
+    {text:'CASE #1933-0447 — CLOSED', delay:15000, stamp:true},
+  ],
+},
+];
+
+// ══════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════
+const state = {
+  student:{name:'',email:'',date:''},
+  level:'detective',
+  current:1,
+  showingNotebook:false,
+  answers:{},
+  checked:{},
+  submitted:{},
+  scores:{},
+  notebook:{},
+  m4decision:null, // 0=A(correct), 1=B(caruso), 2=C(flee)
+};
+
+function initState(){
+  SESSIONS.forEach(s=>{
+    if(!state.answers[s.num])state.answers[s.num]={};
+    if(!state.checked[s.num])state.checked[s.num]={};
+    if(!state.scores[s.num])state.scores[s.num]=computeMaxScores(s);
+    s.exercises.forEach(ex=>{
+      if(!state.answers[s.num][ex.id])state.answers[s.num][ex.id]={};
+      if(state.checked[s.num][ex.id]===undefined)state.checked[s.num][ex.id]=false;
+    });
+    if(!state.notebook[s.num])state.notebook[s.num]='';
+  });
+}
+
+function computeMaxScores(s){
+  let maxLang=0,maxPs=0;
+  s.exercises.forEach(ex=>{
+    if(isAutoEx(ex)){
+      if(ex.skill==='lang')maxLang+=ex.pts;
+      if(ex.skill==='ps')maxPs+=ex.pts;
+    }
+  });
+  const ex=state.scores[s.num]||{};
+  return{lang:ex.lang||0,ps:ex.ps||0,maxLang,maxPs};
+}
+
+function isAutoEx(ex){return['match','sel-blanks','radio-mc','txt-blanks','true-false','decision'].includes(ex.type);}
+function getTotalXP(){return SESSIONS.reduce((a,s)=>a+((state.scores[s.num]?(state.scores[s.num].lang||0)+(state.scores[s.num].ps||0):0)),0);}
+function getLangXP(){return SESSIONS.reduce((a,s)=>a+(state.scores[s.num]?state.scores[s.num].lang||0:0),0);}
+function getPsXP(){return SESSIONS.reduce((a,s)=>a+(state.scores[s.num]?state.scores[s.num].ps||0:0),0);}
+function getRank(xp){return[...RANKS].reverse().find(r=>xp>=r.min)||RANKS[0];}
+function escHtml(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function removeAccents(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+
+// ══════════════════════════════════════════════════════
+//  SHUFFLE (deterministic per student)
+// ══════════════════════════════════════════════════════
+const SHUFFLE_CACHE={};
+function strHash(s){let h=0;for(let i=0;i<s.length;i++)h=Math.imul(31,h)+s.charCodeAt(i)|0;return Math.abs(h);}
+function seededShuffle(arr,seed){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.abs((seed*(i+13)+i*7)^(seed>>3))%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function getShuffledRadioOpts(snum,exid,idx,n){const k=snum+'_'+exid+'_'+idx;if(!SHUFFLE_CACHE[k])SHUFFLE_CACHE[k]=seededShuffle([...Array(n).keys()],strHash(state.student.email+k));return SHUFFLE_CACHE[k];}
+function getShuffledMatchOpts(snum,exid,opts){const k=snum+'_'+exid+'_mo';if(!SHUFFLE_CACHE[k])SHUFFLE_CACHE[k]=seededShuffle([...opts],strHash(state.student.email+k));return SHUFFLE_CACHE[k];}
+function getShuffledDecOpts(snum,exid,n){const k=snum+'_'+exid+'_do';if(!SHUFFLE_CACHE[k])SHUFFLE_CACHE[k]=seededShuffle([...Array(n).keys()],strHash(state.student.email+k));return SHUFFLE_CACHE[k];}
+function getShuffledBank(snum,exid,bank){const k=snum+'_'+exid+'_sb';if(!SHUFFLE_CACHE[k])SHUFFLE_CACHE[k]=seededShuffle([...bank],strHash(state.student.email+k));return SHUFFLE_CACHE[k];}
+
+// ══════════════════════════════════════════════════════
+//  ONBOARDING
+// ══════════════════════════════════════════════════════
+let obSlide=1;const OB_TOTAL=4;
+function obNext(){if(obSlide>=OB_TOTAL)return;obGo(obSlide+1);}
+function obPrev(){if(obSlide<=1)return;obGo(obSlide-1);}
+function obGo(n){
+  document.getElementById('ob-s'+obSlide).classList.remove('active');
+  obSlide=n;
+  document.getElementById('ob-s'+obSlide).classList.add('active');
+  document.querySelectorAll('.ob-dot').forEach((d,i)=>d.classList.toggle('active',i===obSlide-1));
+  document.getElementById('ob-nav').style.display=(obSlide===OB_TOTAL)?'none':'flex';
+}
+function enterApp(){document.getElementById('onboarding').style.display='none';document.getElementById('login').style.display='flex';}
+
+// ══════════════════════════════════════════════════════
+//  EMAIL VALIDATION
+// ══════════════════════════════════════════════════════
+function validateEmail(){
+  const email=document.getElementById('inp-email').value.trim().toLowerCase();
+  const warn=document.getElementById('email-warn');
+  warn.style.display='none';
+  if(!email)return;
+  if(!email.endsWith('@institutmatadepera.cat')){warn.style.display='block';warn.textContent='Please use your school email ending in @institutmatadepera.cat';}
+}
+
+// ══════════════════════════════════════════════════════
+//  LOGIN
+// ══════════════════════════════════════════════════════
+async function tryLogin(){
+  const n=document.getElementById('inp-name').value.trim();
+  const e=document.getElementById('inp-email').value.trim().toLowerCase();
+  if(!n){alert('Please enter your full name.');return;}
+  if(!e||!e.endsWith('@institutmatadepera.cat')){alert('Please use your school email.');return;}
+  if(!(e in STUDENT_DATA)){
+    const warn=document.getElementById('email-warn');
+    warn.style.display='block';
+    warn.textContent='This email is not on the class list. Please check you have typed it correctly.';
+    return;
+  }
+  state.student.name=n;state.student.email=e;
+  state.student.date=new Date().toLocaleDateString('en-GB');
+  state.level=STUDENT_DATA[e]||'detective';
+  document.getElementById('chip-name').textContent=n;
+  const lLabels={rookie:'🟡 Rookie',detective:'🔵 Detective',senior:'🔴 Senior'};
+  document.getElementById('level-chip').textContent=lLabels[state.level]||state.level;
+  const loading=document.getElementById('login-loading');
+  loading.style.display='block';
+  document.querySelector('.btn-start').disabled=true;
+  initState();
+  const saved=await loadProgress(e);
+  loading.style.display='none';
+  if(saved){applyProgress(saved);showResume();}
+  else{document.getElementById('login').style.display='none';launchApp();}
+}
+
+// ══════════════════════════════════════════════════════
+//  SAVE / LOAD
+// ══════════════════════════════════════════════════════
+function saveProgress(){
+  const prog={found:true,name:state.student.name,answers:state.answers,checked:state.checked,
+    submitted:state.submitted,scores:state.scores,notebook:state.notebook,
+    level:state.level,m4decision:state.m4decision};
+  try{localStorage.setItem('manhattan2_'+state.student.email,JSON.stringify(prog));}catch(e){}
+  debouncedSend(prog);
+}
+let _st=null;
+function debouncedSend(prog){clearTimeout(_st);_st=setTimeout(()=>sendProgressToSheets(prog),3000);}
+
+async function loadProgress(email){
+  try{const raw=localStorage.getItem('manhattan2_'+email);if(raw){const d=JSON.parse(raw);if(d&&d.found)return d;}}catch(e){}
+  if(!SHEETS_URL||SHEETS_URL.includes('YOUR_APPS'))return null;
+  try{const res=await fetch(`${SHEETS_URL}?action=load&email=${encodeURIComponent(email)}`);const d=await res.json();if(d&&d.found)return d;}catch(e){}
+  return null;
+}
+
+function applyProgress(saved){
+  if(saved.level)state.level=saved.level;
+  if(saved.m4decision!==undefined&&saved.m4decision!==null)state.m4decision=saved.m4decision;
+  ['answers','checked','submitted','scores','notebook'].forEach(k=>{
+    if(saved[k])Object.keys(saved[k]).forEach(n=>{state[k][n]=saved[k][n]||state[k][n];});
+  });
+}
+
+function sendProgressToSheets(prog){
+  if(!SHEETS_URL||SHEETS_URL.includes('YOUR_APPS'))return;
+  fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify({action:'saveProgress',email:state.student.email,...prog})}).catch(()=>{});
+}
+
+function sendMissionToSheets(snum,rows){
+  if(!SHEETS_URL||SHEETS_URL.includes('YOUR_APPS')){setStatus(snum,'error','No Sheets URL configured.');return;}
+  setStatus(snum,'sending','<div class="spinner"></div> Sending to teacher…');
+  const s=SESSIONS.find(x=>x.num===snum);
+  const payload={action:'saveMission',email:state.student.email,student:state.student.name,
+    date:state.student.date,session:snum,sessionTitle:s.title,level:state.level,
+    scores:state.scores[snum],totalXP:getTotalXP(),rank:getRank(getTotalXP()).title,
+    notebook:state.notebook[snum]||'',m4decision:state.m4decision,rows};
+  fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)})
+  .then(()=>{setStatus(snum,'sent','✓ Sent to teacher!');setTimeout(()=>setStatus(snum,''),4000);})
+  .catch(()=>{setStatus(snum,'error','Connection error. Progress saved locally.');});
+}
+function setStatus(snum,type,html=''){
+  const el=document.getElementById('sendst-'+snum);if(!el)return;
+  el.className='send-status'+(type?' show '+type:'');el.innerHTML=html;
+}
+
+// ══════════════════════════════════════════════════════
+//  RESUME SCREEN
+// ══════════════════════════════════════════════════════
+function showResume(){
+  document.getElementById('login').style.display='none';
+  document.getElementById('resume').style.display='flex';
+  document.getElementById('res-sub').textContent='Welcome back, Detective '+state.student.name+'! Your case files have been loaded.';
+  document.getElementById('res-missions').innerHTML=SESSIONS.map(s=>{
+    const done=state.submitted[s.num];const sc=state.scores[s.num];
+    const xp=sc?(sc.lang||0)+(sc.ps||0):0;
+    return '<div class="res-mission'+(done?' done':'')+'"><span class="rm-icon">'+(done?'✅':s.icon)+'</span><span class="rm-name">'+(s.isEpilogue?'★ Epilogue: ':'Mission '+s.num+': ')+s.title+'</span>'+(done?'<span class="rm-xp">+'+xp+' XP</span>':'')+'</div>';
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+//  LAUNCH APP
+// ══════════════════════════════════════════════════════
+function launchApp(){
+  document.getElementById('resume').style.display='none';
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').style.display='flex';
+  Object.keys(SHUFFLE_CACHE).forEach(k=>delete SHUFFLE_CACHE[k]);
+  buildSidebar();renderAllSessions();restoreState();
+  const firstOpen=SESSIONS.find(s=>!state.submitted[s.num]);
+  goTo(firstOpen?firstOpen.num:4);
+}
+
+// ══════════════════════════════════════════════════════
+//  SIDEBAR
+// ══════════════════════════════════════════════════════
+function buildSidebar(){
+  document.getElementById('stabs').innerHTML=SESSIONS.map(s=>
+    '<div class="stab" id="stab-'+s.num+'" onclick="tryGoTo('+s.num+')">'+
+    '<div class="tab-icon">'+s.icon+'</div>'+
+    '<div class="tab-info"><div class="tab-name">'+s.title.replace('&amp;','&')+'</div>'+
+    '<div class="tab-num">'+(s.isEpilogue?'★ Epilogue':'Mission '+s.num)+'</div></div>'+
+    '<div class="tab-xp" id="tabxp-'+s.num+'"></div></div>'
+  ).join('');
+}
+
+function updateSidebar(){
+  const xp=getTotalXP();const rank=getRank(xp);
+  document.getElementById('tb-rank-ico').textContent=rank.icon;
+  document.getElementById('tb-rank-lbl').textContent=rank.title;
+  document.getElementById('tb-xp').textContent=xp;
+  document.getElementById('sb-rank-ico').textContent=rank.icon;
+  document.getElementById('sb-rank-name').textContent=rank.title;
+  document.getElementById('sb-xp-count').textContent=xp;
+  document.getElementById('sb-xp-fill').style.width=Math.min(100,xp)+'%';
+  document.getElementById('sb-next-rank').textContent=rank.next?'Next rank at '+rank.next+' XP':'🎉 Maximum rank reached!';
+  document.getElementById('sk-lang-val').textContent=getLangXP()+' XP';
+  document.getElementById('sk-ps-val').textContent=getPsXP()+' XP';
+  const commDone=SESSIONS.some(s=>state.submitted[s.num]&&s.exercises.some(ex=>ex.skill==='comm'));
+  document.getElementById('sk-comm-val').textContent=commDone?'Submitted':'Pending';
+  SESSIONS.forEach((s,i)=>{
+    const tab=document.getElementById('stab-'+s.num);
+    const xpEl=document.getElementById('tabxp-'+s.num);
+    const unlocked=s.isEpilogue?state.submitted[4]:(i===0||state.submitted[SESSIONS[i-1].num]);
+    tab.className='stab'+(s.num===state.current&&!state.showingNotebook?' active':'')+(state.submitted[s.num]?' done':'')+(unlocked?'':' locked');
+    xpEl.textContent=state.submitted[s.num]?'+'+(((state.scores[s.num]||{}).lang||0)+((state.scores[s.num]||{}).ps||0))+' XP':'';
+  });
+  const nbTab=document.getElementById('stab-nb');if(nbTab)nbTab.className='stab'+(state.showingNotebook?' active':'');
+}
+
+function tryGoTo(n){
+  const s=SESSIONS.find(x=>x.num===n);
+  if(s&&s.isEpilogue&&!state.submitted[4]){alert('Complete Mission 4 first to unlock the Epilogue!');return;}
+  const idx=SESSIONS.findIndex(x=>x.num===n);
+  if(idx>0&&!s.isEpilogue&&!state.submitted[SESSIONS[idx-1].num]){alert('Complete Mission '+(SESSIONS[idx-1].num)+' first!');return;}
+  goTo(n);
+}
+
+function goTo(n){
+  state.current=n;state.showingNotebook=false;
+  document.querySelectorAll('.session-wrap').forEach(el=>el.classList.remove('active'));
+  const sw=document.getElementById('sw-'+n);if(sw)sw.classList.add('active');
+  document.getElementById('content-area').style.display='';
+  document.getElementById('nb-page').style.display='none';
+  applyMissionColor(n);updateSidebar();window.scrollTo(0,0);
+}
+
+function showNotebook(){
+  state.showingNotebook=true;
+  document.querySelectorAll('.session-wrap').forEach(el=>el.classList.remove('active'));
+  document.getElementById('content-area').style.display='none';
+  document.getElementById('nb-page').style.display='block';
+  renderNotebookPage();updateSidebar();window.scrollTo(0,0);
+}
+
+function applyMissionColor(n){
+  const c=MISSION_COLORS[n]||MISSION_COLORS[1];
+  document.documentElement.style.setProperty('--accent',c.accent);
+  document.documentElement.style.setProperty('--accent-bg',c.bg);
+  document.documentElement.style.setProperty('--accent-border',c.border);
+}
+
+// ══════════════════════════════════════════════════════
+//  DOCUMENT RENDERERS
+// ══════════════════════════════════════════════════════
+function renderLeaflet(){
+  return `<div class="leaflet">
+  <div class="leaflet-header">
+    <div class="leaflet-missing">⚠ MISSING PERSON ⚠</div>
+    <div class="leaflet-name">ELEANOR CONSTANCE HARTWELL</div>
+  </div>
+  <div class="leaflet-body">
+    <div class="leaflet-row"><span class="leaflet-label">Age:</span><span>34 years old</span></div>
+    <div class="leaflet-row"><span class="leaflet-label">Height:</span><span>5 ft 6 in (168 cm)</span></div>
+    <div class="leaflet-row"><span class="leaflet-label">Hair:</span><span>Dark brown, shoulder length</span></div>
+    <div class="leaflet-row"><span class="leaflet-label">Eyes:</span><span>Hazel</span></div>
+    <div class="leaflet-row"><span class="leaflet-label">Last seen:</span><span>Tuesday, 14 November 1933, approx. 10:30 PM</span></div>
+    <div class="leaflet-row"><span class="leaflet-label">Location:</span><span>Hotel Astoria, Fifth Avenue, Manhattan</span></div>
+    <div class="leaflet-row"><span class="leaflet-label">Wearing:</span><span>Unknown — coat, gloves and handbag found in hotel room</span></div>
+    <br>
+    <p>Mrs. Eleanor Hartwell, wife of railroad industrialist Mr. George Hartwell, was reported missing from the Hotel Astoria on the morning of Wednesday 15 November 1933. Her personal belongings — including her winter coat, leather gloves, and handbag — were found undisturbed in her room.</p>
+    <p>A ransom note was received by the New York City Police Department. <strong>A reward of $5,000</strong> is offered for any information leading to her safe return.</p>
+    <p>Contact: <strong>Midtown North Precinct, Manhattan</strong> · <strong>MUrray Hill 4-7000</strong></p>
+  </div>
+  <div class="leaflet-footer">ALL INFORMATION TREATED IN STRICTEST CONFIDENCE · NYPD · NOVEMBER 1933</div>
+</div>`;
+}
+
+function renderEnvelope(id,title,hint,content,meta){
+  return `<div class="envelope-wrap">
+  <div class="envelope-btn" onclick="toggleEnvelope('${id}')">
+    <span class="envelope-icon">✉️</span>
+    <div><div class="envelope-label">Sealed Envelope — Click to Open</div>
+    <div class="envelope-title">${title}</div>
+    <div class="envelope-hint">${hint||''}</div></div>
+  </div>
+  <div class="envelope-content" id="${id}">
+    ${meta?'<div class="envelope-meta">'+meta+'</div>':''}
+    ${content}
+  </div>
+</div>`;
+}
+
+function toggleEnvelope(id){
+  const el=document.getElementById(id);if(!el)return;
+  el.classList.toggle('open');
+}
+
+function renderDossierWitnesses(){
+  return `<div class="dossier">
+  <div class="dossier-header">NYPD CASE #1933-0447 · WITNESS STATEMENTS · CONFIDENTIAL</div>
+  <div class="dossier-section">
+    <div class="dossier-who">Statement 1 — George Hartwell, husband</div>
+    <div class="dossier-where">Hotel Astoria, Suite 401 · 15 November, 8:15 AM</div>
+    "My wife and I had dinner at eight o'clock. By half past nine, Eleanor said she was tired. I accompanied her to the corridor and said goodnight. I returned to our room at ten o'clock. Eleanor was already in bed, asleep. I did not wake until seven the following morning."
+  </div>
+  <div class="dossier-section">
+    <div class="dossier-who">Statement 2 — A guest, Room 403, fourth floor</div>
+    <div class="dossier-where">Hotel Astoria · 15 November, 9:00 AM</div>
+    "I could not sleep. At approximately eleven o'clock I heard voices in the corridor. A man and a woman. The tone was not friendly — it was an argument. It lasted perhaps ten minutes. Then I heard a door close firmly. I did not look into the corridor."
+  </div>
+  <div class="dossier-section">
+    <div class="dossier-who">Statement 3 — A hotel maid</div>
+    <div class="dossier-where">Hotel Astoria, Staff Room · 15 November, 9:45 AM</div>
+    "I was checking the fourth-floor corridor at around half past eleven. I saw a woman near the service stairs. She was not wearing a coat. She carried a small bag. She did not look frightened. She looked — determined. She opened the service door and went through it. I assumed she had her reasons."
+  </div>
+</div>`;
+}
+
+function renderCarusoDossier(){
+  return `<div class="dossier">
+  <div class="dossier-header">NYPD INTELLIGENCE DIVISION · SUBJECT FILE · CONFIDENTIAL</div>
+  <div class="dossier-section">
+    <div class="dossier-who">Subject: Rosa Caruso, female, approx. 41 years</div>
+    <div><b>Known address:</b> The Velvet Room, 52nd Street, Manhattan</div>
+    <div><b>Occupation:</b> Club manager / Velvet Imports LLC (registered agent)</div>
+    <div><b>Known associates:</b> E.C. (identity unconfirmed) — observed at premises on multiple occasions, 1931–1933</div>
+    <div><b>Prior arrests:</b> None on record</div>
+    <div><b>Prior investigations:</b> Case #1925-0112 — closed. Case #1931-0089 — closed.</div>
+  </div>
+  <div class="dossier-section">
+    <div class="dossier-who">Interviewing officer's note, 1931</div>
+    "Subject was cooperative and precise. Every answer was correct. None of them were useful."
+  </div>
+  <div class="dossier-note">File last accessed: 13 November 1933. Accessing officer: unknown.</div>
+</div>`;
+}
+
+function renderAudioTranscript(){
+  return `<div class="dossier">
+  <div class="dossier-header">NYPD CASE #1933-0447 · AUDIO TRANSCRIPT A-7 · CONFIDENTIAL<br>Suite 401, Hotel Astoria · Activated 14 November 1933, 22:57</div>
+  <div class="dossier-section">
+    <p><em>Two voices identified: SUBJECT A (male, George Hartwell) and SUBJECT B (female, Eleanor Hartwell)</em></p>
+    <div class="dossier-speaker">HARTWELL [22:57:14]:</div>
+    <p>"Eleanor. Stop. I am talking to you."</p>
+    <div class="dossier-speaker">ELEANOR [22:57:21]:</div>
+    <p>"I have made my decision, George."</p>
+    <div class="dossier-speaker">HARTWELL [22:57:28]:</div>
+    <p>"Your decision. You don't make decisions. Everything you have — this room, these clothes, your name — it is because of me."</p>
+    <div class="dossier-speaker">ELEANOR [22:57:39]:</div>
+    <p>"That is exactly why I am leaving."</p>
+    <div class="dossier-speaker">HARTWELL [22:57:44]:</div>
+    <p>"You are not going anywhere. If you try, I will destroy you. I will tell them what you really are. Nobody will believe a word you say. Do you understand me?"</p>
+    <p><em>[Pause — 9 seconds]</em></p>
+    <div class="dossier-speaker">ELEANOR [22:57:58]:</div>
+    <p>"I understand you perfectly. I have understood you for eleven years."</p>
+    <p><em>[Sound of door opening — 22:58:04. Recording ends.]</em></p>
+  </div>
+  <div class="dossier-note">Investigator's note: Subject B left the hotel via the service stairs at approx. 23:31. Hartwell's statement that his wife was asleep at 22:00 is demonstrably false. Recording establishes motive for voluntary departure.</div>
+</div>`;
+}
+
+function renderNowhereMirrorArticle(){
+  return `<div class="newspaper">
+  <div class="np-masthead">
+    <div class="np-date">New York City · Friday, 17 November 1933 · Two Cents</div>
+    <div class="np-name">THE DAILY MIRROR</div>
+  </div>
+  <div class="np-headline">CROSS CASE: POLICE WIDEN INVESTIGATION INTO 52ND STREET LINK</div>
+  <div class="np-sub">Velvet Room manager Rosa Caruso declines to comment · Investigators examine shell company · Eleanor Hartwell missing for three days</div>
+  <div class="np-byline">By Grace Hamilton, Crime Correspondent</div>
+  <div class="np-body">
+    <p>New York City police investigators are reported to be examining connections between the disappearance of Eleanor Hartwell and a company known as Velvet Imports LLC — no registered employees, no trading address, no record of commercial activity.</p>
+    <p>The company's registered agent is Rosa Caruso, who also manages a private music establishment on 52nd Street known as the Velvet Room. Miss Caruso has not responded to requests for comment.</p>
+    <p>George Hartwell, husband of the missing woman, continues to cooperate with authorities. A family spokesman described him as "devastated and hopeless."</p>
+    <div class="np-aside">In thirty years of covering this city, certain patterns repeat themselves. A business that exists only on paper. A name that appears in one file and disappears from the next. These patterns are worth watching. — G.H.</div>
+  </div>
+</div>`;
+}
+
+function renderVelvetRoomArticle(){
+  return `<div class="newspaper">
+  <div class="np-masthead">
+    <div class="np-date">New York City · Tuesday, 21 November 1933 · Two Cents</div>
+    <div class="np-name">THE DAILY MIRROR</div>
+  </div>
+  <div class="np-headline">THE VELVET ROOM: MANHATTAN'S MOST PRIVATE CLUB</div>
+  <div class="np-sub">On 52nd Street, a door with no sign — and a reputation for absolute discretion</div>
+  <div class="np-byline">By Grace Hamilton, Crime Correspondent</div>
+  <div class="np-body">
+    <p>Between a laundry and a closed pharmacy on 52nd Street, there is a door with no sign. Behind it, according to those who have been inside, is one of the finest jazz clubs in Manhattan.</p>
+    <p>The Velvet Room has no public membership list, no advertised hours, and no telephone number in any directory. Its manager, Rosa Caruso, does not give interviews.</p>
+    <p>What it does have is a reputation — for discretion, for excellent music, and for a clientele that values privacy above all else.</p>
+    <div class="np-aside">In thirty years I have walked past that door many times. Tonight, for the first time, I have been invited inside. Some doors, once opened, do not close again. — G.H.</div>
+  </div>
+</div>`;
+}
+
+// ══════════════════════════════════════════════════════
+//  RENDER ALL SESSIONS
+// ══════════════════════════════════════════════════════
+function renderAllSessions(){
+  document.getElementById('content-area').innerHTML=SESSIONS.map(renderSession).join('');
+}
+
+function renderVideoCard(s){
+  const hasYt=s.youtubeId&&s.youtubeId.length>5;
+  return `<div class="video-card">
+  <div class="vc-header">
+    <span class="vc-num">VIDEO</span>
+    <div class="vc-info">
+      <div class="vc-label">Listening — Inspector Morrison</div>
+      <div class="vc-title">${s.videoTitle}</div>
+      <div class="vc-duration">${s.videoDuration}</div>
+    </div>
+  </div>
+  ${hasYt?`<iframe class="vc-embed" src="https://www.youtube.com/embed/${s.youtubeId}" allow="autoplay;encrypted-media" allowfullscreen></iframe>`:
+  `<div class="vc-placeholder">
+    <span class="vc-ph-icon">🎬</span>
+    <div class="vc-instruction">${s.videoInstruction}</div>
+    <div class="vc-ph-text" style="font-size:.78rem;color:var(--muted)">Video coming soon — add YouTube ID to the code.</div>
+    <button class="vc-script-toggle" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.nextElementSibling.classList.contains('show')?'Hide script':'📄 Read script instead'">📄 Read script instead</button>
+    <div class="vc-script">${s.videoScript.replace(/\n/g,'<br>')}</div>
+  </div>`}
+</div>`;
+}
+
+function renderSession(s){
+  const c=MISSION_COLORS[s.num]||MISSION_COLORS[1];
+  const maxAuto=s.exercises.filter(ex=>isAutoEx(ex)).reduce((a,ex)=>a+ex.pts,0);
+  const maxTeacher=s.exercises.filter(ex=>ex.type==='open-text').reduce((a,ex)=>a+(ex.pts||0),0);
+
+  let h=`<div class="session-wrap" id="sw-${s.num}">`;
+
+  // Boss card
+  h+=`<div class="boss-card"><div class="boss-avatar">👔</div><div class="boss-content">
+    <div class="boss-label">📋 Inspector Morrison</div>
+    <div class="boss-text">${s.bossMsg}</div>
+  </div></div>`;
+
+  // Banner
+  h+=`<div class="mission-banner">
+    <img class="mission-img" src="${s.image}" alt="${s.imageAlt}" loading="lazy" onerror="this.style.display='none'">
+    <div class="mission-intro">
+      <div class="snum">${s.isEpilogue?'★ EPILOGUE':'MISSION '+s.num+' OF 4'}</div>
+      <div class="stitle">${s.icon} ${s.title}</div>
+      <div class="sdesc">${s.intro}</div>
+    </div>
+  </div>`;
+
+  // Video
+  h+=renderVideoCard(s);
+
+  // Mission-specific documents
+  if(s.num===1){
+    h+=renderLeaflet();
+    // Envelope: note from receptionist
+    h+=renderEnvelope('env_m1_rec',
+      'Sealed Note — Found under your office door',
+      'Someone left this while you were at the hotel.',
+      `<p>Detective —</p>
+<p>I should not be writing this. But there are things I did not say this morning.</p>
+<p>Mr. Hartwell came down to the lobby at quarter past eleven. He asked me if his wife had come downstairs. I told him no. He waited near the entrance for fifteen minutes, then went back up. He told me not to mention it to anyone.</p>
+<p>I am telling you now because I saw what he looked like when he came back from that corridor. I have worked night shifts for eleven years. I know the difference between a worried husband and a frightened one.</p>
+<p>He was not worried. He was frightened.</p>
+<div class="envelope-sig">— The night receptionist</div>`
+    );
+  }
+
+  if(s.num===2){
+    h+=renderDossierWitnesses();
+    // Envelope: Hamilton note M2
+    h+=renderEnvelope('env_m2_gh',
+      'Sealed Note — From Grace Hamilton, Daily Mirror',
+      'Left at the precinct reception this morning.',
+      `<p>Detective —</p>
+<p>You will have noticed that the witness statements do not add up. Hartwell says his wife was asleep at ten. The guest on the fourth floor heard an argument at eleven. The maid saw a woman leave at half past eleven — without a coat, without fear.</p>
+<p>One of these people is lying. I think you already know which one.</p>
+<p>I have been covering Manhattan crime for thirty years. I have seen the name Velvet Imports LLC before — in a case from 1925 that was closed after two weeks without explanation.</p>
+<p>I am not suggesting anything. I am simply telling you what I know.</p>
+<p>Be careful, Detective.</p>
+<div class="envelope-sig">— G.H.</div>`
+    );
+    h+=renderNowhereMirrorArticle();
+  }
+
+  if(s.num===3){
+    h+=renderCarusoDossier();
+    // Envelope: Hamilton note M3
+    h+=renderEnvelope('env_m3_gh',
+      'Sealed Note — From Grace Hamilton, Daily Mirror',
+      'Delivered by hand. No envelope return address.',
+      `<p>Detective —</p>
+<p>You are standing at the edge of something much larger than a missing woman.</p>
+<p>Eleanor Hartwell is not a victim. She moved between two very different worlds — freely, and for years. That is not something that happens by accident.</p>
+<p>There is a table at the back of the Velvet Room. If you go there tonight, order a bourbon. Leave the badge at home.</p>
+<div class="envelope-sig">— G.H.</div>`
+    );
+    h+=renderVelvetRoomArticle();
+  }
+
+  if(s.num===4){
+    h+=renderAudioTranscript();
+    // Envelope: Hamilton M4 — reveals the truth
+    h+=renderEnvelope('env_m4_gh',
+      'Sealed Note — From Grace Hamilton, Daily Mirror',
+      'Found on your desk this morning.',
+      `<p>Detective —</p>
+<p>You followed the thread. You pulled it. Now you see the whole picture.</p>
+<p>Eleanor Hartwell was an operative — placed inside the Falcone family eleven years ago, when she married George Hartwell. The Falcones are one of two organisations that have run this city quietly for twenty years. Rosa Caruso runs the other.</p>
+<p>George Hartwell suspected Eleanor for months. The night of the fourteenth, he confronted her. She had no choice but to leave immediately. Caruso extracted her. The ransom note bought forty-eight hours of confusion.</p>
+<p>George Hartwell lied to investigators from the first morning — knowing it would keep the search focused on a kidnapping rather than the truth.</p>
+<p>You have the recording. You have the statements. What you do with it is your decision now.</p>
+<div class="envelope-sig">— G.H.</div>`
+    );
+    // Envelope: Caruso M4 — the offer
+    h+=renderEnvelope('env_m4_rc',
+      'Sealed Envelope — No postmark, no return address',
+      'Found under your door this morning.',
+      `<p>Detective —</p>
+<p>You have been thorough. More thorough than I expected.</p>
+<p>Eleanor is safe. She will not return to New York. She does not wish to be found, and I intend to respect that.</p>
+<p>An open case keeps George Hartwell in the shadows. A closed case — the right kind of closed — takes that protection away from him.</p>
+<p>I am asking you to close it. In return, I can offer you something your badge cannot — information, when you need it. Protection, if it comes to that.</p>
+<p>This offer has a short life, Detective. Everything in this city does.</p>
+<div class="envelope-sig">— R.C.</div>`
+    );
+    // Answering machine note
+    h+=`<div class="note-box" style="margin-bottom:1.25rem">
+  📞 <b>Your answering machine light is on.</b> You notice it when you get home that evening. You remember the access code — it's the same one you've used for years. Press play.
+  <br><br><span style="color:var(--muted);font-size:.82rem">⚙️ Answering machine player will be integrated here by your teacher.</span>
+</div>`;
+  }
+
+  if(s.num===5){
+    // Envelope: Hamilton Epilogue
+    h+=renderEnvelope('env_ep_gh',
+      'Sealed Letter — From Grace Hamilton',
+      'No postmark. Slipped under your door.',
+      `<p>Detective —</p>
+<p>You followed the thread all the way to the end. Not many people do.</p>
+<p>I owe you an explanation I have been postponing. I am not simply a crime reporter. I have been working alongside Rosa Caruso for seven years — not as an operative, but as something harder to define. A witness. A record-keeper. Someone who writes down what happens so that it is not forgotten.</p>
+<p>Eleanor is alive and well. She has a new name, a new city, and for the first time in eleven years, a life that belongs entirely to her. She asked me to tell you that.</p>
+<p>I am leaving New York tomorrow. If this city has taught me one thing in thirty years, it is that the right moment to leave is always slightly before you think it is.</p>
+<p>It has been a privilege, Detective.</p>
+<div class="envelope-sig">— G.H.</div>`
+    );
+    // Envelope: Caruso Epilogue
+    h+=renderEnvelope('env_ep_rc',
+      'Sealed Note — From Rosa Caruso',
+      'Left at the precinct reception. No name given.',
+      `<p>Detective —</p>
+<p>The case is closed. You closed it well.</p>
+<p>The world does not stop moving because a case is closed.</p>
+<p>I will not contact you again unless it becomes necessary. In this business, "necessary" arrives without warning and without apology.</p>
+<p>You have shown good judgement. Stay alert.</p>
+<div class="envelope-sig">— R.C.</div>`
+    );
+  }
+
+  // Theory
+  if(s.theory){
+    h+=`<div class="theory-box open" onclick="toggleTheory(event,this)">
+      <div class="th-hdr">
+        <div class="th-hdr-l">📘 Grammar &amp; Theory — click to expand/collapse</div>
+        <div class="th-chevron">▼</div>
+      </div>
+      <div class="th-body">${s.theory}</div>
+    </div>`;
+  }
+
+  // Exercises
+  s.exercises.forEach((ex,i)=>{h+=renderExercise(s.num,ex,i+1);});
+
+  // Notebook task
+  h+=`<div class="notebook-task">
+    <div class="nb-header"><div class="nb-icon">📓</div>
+    <div><div class="nb-label">Detective's Notebook — Case Report</div>
+    <div class="nb-title">${s.notebookTitle}</div></div></div>
+    <div class="nb-prompt">${s.notebookPrompt}</div>
+    <div class="nb-bullets">${s.notebookBullets.map(b=>'<span class="nb-bullet">✦ '+b+'</span>').join('')}</div>
+    <textarea class="nb-textarea" id="nb_${s.num}" placeholder="Write your report here…" oninput="saveNB(${s.num},this.value)">${escHtml(state.notebook[s.num]||'')}</textarea>
+  </div>`;
+
+  // Final summary (M4 only)
+  if(s.hasFinalSummary){
+    h+=`<div class="final-summary">
+      <div class="fs-header"><span class="fs-icon">🎥</span>
+      <div><div class="fs-title">Final Video: Close the Case</div>
+      <div class="fs-sub">Your ultimate challenge as a detective</div></div></div>
+      <div class="fs-body">You have completed all four missions. Use your Detective's Notebook as the script for a <b>2–3 minute video presentation</b>. Present the full investigation: the evidence, the witnesses, the truth — and your verdict.</div>
+      <div class="fs-checklist">
+        ${['Mission 1 — Incident Report: who, where, when, first clues',
+           'Mission 2 — Witness Summary: what each witness said (reported speech)',
+           'Mission 3 — Field Report: the Velvet Room and your deductions',
+           'Mission 4 — Closing Statement: the truth and your verdict'].map((t,i)=>
+          `<div class="fs-check"><span class="fsc-num">${i+1}</span><span>${t}</span></div>`).join('')}
+      </div>
+      <div class="note-box"><b>📌 Language checklist:</b> Reported speech · Reporting verbs · Reported commands/offers · Modal verbs of deduction · Crime &amp; media vocabulary</div>
+    </div>`;
+  }
+
+  // Submit footer
+  h+=`<div class="sfooter">
+    <button class="btn-quest" id="sub-${s.num}" onclick="completeMission(${s.num})" disabled>⚔️ ${s.isEpilogue?'Close the Epilogue':'Complete Mission '+s.num}</button>
+    <span class="mission-status" id="mstatus-${s.num}"></span>
+    <div class="send-status" id="sendst-${s.num}"></div>
+    ${s.num<4?`<button class="btn-nxt" id="nxt-${s.num}" onclick="tryGoTo(${s.num+1})">Next mission →</button>`:
+      s.num===4?`<button class="btn-nxt" id="nxt-${s.num}" onclick="tryGoTo(5)">★ Open Epilogue</button>`:''}
+  </div>`;
+
+  // Mission complete card
+  h+=`<div class="mission-complete" id="mc-${s.num}">
+    <div class="mc-header"><span class="mc-icon">🏆</span>
+    <div><div class="mc-title">${s.isEpilogue?'Epilogue Complete!':'Mission '+s.num+' Complete!'}</div>
+    <div class="mc-subtitle">${s.title}</div></div></div>
+    <div class="mc-stats">
+      <div class="mc-stat"><div class="mc-stat-val xpv" id="mc-xp-${s.num}">+0</div><div class="mc-stat-lbl">XP Earned</div></div>
+      <div class="mc-stat"><div class="mc-stat-val autov" id="mc-auto-${s.num}">0/${maxAuto}</div><div class="mc-stat-lbl">Auto Score</div></div>
+      <div class="mc-stat"><div class="mc-stat-val totv" id="mc-tot-${s.num}">0</div><div class="mc-stat-lbl">Total XP</div></div>
+    </div>
+    <div class="mc-skills">
+      <span class="mc-skill-chip sk-lang" id="mc-sk-lang-${s.num}">🧠 Lang: 0</span>
+      <span class="mc-skill-chip sk-ps" id="mc-sk-ps-${s.num}">🧩 PS: 0</span>
+      ${maxTeacher>0?`<span class="mc-skill-chip sk-comm">🗣️ +${maxTeacher} pts teacher</span>`:''}
+    </div>
+    <div class="mc-rank-row"><span id="mc-rico-${s.num}">🎫</span>&nbsp;<span style="color:var(--muted);font-size:.87rem">Rank: <b id="mc-rname-${s.num}" style="color:var(--gold)">Rookie Detective</b></span></div>
+    <div id="mc-rankup-${s.num}"></div>
+    <div class="mc-nb-remind">📓 Don't forget to fill in your <b>Detective's Notebook</b> entry above!</div>
+  </div>`;
+
+  h+='</div>';
+  return h;
+}
+
+// ══════════════════════════════════════════════════════
+//  RENDER EXERCISE
+// ══════════════════════════════════════════════════════
+function renderExercise(snum,ex,num){
+  const c=MISSION_COLORS[snum]||MISSION_COLORS[1];
+  const skillTag=ex.skill==='lang'?'<span class="skill-tag sk-lang">🧠 Language</span>':
+    ex.skill==='ps'?'<span class="skill-tag sk-ps">🧩 Problem Solving</span>':
+    '<span class="skill-tag sk-comm">🗣️ Communication</span>';
+  const isAuto=isAutoEx(ex);
+  const xpLabel=isAuto?`<span class="ex-xp">⚡ ${ex.pts} XP</span>`:'<span class="ex-teacher">📝 Teacher-graded</span>';
+
+  let hintHtml='';
+  if(state.level==='rookie'&&ex.hintCat){
+    hintHtml=`<div class="hint-cat show">🇨🇦 <b>Pista:</b> ${ex.hintCat}</div>`;
+  } else if(state.level==='detective'&&ex.hint){
+    hintHtml=`<div class="hint-eng" id="hintbox_${snum}_${ex.id}">💡 <b>Hint:</b> ${ex.hint}</div><button class="hint-toggle" onclick="toggleHint('${snum}_${ex.id}')">💡 Show hint</button>`;
+  }
+
+  let body='';
+  if(ex.type==='match'){
+    const sOpts=getShuffledMatchOpts(snum,ex.id,ex.opts);
+    body='<table class="match-table">'+ex.items.map((it,i)=>
+      `<tr><td class="match-def"><span>${i+1}.</span> <b>${it.def}</b></td><td>
+      <select class="ans-sel" id="${snum}_${ex.id}_${i}" onchange="saveAns(${snum},'${ex.id}',${i},this.value)">
+      <option value="">— choose —</option>${sOpts.map(o=>`<option value="${o}">${o}</option>`).join('')}
+      </select><span id="fb_${snum}_${ex.id}_${i}"></span></td></tr>`
+    ).join('')+'</table>';
+
+  } else if(ex.type==='sel-blanks'){
+    const sBank=getShuffledBank(snum,ex.id,ex.bank);
+    body='<div class="wbank">'+ex.bank.map(w=>`<span class="wchip">${w}</span>`).join('')+'</div>';
+    body+=ex.items.map((it,i)=>`<div class="qitem"><div class="fsent">
+      <span style="color:var(--muted);font-weight:700">${i+1}.</span>
+      ${it.before?`<span>${it.before}</span>`:''}
+      <select class="ans-sel" id="${snum}_${ex.id}_${i}" onchange="saveAns(${snum},'${ex.id}',${i},this.value)">
+      <option value="">___</option>${sBank.map(w=>`<option value="${w}">${w}</option>`).join('')}
+      </select>${it.after?`<span>${it.after}</span>`:''}
+      <span id="fb_${snum}_${ex.id}_${i}"></span></div></div>`
+    ).join('');
+
+  } else if(ex.type==='radio-mc'){
+    body=ex.items.map((it,i)=>{
+      const sIdx=getShuffledRadioOpts(snum,ex.id,i,it.opts.length);
+      return `<div class="qitem" id="qitem_${snum}_${ex.id}_${i}">
+        <div class="qtxt"><strong>${i+1}.</strong> ${it.q}</div>
+        <div class="opts">${sIdx.map((oi,dp)=>`<label class="opt" id="opt_${snum}_${ex.id}_${i}_${oi}">
+          <input type="radio" name="r_${snum}_${ex.id}_${i}" value="${oi}" onchange="saveAns(${snum},'${ex.id}',${i},${oi})">
+          <span>${String.fromCharCode(65+dp)}. ${it.opts[oi]}</span></label>`).join('')}
+        </div></div>`;
+    }).join('');
+
+  } else if(ex.type==='txt-blanks'){
+    body=ex.items.map((it,i)=>`<div class="qitem"><div class="fsent">
+      <span style="color:var(--muted);font-weight:700">${i+1}.</span>
+      <span>${it.before}</span>
+      <strong style="color:var(--muted);font-size:.78rem;margin:0 .2rem">${it.verb}</strong>
+      <input class="ans-inp" id="${snum}_${ex.id}_${i}" type="text" placeholder="…" oninput="saveAns(${snum},'${ex.id}',${i},this.value)">
+      <span>${it.after}</span>
+      <span id="fb_${snum}_${ex.id}_${i}"></span></div>
+      <div class="correct-hint" id="hint_${snum}_${ex.id}_${i}" style="display:none"></div></div>`
+    ).join('');
+
+  } else if(ex.type==='true-false'){
+    body=ex.items.map((it,i)=>`<div class="qitem">
+      <div class="qtxt"><strong>${i+1}.</strong> ${it.q}</div>
+      <div class="tf-row">
+        <button class="tf-btn" id="tf_${snum}_${ex.id}_${i}_t" onclick="saveTF(${snum},'${ex.id}',${i},'true')">✓ True</button>
+        <button class="tf-btn" id="tf_${snum}_${ex.id}_${i}_f" onclick="saveTF(${snum},'${ex.id}',${i},'false')">✗ False</button>
+        <span id="fb_${snum}_${ex.id}_${i}"></span>
+      </div></div>`
+    ).join('');
+
+  } else if(ex.type==='open-text'){
+    body='<p style="font-size:.8rem;color:var(--gold);margin-bottom:.85rem">📝 Your teacher will read and grade your answer.</p>';
+    body+=ex.items.map((it,i)=>`<div class="qitem">
+      <div class="qtxt"><strong>${i+1}.</strong> ${it.q}</div>
+      <textarea class="open-inp" id="${snum}_${ex.id}_${i}" rows="4" placeholder="Write your answer here…" oninput="saveAns(${snum},'${ex.id}',${i},this.value)"></textarea>
+    </div>`).join('');
+
+  } else if(ex.type==='decision'){
+    const dIdx=getShuffledDecOpts(snum,ex.id,ex.options.length);
+    body=`<div class="decision-scene">
+      <div class="char-bubble">
+        <div class="char-avatar">${ex.charEmoji}</div>
+        <div class="char-info">
+          <div class="char-name">${ex.charName}</div>
+          <div class="char-text">${ex.scenario}</div>
+        </div>
+      </div>
+      <div class="dec-options">${dIdx.map((oi,dp)=>
+        `<button class="dec-btn" id="dec_${snum}_${ex.id}_${oi}" onclick="chooseOption(${snum},'${ex.id}',${oi})">
+        <span class="dec-letter">${String.fromCharCode(65+dp)}</span>
+        <span>${ex.options[oi].text}</span></button>`
+      ).join('')}</div>
+      <div class="dec-feedback" id="decfb_${snum}_${ex.id}"></div>
+    </div>`;
+  }
+
+  const footerBtn=isAuto&&ex.type!=='decision'?
+    `<button class="btn-check" id="chk_${snum}_${ex.id}" onclick="checkExercise(${snum},'${ex.id}')">✓ Check Answers</button>`:
+    ex.type==='open-text'?`<button class="btn-save-open" id="chk_${snum}_${ex.id}" onclick="saveOpenExercise(${snum},'${ex.id}')">💾 Save Answers</button>`:'';
+
+  return `<div class="exblock" id="exblock_${snum}_${ex.id}">
+    <div class="ex-hdr">
+      <span class="ex-badge" style="background:${c.accent}">EX ${num}</span>
+      <span class="ex-title">${ex.title}</span>${skillTag}${xpLabel}
+    </div>
+    <div class="ex-body">${hintHtml}
+      <p class="ex-instr">${ex.instr}</p>${body}
+      <div class="ex-footer">${footerBtn}<span class="check-result" id="res_${snum}_${ex.id}"></span></div>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+//  INTERACTIONS
+// ══════════════════════════════════════════════════════
+function saveAns(snum,exid,qi,val){
+  if(!state.answers[snum])state.answers[snum]={};
+  if(!state.answers[snum][exid])state.answers[snum][exid]={};
+  state.answers[snum][exid][qi]=val;
+}
+function saveTF(snum,exid,qi,val){
+  saveAns(snum,exid,qi,val);
+  if(!state.checked[snum]?.[exid]){
+    ['t','f'].forEach(x=>{const b=document.getElementById('tf_'+snum+'_'+exid+'_'+qi+'_'+x);
+      if(b)b.className='tf-btn'+(val===(x==='t'?'true':'false')?' sel-'+(x==='t'?'t':'f'):'');});
+  }
+}
+function saveNB(mnum,val){state.notebook[mnum]=val;saveProgress();}
+function toggleTheory(e,el){e.stopPropagation();el.classList.toggle('open');}
+function toggleHint(key){
+  const box=document.getElementById('hintbox_'+key);if(!box)return;
+  box.classList.toggle('show');
+  const btn=box.nextElementSibling;if(btn)btn.style.display='none';
+}
+
+function chooseOption(snum,exid,optIdx){
+  const s=SESSIONS.find(x=>x.num===snum);const ex=s.exercises.find(e=>e.id===exid);
+  if(!ex||state.checked[snum]?.[exid])return;
+  saveAns(snum,exid,0,optIdx);
+
+  // Store M4 decision
+  if(snum===4&&exid==='ex4'){state.m4decision=optIdx;}
+
+  ex.options.forEach((_,i)=>{const b=document.getElementById('dec_'+snum+'_'+exid+'_'+i);if(b)b.disabled=true;});
+  const chosen=document.getElementById('dec_'+snum+'_'+exid+'_'+optIdx);
+  const opt=ex.options[optIdx];
+  if(chosen)chosen.classList.add(opt.best?'chosen-best':'chosen-bad');
+  if(!opt.best){const bi=ex.options.findIndex(o=>o.best);const bb=document.getElementById('dec_'+snum+'_'+exid+'_'+bi);if(bb)bb.classList.add('reveal-best');}
+  const fb=document.getElementById('decfb_'+snum+'_'+exid);
+  if(fb){fb.className='dec-feedback show '+(opt.best?'good':'bad');
+    fb.innerHTML=(opt.best?'✅':'❌')+' <b>'+(opt.best?'Excellent instinct!':'Not the best call.')+'</b> '+opt.outcome+(opt.best?'<br><b>+'+opt.xp+' Problem Solving XP!</b>':'<br>'+opt.xp+' XP earned.');}
+
+  if(!state.scores[snum])state.scores[snum]=computeMaxScores(s);
+  if(!state.scores[snum]._byEx)state.scores[snum]._byEx={};
+  state.scores[snum]._byEx[exid]=opt.xp;
+  state.scores[snum].ps=Object.entries(state.scores[snum]._byEx).reduce((a,[k,v])=>{
+    const e=s.exercises.find(x=>x.id===k);return a+(e&&e.skill==='ps'?v:0);},0);
+  state.checked[snum][exid]=true;
+  document.getElementById('exblock_'+snum+'_'+exid)?.classList.add('ex-done');
+  const chkBtn=document.getElementById('chk_'+snum+'_'+exid);if(chkBtn)chkBtn.style.display='none';
+  const resEl=document.getElementById('res_'+snum+'_'+exid);
+  if(resEl){resEl.className='check-result good';resEl.textContent=opt.best?'✓ Best choice! +'+opt.xp+' PS XP':'✓ Answered — '+opt.xp+' XP';}
+  saveProgress();updateSubmitButton(snum);updateSidebar();
+}
+
+function checkExercise(snum,exid,restoreMode=false){
+  const s=SESSIONS.find(x=>x.num===snum);const ex=s.exercises.find(e=>e.id===exid);
+  if(!ex||ex.type==='decision')return;
+  let score=0;
+  ex.items.forEach((it,i)=>{
+    const userVal=state.answers[snum]?.[exid]?.[i]||'';
+    const fbEl=document.getElementById('fb_'+snum+'_'+exid+'_'+i);
+    let correct=false;
+    if(ex.type==='match'||ex.type==='sel-blanks'){
+      const sel=document.getElementById(snum+'_'+exid+'_'+i);
+      if(sel){sel.disabled=true;sel.value=userVal;}
+      correct=(userVal===it.ans);
+      if(sel)sel.className='ans-sel '+(correct?'ok':'ko');
+      if(fbEl)fbEl.innerHTML=correct?'<span class="fb ok">✓</span>':'<span class="fb ko">✗ '+it.ans+'</span>';
+    } else if(ex.type==='radio-mc'){
+      const chosen=parseInt(state.answers[snum]?.[exid]?.[i]);
+      document.querySelectorAll(`input[name="r_${snum}_${exid}_${i}"]`).forEach(r=>{r.disabled=true;if(r.value==chosen)r.checked=true;});
+      correct=(chosen===it.ans);
+      it.opts.forEach((_,oi)=>{const lbl=document.getElementById(`opt_${snum}_${exid}_${i}_${oi}`);if(!lbl)return;
+        if(oi===it.ans)lbl.classList.add('c-ans');else if(oi===chosen&&!correct)lbl.classList.add('w-ans');});
+    } else if(ex.type==='txt-blanks'){
+      const inp=document.getElementById(snum+'_'+exid+'_'+i);
+      if(inp){inp.disabled=true;inp.value=userVal;}
+      const uv=(userVal||'').trim().toLowerCase().replace(/['']/g,"'");
+      correct=it.ans.some(a=>a.toLowerCase().replace(/['']/g,"'")===uv);
+      if(inp)inp.className='ans-inp '+(correct?'ok':'ko');
+      if(fbEl)fbEl.innerHTML=correct?'<span class="fb ok">✓</span>':'<span class="fb ko">✗</span>';
+      const hEl=document.getElementById('hint_'+snum+'_'+exid+'_'+i);
+      if(hEl&&!correct){hEl.textContent='✓ '+it.ans[0];hEl.style.display='block';}
+    } else if(ex.type==='true-false'){
+      const uv=state.answers[snum]?.[exid]?.[i];correct=(uv===it.ans);
+      ['t','f'].forEach(x=>{const b=document.getElementById('tf_'+snum+'_'+exid+'_'+i+'_'+x);if(b)b.disabled=true;});
+      const tb=document.getElementById('tf_'+snum+'_'+exid+'_'+i+'_t');
+      const fb2=document.getElementById('tf_'+snum+'_'+exid+'_'+i+'_f');
+      if(it.ans==='true'&&tb)tb.classList.add('rev-ok');else if(fb2)fb2.classList.add('rev-ok');
+      if(!correct&&uv==='true'&&tb)tb.classList.add('rev-ko');
+      if(!correct&&uv==='false'&&fb2)fb2.classList.add('rev-ko');
+      if(fbEl)fbEl.innerHTML=correct?'<span class="fb ok">✓</span>':'<span class="fb ko">✗ '+(it.ans==='true'?'True':'False')+'</span>';
+    }
+    if(correct)score++;
+  });
+  if(!state.scores[snum])state.scores[snum]=computeMaxScores(s);
+  if(!state.scores[snum]._byEx)state.scores[snum]._byEx={};
+  state.scores[snum]._byEx[exid]=score;
+  const recompute=skill=>Object.entries(state.scores[snum]._byEx).reduce((a,[k,v])=>{
+    const e=s.exercises.find(x=>x.id===k);return a+(e&&e.skill===skill?v:0);},0);
+  if(ex.skill==='lang')state.scores[snum].lang=recompute('lang');
+  if(ex.skill==='ps')state.scores[snum].ps=recompute('ps');
+  state.checked[snum][exid]=true;
+  document.getElementById('exblock_'+snum+'_'+exid)?.classList.add('ex-done');
+  const chkBtn=document.getElementById('chk_'+snum+'_'+exid);if(chkBtn)chkBtn.style.display='none';
+  const resEl=document.getElementById('res_'+snum+'_'+exid);
+  if(resEl){resEl.className='check-result good';resEl.textContent='✓ Done — '+score+'/'+ex.pts+' XP earned';}
+  if(!restoreMode){saveProgress();updateSubmitButton(snum);updateSidebar();}
+}
+
+function saveOpenExercise(snum,exid){
+  const s=SESSIONS.find(x=>x.num===snum);const ex=s.exercises.find(e=>e.id===exid);if(!ex)return;
+  ex.items.forEach((_,i)=>{const el=document.getElementById(snum+'_'+exid+'_'+i);if(el)el.disabled=true;});
+  state.checked[snum][exid]=true;
+  document.getElementById('exblock_'+snum+'_'+exid)?.classList.add('ex-done');
+  const chkBtn=document.getElementById('chk_'+snum+'_'+exid);if(chkBtn)chkBtn.style.display='none';
+  const resEl=document.getElementById('res_'+snum+'_'+exid);
+  if(resEl){resEl.className='check-result saved';resEl.textContent='📝 Saved — teacher will grade this.';}
+  saveProgress();updateSubmitButton(snum);
+}
+
+function updateSubmitButton(snum){
+  const s=SESSIONS.find(x=>x.num===snum);if(!s)return;
+  const allChecked=s.exercises.every(ex=>state.checked[snum]?.[ex.id]);
+  const btn=document.getElementById('sub-'+snum);const status=document.getElementById('mstatus-'+snum);
+  if(state.submitted[snum]){if(btn)btn.style.display='none';return;}
+  if(btn)btn.disabled=!allChecked;
+  if(status){const done=s.exercises.filter(ex=>state.checked[snum]?.[ex.id]).length;
+    status.textContent=allChecked?'All exercises done! Click to submit.':'('+done+'/'+s.exercises.length+' exercises completed)';}
+}
+
+// ══════════════════════════════════════════════════════
+//  COMPLETE MISSION
+// ══════════════════════════════════════════════════════
+function completeMission(snum){
+  const s=SESSIONS.find(x=>x.num===snum);
+  const prevXP=getTotalXP();const prevRank=getRank(prevXP);
+  state.submitted[snum]=true;
+  document.getElementById('sub-'+snum).style.display='none';
+  document.getElementById('mstatus-'+snum).textContent='';
+  const newXP=getTotalXP();const rank=getRank(newXP);
+  const sc=state.scores[snum]||{lang:0,ps:0};
+  const mxp=(sc.lang||0)+(sc.ps||0);
+  const mc=document.getElementById('mc-'+snum);mc.classList.add('show');
+  document.getElementById('mc-xp-'+snum).textContent='+'+mxp;
+  document.getElementById('mc-auto-'+snum).textContent=mxp+'/'+((sc.maxLang||0)+(sc.maxPs||0));
+  document.getElementById('mc-tot-'+snum).textContent=newXP;
+  document.getElementById('mc-rico-'+snum).textContent=rank.icon;
+  document.getElementById('mc-rname-'+snum).textContent=rank.title;
+  document.getElementById('mc-sk-lang-'+snum).textContent='🧠 Lang: '+(sc.lang||0);
+  document.getElementById('mc-sk-ps-'+snum).textContent='🧩 PS: '+(sc.ps||0);
+  if(rank.title!==prevRank.title){document.getElementById('mc-rankup-'+snum).innerHTML=
+    '<div class="rank-up-msg">🎉 RANK UP! You are now a '+rank.icon+' <b>'+rank.title+'</b>!</div>';}
+  const nxt=document.getElementById('nxt-'+snum);if(nxt)nxt.classList.add('show');
+
+  // Collect rows for Sheets
+  const allRows=[];
+  s.exercises.forEach((ex,ei)=>{
+    if(ex.type==='decision'){
+      const chosen=state.answers[snum]?.[ex.id]?.[0];const opt=typeof chosen!=='undefined'?ex.options[chosen]:null;
+      allRows.push({exercise:'Ex '+(ei+1)+': '+ex.title,qNum:1,question:ex.scenario.substring(0,120),
+        answer:opt?opt.text.substring(0,80):'(none)',correct:ex.options.find(o=>o.best)?.text.substring(0,80)||'',
+        result:opt?(opt.best?'Best':'Not best'):'None',pts:opt?opt.xp:0});
+    } else {
+      ex.items.forEach((it,i)=>{
+        const val=state.answers[snum]?.[ex.id]?.[i]||'';
+        const qtext=(it.q||it.def||(it.before?it.before+' ___ '+it.after:'')||'').substring(0,120);
+        let correct='',result='';
+        if(ex.type==='match'||ex.type==='sel-blanks'){correct=it.ans;result=val===it.ans?'Correct':'Wrong';}
+        else if(ex.type==='radio-mc'){correct=it.opts[it.ans];result=parseInt(val)===it.ans?'Correct':'Wrong';}
+        else if(ex.type==='txt-blanks'){correct=it.ans[0];const uv=(val||'').trim().toLowerCase().replace(/['']/g,"'");result=it.ans.some(a=>a.toLowerCase().replace(/['']/g,"'")===uv)?'Correct':'Wrong';}
+        else if(ex.type==='true-false'){correct=it.ans;result=val===it.ans?'Correct':'Wrong';}
+        else{correct='Open';result='Pending teacher';}
+        allRows.push({exercise:'Ex '+(ei+1)+': '+ex.title,qNum:i+1,question:qtext,
+          answer:(val||'(none)').substring(0,200),correct,result,pts:''});
+      });
+    }
+  });
+
+  saveProgress();sendMissionToSheets(snum,allRows);updateSidebar();
+
+  // Epilogue closing screen
+  if(s.isEpilogue&&s.closingLines){
+    setTimeout(()=>showClosingScreen(s.closingLines),1500);
+  } else if(s.cliffhanger){
+    setTimeout(()=>showCliffhanger(s.cliffhanger),1200);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  CLIFFHANGER
+// ══════════════════════════════════════════════════════
+function showCliffhanger(ch){
+  const overlay=document.getElementById('cliffhanger');
+  document.getElementById('ch-eyebrow').textContent=ch.eyebrow||'END OF MISSION';
+  document.getElementById('ch-title').textContent=ch.title;
+  document.getElementById('ch-text').innerHTML=ch.text.replace(/\n/g,'<br>');
+  document.getElementById('ch-btn').textContent=ch.nextLabel||'Continue →';
+  if(ch.image){document.getElementById('ch-bg').style.backgroundImage='url('+ch.image+')';}
+  if(ch.isEpilogue){document.getElementById('ch-btn').onclick=()=>{closeCliffhanger();tryGoTo(5);};}
+  else{document.getElementById('ch-btn').onclick=closeCliffhanger;}
+  overlay.classList.add('show');
+}
+function closeCliffhanger(){document.getElementById('cliffhanger').classList.remove('show');}
+
+// ══════════════════════════════════════════════════════
+//  CLOSING SCREEN (Epilogue)
+// ══════════════════════════════════════════════════════
+function showClosingScreen(lines){
+  const screen=document.getElementById('closing-screen');
+  const container=document.getElementById('closing-lines');
+  container.innerHTML='';
+  lines.forEach((l,i)=>{
+    const div=document.createElement('div');
+    div.className='closing-line'+(l.italic?' italic':'')+(l.bold?' bold':'')+(l.stamp?' stamp':'');
+    div.textContent=l.text;
+    div.style.animationDelay=(l.delay/1000)+'s';
+    container.appendChild(div);
+  });
+  screen.classList.add('show');
+}
+
+// ══════════════════════════════════════════════════════
+//  NOTEBOOK PAGE
+// ══════════════════════════════════════════════════════
+function renderNotebookPage(){
+  document.getElementById('nb-entries').innerHTML=SESSIONS.map(s=>{
+    const content=state.notebook[s.num]||'';
+    return `<div class="nb-entry">
+      <div class="nb-entry-hdr">
+        <span class="nb-entry-num">${s.icon} ${s.isEpilogue?'EPILOGUE':'MISSION '+s.num}</span>
+        <span class="nb-entry-title">${s.notebookTitle}</span>
+      </div>
+      ${content?`<div class="nb-entry-body">${escHtml(content)}</div>`:
+        `<div class="nb-entry-empty">Not written yet.</div>`}
+    </div>`;
+  }).join('');
+}
+
+function downloadNotebook(){
+  let text='THE MANHATTAN AFFAIR — DETECTIVE\'S NOTEBOOK\n';
+  text+='Detective: '+state.student.name+' | Date: '+state.student.date+' | Level: '+state.level+'\n';
+  text+='═'.repeat(50)+'\n\n';
+  SESSIONS.forEach(s=>{
+    text+=s.icon+' '+s.notebookTitle.toUpperCase()+'\n'+'─'.repeat(40)+'\n';
+    text+=(state.notebook[s.num]||'(not written yet)')+'\n\n';
+  });
+  text+='═'.repeat(50)+'\n';
+  text+='Total XP: '+getTotalXP()+'/100 · Rank: '+getRank(getTotalXP()).title+'\n';
+  const blob=new Blob([text],{type:'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='DetectiveNotebook_'+state.student.name.replace(/\s+/g,'_')+'.txt';
+  a.click();URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════════════════════
+//  RESTORE STATE
+// ══════════════════════════════════════════════════════
+function restoreState(){
+  SESSIONS.forEach(s=>{
+    s.exercises.forEach(ex=>{
+      const ans=state.answers[s.num]?.[ex.id]||{};
+      if(ex.type==='decision'){
+        const chosen=ans[0];
+        if(typeof chosen!=='undefined'&&state.checked[s.num]?.[ex.id]){
+          ex.options.forEach((_,i)=>{const b=document.getElementById('dec_'+s.num+'_'+ex.id+'_'+i);if(b)b.disabled=true;});
+          const cb=document.getElementById('dec_'+s.num+'_'+ex.id+'_'+chosen);
+          if(cb)cb.classList.add(ex.options[chosen].best?'chosen-best':'chosen-bad');
+          if(!ex.options[chosen].best){const bi=ex.options.findIndex(o=>o.best);const bb=document.getElementById('dec_'+s.num+'_'+ex.id+'_'+bi);if(bb)bb.classList.add('reveal-best');}
+          const fb=document.getElementById('decfb_'+s.num+'_'+ex.id);
+          if(fb){const o=ex.options[chosen];fb.className='dec-feedback show '+(o.best?'good':'bad');
+            fb.innerHTML=(o.best?'✅ <b>Excellent instinct!</b>':'❌ <b>Not the best call.</b>')+' '+o.outcome;}
+        }
+      } else {
+        ex.items.forEach((_,i)=>{
+          const val=ans[i]||'';if(!val)return;
+          if(ex.type==='radio-mc'){const r=document.querySelector(`input[name="r_${s.num}_${ex.id}_${i}"][value="${val}"]`);if(r)r.checked=true;}
+          else if(ex.type==='true-false'){
+            ['t','f'].forEach(x=>{const b=document.getElementById('tf_'+s.num+'_'+ex.id+'_'+i+'_'+x);
+              if(b)b.className='tf-btn'+(val===(x==='t'?'true':'false')?' sel-'+(x==='t'?'t':'f'):'');});
+          } else{const el=document.getElementById(s.num+'_'+ex.id+'_'+i);if(el)el.value=val;}
+        });
+      }
+      if(state.checked[s.num]?.[ex.id]){
+        if(isAutoEx(ex)&&ex.type!=='decision')checkExercise(s.num,ex.id,true);
+        else if(ex.type!=='decision'){
+          ex.items.forEach((_,i)=>{const el=document.getElementById(s.num+'_'+ex.id+'_'+i);if(el)el.disabled=true;});
+          document.getElementById('exblock_'+s.num+'_'+ex.id)?.classList.add('ex-done');
+          const chkBtn=document.getElementById('chk_'+s.num+'_'+ex.id);if(chkBtn)chkBtn.style.display='none';
+          const resEl=document.getElementById('res_'+s.num+'_'+ex.id);
+          if(resEl){resEl.className='check-result saved';resEl.textContent='📝 Saved — teacher will grade this.';}
+        }
+      }
+    });
+    const nbEl=document.getElementById('nb_'+s.num);if(nbEl)nbEl.value=state.notebook[s.num]||'';
+    if(state.submitted[s.num]){
+      const mc=document.getElementById('mc-'+s.num);
+      if(mc){
+        mc.classList.add('show');
+        const sc=state.scores[s.num]||{lang:0,ps:0,maxLang:0,maxPs:0};
+        const mxp=(sc.lang||0)+(sc.ps||0);const rank=getRank(getTotalXP());
+        document.getElementById('mc-xp-'+s.num).textContent='+'+mxp;
+        document.getElementById('mc-auto-'+s.num).textContent=mxp+'/'+((sc.maxLang||0)+(sc.maxPs||0));
+        document.getElementById('mc-tot-'+s.num).textContent=getTotalXP();
+        document.getElementById('mc-rico-'+s.num).textContent=rank.icon;
+        document.getElementById('mc-rname-'+s.num).textContent=rank.title;
+        if(document.getElementById('mc-sk-lang-'+s.num))document.getElementById('mc-sk-lang-'+s.num).textContent='🧠 Lang: '+(sc.lang||0);
+        if(document.getElementById('mc-sk-ps-'+s.num))document.getElementById('mc-sk-ps-'+s.num).textContent='🧩 PS: '+(sc.ps||0);
+      }
+      const btn=document.getElementById('sub-'+s.num);if(btn)btn.style.display='none';
+      const nxt=document.getElementById('nxt-'+s.num);if(nxt)nxt.classList.add('show');
+    }
+    updateSubmitButton(s.num);
+  });
+  updateSidebar();
+}
+
+// ══════════════════════════════════════════════════════
+//  BOOT
+// ══════════════════════════════════════════════════════
+if(location.search.includes('reset')){
+  Object.keys(localStorage).filter(k=>k.startsWith('manhattan2_')).forEach(k=>localStorage.removeItem(k));
+  const url=location.href.replace(/[?&]reset[^&]*/,'').replace(/[?&]$/,'');
+  history.replaceState(null,'',url||location.pathname);
+  alert('✓ Progress cleared.');
+}
+</script>
+</body>
+</html>
