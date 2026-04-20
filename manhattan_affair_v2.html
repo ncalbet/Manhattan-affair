@@ -436,7 +436,31 @@ body{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,se
 .closing-dismiss{background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Crimson Pro',serif;font-size:.85rem;padding:.5rem 1.2rem;cursor:pointer;margin-top:2rem;transition:border-color .2s;opacity:0;animation:fadeInLine .8s 4s ease forwards}
 .closing-dismiss:hover{border-color:var(--gold);color:var(--text)}
 
-/* ── ANSWERING MACHINE ── */
+/* ── NOTEBOOK ANALYSIS ── */
+.nb-analysis{background:rgba(107,70,193,.07);border:1px solid rgba(107,70,193,.25);border-radius:8px;padding:.85rem 1rem;margin-top:.85rem}
+.nb-analysis-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:#9b8abf;font-weight:700;margin-bottom:.45rem}
+.nb-analysis-q{font-size:.88rem;color:#cdc0a8;line-height:1.65;margin-bottom:.65rem}
+.nb-analysis-inp{width:100%;min-height:70px;background:rgba(107,70,193,.05);border:1px solid rgba(107,70,193,.2);border-radius:6px;padding:.6rem .85rem;color:var(--text);font-family:'Crimson Pro',serif;font-size:.9rem;line-height:1.65;resize:vertical}
+.nb-analysis-inp:focus{outline:none;border-color:#9b8abf}
+
+/* ── DEDUCTION CARD ── */
+.deduction-card{background:rgba(42,122,138,.06);border:1px solid rgba(42,122,138,.25);border-radius:10px;padding:1.1rem 1.25rem;margin-bottom:1.25rem}
+.ded-header{display:flex;align-items:center;gap:.7rem;margin-bottom:.75rem}
+.ded-icon{font-size:1.4rem}
+.ded-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:#2a7a8a;font-weight:700}
+.ded-title{font-size:.9rem;font-weight:700;color:var(--text)}
+.ded-prompt{font-size:.86rem;color:#bdb09a;line-height:1.65;margin-bottom:.75rem;font-style:italic}
+.ded-suspects{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem}
+.ded-suspect-btn{background:var(--s3);border:1px solid var(--border);border-radius:100px;padding:.25rem .8rem;font-size:.8rem;color:var(--muted);cursor:pointer;transition:all .15s;font-family:'Crimson Pro',serif}
+.ded-suspect-btn:hover{border-color:#2a7a8a;color:var(--text)}
+.ded-suspect-btn.selected{background:rgba(42,122,138,.15);border-color:#2a7a8a;color:#7dd3e0}
+.ded-textarea{width:100%;min-height:60px;background:var(--s2);border:1px solid rgba(42,122,138,.2);border-radius:7px;padding:.6rem .85rem;color:var(--text);font-family:'Crimson Pro',serif;font-size:.88rem;line-height:1.6;resize:vertical}
+.ded-textarea:focus{outline:none;border-color:#2a7a8a}
+.ded-save-row{display:flex;align-items:center;gap:.75rem;margin-top:.6rem}
+.ded-save-btn{background:rgba(42,122,138,.15);border:1px solid rgba(42,122,138,.3);border-radius:7px;color:#7dd3e0;font-family:'Crimson Pro',serif;font-size:.82rem;font-weight:700;padding:.38rem .9rem;cursor:pointer;transition:background .15s}
+.ded-save-btn:hover{background:rgba(42,122,138,.25)}
+.ded-saved-msg{font-size:.78rem;color:var(--muted);font-style:italic;display:none}
+.ded-saved-msg.show{display:block}
 .answ-wrap{background:var(--s2);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1.25rem}
 .answ-header{display:flex;align-items:center;gap:.85rem;padding:.85rem 1.15rem;border-bottom:1px solid var(--border);background:rgba(155,44,44,.07)}
 .answ-header-icon{font-size:1.5rem;flex-shrink:0}
@@ -634,7 +658,7 @@ body{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,se
 // ══════════════════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════════════════
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwaRiemCH0J8xtO3K4cB8E6AAE5s1LeIuka7wNt6lhnX0pTO9HiT1Evp3zwLphgHUpU5g/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyyaQNo3GpvlEYAUc5d0DxXtPWcLC5423U6p6dKmJOtqMtCkOfTmprqut0Riw4LWvXYoQ/exec';
 
 const RANKS = [
   {min:0,  title:'Rookie Detective',    icon:'🎫', next:20},
@@ -653,51 +677,24 @@ const MISSION_COLORS = {
 };
 
 // ══════════════════════════════════════════════════════
-//  STUDENT DATA  email → level ('rookie'|'detective'|'senior')
+//  STUDENT VALIDATION
+//  Students are managed in the Google Sheet — Students tab
+//  The teacher adds/removes students and sets levels there
 // ══════════════════════════════════════════════════════
-const STUDENT_DATA = {
-  'aguilar.marta@institutmatadepera.cat':   'detective',
-  'boix.daniela@institutmatadepera.cat':    'detective',
-  'brana.nora@institutmatadepera.cat':      'detective',
-  'caparros.lia@institutmatadepera.cat':    'rookie',
-  'espinosa.marc@institutmatadepera.cat':   'detective',
-  'fernandez.judith@institutmatadepera.cat':'detective',
-  'gonzalez.pau@institutmatadepera.cat':    'senior',
-  'gonzalez.bruno@institutmatadepera.cat':  'detective',
-  'grau.nuria@institutmatadepera.cat':      'detective',
-  'ligero.david@institutmatadepera.cat':    'detective',
-  'macias.carla@institutmatadepera.cat':    'rookie',
-  'martin.ariadna@institutmatadepera.cat':  'detective',
-  'oliveres.arlet@institutmatadepera.cat':  'detective',
-  'ortuno.arian@institutmatadepera.cat':    'detective',
-  'prat.biel@institutmatadepera.cat':       'detective',
-  'prat.aran@institutmatadepera.cat':       'detective',
-  'rodriguez.genis@institutmatadepera.cat': 'senior',
-  'rubia.lucas@institutmatadepera.cat':     'detective',
-  'sanchez.gabriel@institutmatadepera.cat': 'detective',
-  'asensio.carla@institutmatadepera.cat':   'detective',
-  'bernabeu.joan@institutmatadepera.cat':   'detective',
-  'castillo.roger@institutmatadepera.cat':  'detective',
-  'cusido.jan@institutmatadepera.cat':      'detective',
-  'ferrero.marina@institutmatadepera.cat':  'detective',
-  'garcia.marti@institutmatadepera.cat':    'detective',
-  'gil.pau@institutmatadepera.cat':         'senior',
-  'girol.marc@institutmatadepera.cat':      'detective',
-  'gomez.bernat@institutmatadepera.cat':    'rookie',
-  'iglesias.nil@institutmatadepera.cat':    'detective',
-  'latorre.lluis@institutmatadepera.cat':   'detective',
-  'lopez.africa@institutmatadepera.cat':    'detective',
-  'malgosa.martina@institutmatadepera.cat': 'detective',
-  'martin.marc@institutmatadepera.cat':     'detective',
-  'martin.bet@institutmatadepera.cat':      'detective',
-  'milla.mylene@institutmatadepera.cat':    'rookie',
-  'peiro.oriol@institutmatadepera.cat':     'detective',
-  'riba.juli@institutmatadepera.cat':       'detective',
-  'sociats.roc@institutmatadepera.cat':     'detective',
-  'vancells.nora@institutmatadepera.cat':   'detective',
-  'vergara.marc@institutmatadepera.cat':    'detective',
-  'nestor.calbet@institutmatadepera.cat':   'senior',
-};
+async function validateStudent(email){
+  // 1. Try Sheet first
+  if(SHEETS_URL && !SHEETS_URL.includes('YOUR_APPS')){
+    try{
+      const res = await fetch(`${SHEETS_URL}?action=validateStudent&email=${encodeURIComponent(email)}`);
+      const d   = await res.json();
+      if(d && d.valid) return {valid:true, level:d.level||'detective', name:d.name||''};
+      if(d && d.valid===false) return {valid:false};
+    } catch(e){}
+  }
+  // 2. Fallback: if Sheets unavailable, allow any school email at detective level
+  if(email.endsWith('@institutmatadepera.cat')) return {valid:true, level:'detective', name:''};
+  return {valid:false};
+}
 
 // ══════════════════════════════════════════════════════
 //  SESSIONS DATA
@@ -723,7 +720,11 @@ const SESSIONS = [
     image:'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=700&q=80',
     nextLabel:'Continue to Mission 2 →',
   },
-  theory:`<h3>1. What is Reported Speech?</h3>
+  deductionCard:{
+    title:'Suspect Board — Mission 1',
+    prompt:'Based on what you have seen so far: who do you think is responsible for Eleanor\'s disappearance? Choose a suspect and write 1–2 sentences explaining your theory.',
+    suspects:['George Hartwell','The night receptionist','Rosa Caruso','Someone unknown','Eleanor herself'],
+  },
 <p>When we report what someone said, we change the verb tense. This is called <strong>backshift</strong>.</p>
 <table class="th-table">
 <tr><th>Direct Speech</th><th>→</th><th>Reported Speech</th></tr>
@@ -814,6 +815,7 @@ const SESSIONS = [
   notebookTitle:'Mission 1: Incident Report',
   notebookPrompt:'Write a short incident report (5–6 sentences) about the disappearance of Eleanor Hartwell. Include the key facts: who she is, when and where she was last seen, and the first clues you have found. Use the past tense throughout.',
   notebookBullets:['Name, age and description of the missing person','When and where she was last seen','Key evidence found (ransom note, belongings...)','Names of first witnesses and what they said','Your initial assessment'],
+  notebookAnalysis:'The ransom note was postmarked <b>before</b> Eleanor disappeared. What does this tell you about how the disappearance was planned? Write 1–2 sentences.',
 },
 
 // ─── MISSION 2 ───────────────────────────────────────
@@ -834,6 +836,11 @@ const SESSIONS = [
     text:`The lab technician calls at seven in the morning.\n\n"Detective. We examined the ransom note under UV light. There is a watermark in the paper — very faint, but unmistakable."\n\nA pause.\n\n"The stationery belongs to a company. Velvet Imports LLC."\n\nYou already know that name.\n\n"There is something else," she says. "The company has no address, no employees, no tax records. But there is a registered agent."\n\nAnother pause.\n\n<em>"A woman named Rosa Caruso."</em>`,
     image:'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=700&q=80',
     nextLabel:'Continue to Mission 3 →',
+  },
+  deductionCard:{
+    title:'Suspect Board — Mission 2',
+    prompt:'Three witnesses, three versions. You now know more than at the start. Has your theory changed? Who do you suspect most — and why? Write 1–2 sentences.',
+    suspects:['George Hartwell','The night receptionist','Rosa Caruso','Eleanor herself','Someone we haven\'t met yet'],
   },
   theory:`<h3>1. Reporting Verbs — More Than Just "Said"</h3>
 <p>Instead of always using <b>said</b>, use specific verbs that show <em>how</em> something was said:</p>
@@ -905,6 +912,7 @@ const SESSIONS = [
   notebookTitle:'Mission 2: Witness Summary',
   notebookPrompt:'Write a summary (5–6 sentences) of the three witness statements. Use reported speech and a range of reporting verbs. End with your assessment: who is not telling the truth, and why does it matter?',
   notebookBullets:['Report what each witness said using: claimed, insisted, admitted, denied, explained...','At least 3 different reporting verbs','Correctly backshifted verbs','Your conclusion: who is lying and what does it mean?'],
+  notebookAnalysis:'Look at what the hotel maid said about Eleanor: <i>"She did not look frightened. She looked — determined."</i> Why is this significant? What might it tell us about Eleanor\'s state of mind? Write 1–2 sentences.',
 },
 
 // ─── MISSION 3 ───────────────────────────────────────
@@ -925,6 +933,11 @@ const SESSIONS = [
     text:`You are back at your desk. It is past midnight.\n\nThe telephone rings.\n\nA woman's voice. Calm. Unhurried.\n\n"You went to the Velvet Room tonight, Detective. I know what you ordered."\n\nA pause.\n\n"Eleanor Hartwell was never in danger. She was exactly where she chose to be."\n\n"Then why the ransom note?" you ask.\n\n"To give her time. And to find out something important."\n\n"What?"\n\n<em>"Whether you were worth trusting."</em>\n\nThe line goes dead.\n\nOn your desk, under a folder you do not remember moving, there is an envelope. No postmark. Inside: a photograph. Eleanor. Smiling. On the back, four words:\n\n<em>She is safe. Come alone.</em>`,
     image:'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=700&q=80',
     nextLabel:'Continue to Mission 4 →',
+  },
+  deductionCard:{
+    title:'Suspect Board — Mission 3',
+    prompt:'Rosa Caruso said Eleanor "was exactly where she chose to be." This changes everything. What do you now think really happened? Write 1–2 sentences — your theory is probably very different from Mission 1.',
+    suspects:['Eleanor fled voluntarily','Caruso kidnapped Eleanor','George planned everything','Two organisations are involved','Still not clear'],
   },
   theory:`<h3>1. Reported Commands &amp; Requests</h3>
 <p>Use <b>told / asked + object + (not) to + infinitive</b></p>
@@ -1004,6 +1017,7 @@ const SESSIONS = [
   notebookTitle:'Mission 3: Field Report',
   notebookPrompt:'Write a short field report (5–6 sentences) about what you have discovered. Include what you know about the Velvet Room and Rosa Caruso. Use media vocabulary and modal verbs of deduction.',
   notebookBullets:['Professional, formal tone','Use media vocabulary: investigation, evidence, source...','Report what witnesses said using reported speech','Include what you deduce using modals: must have, could have, can\'t have'],
+  notebookAnalysis:'The Caruso dossier shows that someone accessed her file on <b>13 November</b> — the day <i>before</i> Eleanor disappeared — and the access officer is listed as unknown. What do you think this means? Who might have accessed it, and why? Write 1–2 sentences.',
 },
 
 // ─── MISSION 4 ───────────────────────────────────────
@@ -1094,6 +1108,7 @@ const SESSIONS = [
   notebookTitle:'Mission 4: Closing Statement',
   notebookPrompt:'Write your final closing statement (5–6 sentences) as the detective. Explain what really happened, what evidence led you to this conclusion, and what you recommend should happen. Use reported speech, modal verbs and vocabulary from all four missions.',
   notebookBullets:['What really happened — the full truth','Key evidence that brought you to this conclusion','"She claimed that..." / "This must have been..."','Your recommendation: what happens to each person'],
+  notebookAnalysis:'Which single piece of evidence do you think was most important in solving this case? Why was it more decisive than the others? Write 1–2 sentences.',
   hasFinalSummary:true,
 },
 
@@ -1153,6 +1168,7 @@ const SESSIONS = [
   notebookTitle:'Epilogue: New Lead',
   notebookPrompt:'You have read both letters. You know the Falcone family has found you. Write 4–5 sentences in the detective\'s voice: what do you know now, what do you feel, and what are you waiting for? Include at least one modal verb of deduction and one example of reported speech.',
   notebookBullets:['What you now understand that you didn\'t in November','What you deduce from the Falcone envelope','Modal verb of deduction + reported speech','What comes next — or what you are waiting for'],
+  notebookAnalysis:'Hamilton described himself as "a witness, a record-keeper." Looking back at all four missions, do you think he was completely honest with you? Was there a moment when you should have trusted him less? Write 1–2 sentences.',
   closingLines:[
     {text:'Grace Hamilton left New York on the morning of Wednesday, 16 May 1934.', delay:0},
     {text:'His last column for the Daily Mirror was never published.', delay:1200, italic:true},
@@ -1182,7 +1198,9 @@ const state = {
   submitted:{},
   scores:{},
   notebook:{},
-  m4decision:null, // 0=A(correct), 1=B(caruso), 2=C(flee)
+  notebookAnalysis:{},
+  deductions:{},
+  m4decision:null,
 };
 
 function initState(){
@@ -1262,22 +1280,27 @@ async function tryLogin(){
   const n=document.getElementById('inp-name').value.trim();
   const e=document.getElementById('inp-email').value.trim().toLowerCase();
   if(!n){alert('Please enter your full name.');return;}
-  if(!e||!e.endsWith('@institutmatadepera.cat')){alert('Please use your school email.');return;}
-  if(!(e in STUDENT_DATA)){
+  if(!e||!e.endsWith('@institutmatadepera.cat')){alert('Please use your school email (@institutmatadepera.cat).');return;}
+  const loading=document.getElementById('login-loading');
+  loading.style.display='block';
+  document.querySelector('.btn-start').disabled=true;
+  loading.innerHTML='<span class="spinner" style="display:inline-block;vertical-align:middle;margin-right:.5rem"></span> Checking class list…';
+  const result = await validateStudent(e);
+  if(!result.valid){
+    loading.style.display='none';
+    document.querySelector('.btn-start').disabled=false;
     const warn=document.getElementById('email-warn');
     warn.style.display='block';
-    warn.textContent='This email is not on the class list. Please check you have typed it correctly.';
+    warn.textContent='This email is not on the class list. Check it is correct or ask your teacher.';
     return;
   }
   state.student.name=n;state.student.email=e;
   state.student.date=new Date().toLocaleDateString('en-GB');
-  state.level=STUDENT_DATA[e]||'detective';
+  state.level=result.level||'detective';
   document.getElementById('chip-name').textContent=n;
   const lLabels={rookie:'🟡 Rookie',detective:'🔵 Detective',senior:'🔴 Senior'};
   document.getElementById('level-chip').textContent=lLabels[state.level]||state.level;
-  const loading=document.getElementById('login-loading');
-  loading.style.display='block';
-  document.querySelector('.btn-start').disabled=true;
+  loading.innerHTML='<span class="spinner" style="display:inline-block;vertical-align:middle;margin-right:.5rem"></span> Loading your case files…';
   initState();
   const saved=await loadProgress(e);
   loading.style.display='none';
@@ -1291,6 +1314,7 @@ async function tryLogin(){
 function saveProgress(){
   const prog={found:true,name:state.student.name,answers:state.answers,checked:state.checked,
     submitted:state.submitted,scores:state.scores,notebook:state.notebook,
+    notebookAnalysis:state.notebookAnalysis,deductions:state.deductions,
     level:state.level,m4decision:state.m4decision};
   try{localStorage.setItem('manhattan2_'+state.student.email,JSON.stringify(prog));}catch(e){}
   debouncedSend(prog);
@@ -1308,7 +1332,7 @@ async function loadProgress(email){
 function applyProgress(saved){
   if(saved.level)state.level=saved.level;
   if(saved.m4decision!==undefined&&saved.m4decision!==null)state.m4decision=saved.m4decision;
-  ['answers','checked','submitted','scores','notebook'].forEach(k=>{
+  ['answers','checked','submitted','scores','notebook','notebookAnalysis','deductions'].forEach(k=>{
     if(saved[k])Object.keys(saved[k]).forEach(n=>{state[k][n]=saved[k][n]||state[k][n];});
   });
 }
@@ -1495,6 +1519,7 @@ function renderDossierWitnesses(){
     <div class="dossier-who">Statement 3 — A hotel maid</div>
     <div class="dossier-where">Hotel Astoria, Staff Room · 15 November, 9:45 AM</div>
     "I was checking the fourth-floor corridor at around half past eleven. I saw a woman near the service stairs. She was not wearing a coat. She carried a small bag. She did not look frightened. She looked — determined. She opened the service door and went through it. I assumed she had her reasons."
+    <div class="dossier-note">Officer's observation: witness became visibly uncomfortable when asked to describe the woman's expression in more detail. When pressed, she added quietly: <em>"She looked like someone who had made a very difficult decision and was not going to change her mind."</em> Interview terminated at subject's request.</div>
   </div>
 </div>`;
 }
@@ -1506,15 +1531,17 @@ function renderCarusoDossier(){
     <div class="dossier-who">Subject: Rosa Caruso, female, approx. 41 years</div>
     <div><b>Known address:</b> The Velvet Room, 52nd Street, Manhattan</div>
     <div><b>Occupation:</b> Club manager / Velvet Imports LLC (registered agent)</div>
-    <div><b>Known associates:</b> E.C. (identity unconfirmed) — observed at premises on multiple occasions, 1931–1933</div>
+    <div><b>Known associates:</b> E.C. (identity unconfirmed) — observed at premises on multiple occasions, 1931–1933. On at least two occasions, E.C. appeared distressed upon arrival. On subsequent visits, demeanour described as composed.</div>
     <div><b>Prior arrests:</b> None on record</div>
     <div><b>Prior investigations:</b> Case #1925-0112 — closed. Case #1931-0089 — closed.</div>
+    <div><b>Personal access reference:</b> Year of first case registration — 1925. Year of second registration — 1931. <em>Year of current file: 1933.</em></div>
   </div>
   <div class="dossier-section">
     <div class="dossier-who">Interviewing officer's note, 1931</div>
     "Subject was cooperative and precise. Every answer was correct. None of them were useful."
+    <div class="dossier-note">Secondary note: On leaving the interview, subject paused and said — unprompted — <em>"The women in this city are stronger than anyone gives them credit for. Remember that, Officer."</em> No further comment recorded.</div>
   </div>
-  <div class="dossier-note">File last accessed: 13 November 1933. Accessing officer: unknown.</div>
+  <div class="dossier-note">File last accessed: 13 November 1933. Accessing officer: unknown.<br><span style="color:#c8922a;font-weight:700">Personal access code (home line): year of current file registration.</span></div>
 </div>`;
 }
 
@@ -1736,6 +1763,57 @@ function _answPlayTTS(){
 }
 
 // ══════════════════════════════════════════════════════
+//  DEDUCTION CARD
+// ══════════════════════════════════════════════════════
+function renderDeductionCard(snum, card){
+  const saved = state.deductions?.[snum] || {};
+  return `<div class="deduction-card">
+    <div class="ded-header">
+      <span class="ded-icon">🔎</span>
+      <div>
+        <div class="ded-label">Detective's Instinct</div>
+        <div class="ded-title">${card.title}</div>
+      </div>
+    </div>
+    <div class="ded-prompt">${card.prompt}</div>
+    <div class="ded-suspects">${card.suspects.map((s,i)=>
+      `<button class="ded-suspect-btn${saved.suspect===i?' selected':''}" onclick="selectSuspect(${snum},${i},this)">${s}</button>`
+    ).join('')}</div>
+    <textarea class="ded-textarea" id="ded_${snum}" placeholder="Write your theory in 1–2 sentences…" oninput="saveDed(${snum},this.value)">${escHtml(saved.theory||'')}</textarea>
+    <div class="ded-save-row">
+      <button class="ded-save-btn" onclick="saveDedNow(${snum})">💾 Save theory</button>
+      <span class="ded-saved-msg" id="dedsaved_${snum}">✓ Theory saved to your notebook</span>
+    </div>
+  </div>`;
+}
+
+function selectSuspect(snum, idx, el){
+  if(!state.deductions) state.deductions = {};
+  if(!state.deductions[snum]) state.deductions[snum] = {};
+  state.deductions[snum].suspect = idx;
+  el.closest('.ded-suspects').querySelectorAll('.ded-suspect-btn').forEach((b,i)=>
+    b.classList.toggle('selected', i===idx));
+}
+
+function saveDed(snum, val){
+  if(!state.deductions) state.deductions = {};
+  if(!state.deductions[snum]) state.deductions[snum] = {};
+  state.deductions[snum].theory = val;
+}
+
+function saveDedNow(snum){
+  saveProgress();
+  const msg = document.getElementById('dedsaved_'+snum);
+  if(msg){msg.classList.add('show');setTimeout(()=>msg.classList.remove('show'),2500);}
+}
+
+function saveNBA(snum, val){
+  if(!state.notebookAnalysis) state.notebookAnalysis = {};
+  state.notebookAnalysis[snum] = val;
+  saveProgress();
+}
+
+// ══════════════════════════════════════════════════════
 //  RENDER ALL SESSIONS
 // ══════════════════════════════════════════════════════
 function renderAllSessions(){
@@ -1905,6 +1983,9 @@ function renderSession(s){
     </div>`;
   }
 
+  // Deduction card (before exercises, after documents)
+  if(s.deductionCard){h+=renderDeductionCard(s.num,s.deductionCard);}
+
   // Exercises
   s.exercises.forEach((ex,i)=>{h+=renderExercise(s.num,ex,i+1);});
 
@@ -1916,15 +1997,20 @@ function renderSession(s){
     <div class="nb-prompt">${s.notebookPrompt}</div>
     <div class="nb-bullets">${s.notebookBullets.map(b=>'<span class="nb-bullet">✦ '+b+'</span>').join('')}</div>
     <textarea class="nb-textarea" id="nb_${s.num}" placeholder="Write your report here…" oninput="saveNB(${s.num},this.value)">${escHtml(state.notebook[s.num]||'')}</textarea>
+    ${s.notebookAnalysis?`<div class="nb-analysis">
+      <div class="nb-analysis-label">🔍 Think like a detective</div>
+      <div class="nb-analysis-q">${s.notebookAnalysis}</div>
+      <textarea class="nb-analysis-inp" id="nba_${s.num}" placeholder="Your analysis here…" oninput="saveNBA(${s.num},this.value)">${escHtml(state.notebookAnalysis?.[s.num]||'')}</textarea>
+    </div>`:''}
   </div>`;
 
-  // Final summary (M4 only)
+  // Final summary (M4 only) — updated: no video requirement
   if(s.hasFinalSummary){
     h+=`<div class="final-summary">
-      <div class="fs-header"><span class="fs-icon">🎥</span>
-      <div><div class="fs-title">Final Video: Close the Case</div>
-      <div class="fs-sub">Your ultimate challenge as a detective</div></div></div>
-      <div class="fs-body">You have completed all four missions. Use your Detective's Notebook as the script for a <b>2–3 minute video presentation</b>. Present the full investigation: the evidence, the witnesses, the truth — and your verdict.</div>
+      <div class="fs-header"><span class="fs-icon">📋</span>
+      <div><div class="fs-title">Case Summary — Your Full Investigation</div>
+      <div class="fs-sub">Make sure your Detective's Notebook tells the complete story</div></div></div>
+      <div class="fs-body">You have completed all four missions. Before you submit, check that your Detective's Notebook covers the full investigation from start to finish.</div>
       <div class="fs-checklist">
         ${['Mission 1 — Incident Report: who, where, when, first clues',
            'Mission 2 — Witness Summary: what each witness said (reported speech)',
@@ -2309,14 +2395,19 @@ function showClosingScreen(lines){
 // ══════════════════════════════════════════════════════
 function renderNotebookPage(){
   document.getElementById('nb-entries').innerHTML=SESSIONS.map(s=>{
-    const content=state.notebook[s.num]||'';
+    const content  = state.notebook[s.num]||'';
+    const analysis = state.notebookAnalysis?.[s.num]||'';
+    const ded      = state.deductions?.[s.num];
+    const dedText  = ded?.theory||'';
+    const dedSusp  = ded?.suspect!==undefined&&s.deductionCard ? s.deductionCard.suspects[ded.suspect] : '';
     return `<div class="nb-entry">
       <div class="nb-entry-hdr">
         <span class="nb-entry-num">${s.icon} ${s.isEpilogue?'EPILOGUE':'MISSION '+s.num}</span>
         <span class="nb-entry-title">${s.notebookTitle}</span>
       </div>
-      ${content?`<div class="nb-entry-body">${escHtml(content)}</div>`:
-        `<div class="nb-entry-empty">Not written yet.</div>`}
+      ${content?`<div class="nb-entry-body">${escHtml(content)}</div>`:'<div class="nb-entry-empty">Not written yet.</div>'}
+      ${analysis?`<div class="nb-entry-body" style="border-top:1px solid var(--border);margin-top:.5rem;padding-top:.75rem;background:rgba(107,70,193,.04)"><span style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:#9b8abf;font-weight:700;display:block;margin-bottom:.35rem">🔍 Analysis</span>${escHtml(analysis)}</div>`:''}
+      ${(dedText||dedSusp)?`<div class="nb-entry-body" style="border-top:1px solid var(--border);margin-top:.5rem;padding-top:.75rem;background:rgba(42,122,138,.04)"><span style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:#2a7a8a;font-weight:700;display:block;margin-bottom:.35rem">🔎 Theory at the time${dedSusp?' — suspected: '+dedSusp:''}</span>${escHtml(dedText)}</div>`:''}
     </div>`;
   }).join('');
 }
@@ -2378,6 +2469,14 @@ function restoreState(){
       }
     });
     const nbEl=document.getElementById('nb_'+s.num);if(nbEl)nbEl.value=state.notebook[s.num]||'';
+    const nbaEl=document.getElementById('nba_'+s.num);if(nbaEl)nbaEl.value=state.notebookAnalysis?.[s.num]||'';
+    const dedEl=document.getElementById('ded_'+s.num);if(dedEl)dedEl.value=state.deductions?.[s.num]?.theory||'';
+    // Restore selected suspect button
+    const savedDed=state.deductions?.[s.num];
+    if(savedDed&&savedDed.suspect!==undefined){
+      const btns=document.querySelectorAll(`#sw-${s.num} .ded-suspect-btn`);
+      btns.forEach((b,i)=>b.classList.toggle('selected',i===savedDed.suspect));
+    }
     if(state.submitted[s.num]){
       const mc=document.getElementById('mc-'+s.num);
       if(mc){
