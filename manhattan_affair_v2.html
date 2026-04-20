@@ -725,7 +725,7 @@ const SESSIONS = [
     prompt:'Based on what you have seen so far: who do you think is responsible for Eleanor\'s disappearance? Choose a suspect and write 1–2 sentences explaining your theory.',
     suspects:['George Hartwell','The night receptionist','Rosa Caruso','Someone unknown','Eleanor herself'],
   },
-<p>When we report what someone said, we change the verb tense. This is called <strong>backshift</strong>.</p>
+  theory:`<p>When we report what someone said, we change the verb tense. This is called <strong>backshift</strong>.</p>
 <table class="th-table">
 <tr><th>Direct Speech</th><th>→</th><th>Reported Speech</th></tr>
 <tr><td>"I <b>am</b> here." (Present Simple)</td><td>→</td><td>She said she <b>was</b> there. (Past Simple)</td></tr>
@@ -1614,7 +1614,7 @@ function renderVelvetRoomArticle(){
 // Set ANSW_AUDIO_URL to the MP3 file URL (or leave '' to use text-to-speech fallback)
 // Set ANSW_MESSAGE_TEXT to Eleanor's message (shown after correct code + used for TTS fallback)
 const ANSW_CODE     = '1933';
-const ANSW_AUDIO_URL = 'https://ncalbet.github.io/Manhattan-affair/1933.mp3';   // e.g. 'https://yourserver.com/eleanor_message.mp3'
+const ANSW_AUDIO_URL = 'https://ncalbet.github.io/Manhattan-affair/1933.mp3';
 const ANSW_MESSAGE_TEXT = `Eleanor speaking. If you are listening to this, you already know more than is safe.\n\nI am not a victim, Detective. I never was. What I did — what Rosa helped me do — was the only way out. Eleven years is a long time to wait for the right moment.\n\nGeorge knows people in this city. Important people. That is why this had to look like something else entirely.\n\nClose the case. Close it correctly. And be careful — the people George works for do not forgive and they do not forget.\n\nThank you for not looking too hard.\n\nGoodbye.`;
 // ─────────────────────────────────────────────────────
 
@@ -2450,7 +2450,7 @@ function restoreState(){
       } else {
         ex.items.forEach((_,i)=>{
           const val=ans[i]||'';if(!val)return;
-          if(ex.type==='radio-mc'){const r=document.querySelector(`input[name="r_${s.num}_${ex.id}_${i}"][value="${val}"]`);if(r)r.checked=true;}
+          if(ex.type==='radio-mc'){const r=document.querySelector('input[name="r_'+s.num+'_'+ex.id+'_'+i+'"][value="'+val+'"]');if(r)r.checked=true;}
           else if(ex.type==='true-false'){
             ['t','f'].forEach(x=>{const b=document.getElementById('tf_'+s.num+'_'+ex.id+'_'+i+'_'+x);
               if(b)b.className='tf-btn'+(val===(x==='t'?'true':'false')?' sel-'+(x==='t'?'t':'f'):'');});
@@ -2474,7 +2474,7 @@ function restoreState(){
     // Restore selected suspect button
     const savedDed=state.deductions?.[s.num];
     if(savedDed&&savedDed.suspect!==undefined){
-      const btns=document.querySelectorAll(`#sw-${s.num} .ded-suspect-btn`);
+      const btns=document.querySelectorAll('#sw-'+s.num+' .ded-suspect-btn');
       btns.forEach((b,i)=>b.classList.toggle('selected',i===savedDed.suspect));
     }
     if(state.submitted[s.num]){
