@@ -399,19 +399,20 @@ body{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,se
 .mc-nb-remind{background:rgba(212,168,64,.07);border:1px solid rgba(212,168,64,.2);border-radius:8px;padding:.65rem .9rem;font-size:.84rem;color:#e8d87a;margin-top:.75rem;display:flex;align-items:center;gap:.6rem}
 
 /* Cliffhanger overlay */
-#cliffhanger{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:#000;animation:chFadeIn .6s ease}
+#cliffhanger{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:#000;animation:chFadeIn .6s ease;overflow-y:auto;padding:2rem 1rem}
 #cliffhanger.show{display:flex}
 @keyframes chFadeIn{from{opacity:0}to{opacity:1}}
-.ch-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.2;filter:sepia(50%)}
-.ch-content{position:relative;z-index:1;max-width:700px;padding:3rem 2.5rem;text-align:center}
-.ch-eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.22em;color:var(--accent);font-weight:700;margin-bottom:1rem}
-.ch-rule{width:60px;height:1px;background:var(--accent);margin:0 auto 1rem}
-.ch-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--gold);line-height:1.1;margin-bottom:1.5rem}
-.ch-text{font-family:'Crimson Pro',serif;font-size:1rem;color:#cdc0a8;line-height:1.9;margin-bottom:2rem;text-align:left;background:rgba(0,0,0,.45);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;border-radius:0 8px 8px 0}
+.ch-bg{position:fixed;inset:0;background-size:cover;background-position:center;opacity:.18;filter:sepia(60%) contrast(1.1)}
+.ch-content{position:relative;z-index:1;width:100%;max-width:640px;margin:auto;text-align:center}
+.ch-card{background:rgba(13,11,8,.88);border:1px solid var(--border);border-radius:16px;padding:2.5rem 2.25rem;backdrop-filter:blur(4px)}
+.ch-eyebrow{font-size:.68rem;text-transform:uppercase;letter-spacing:.22em;color:var(--accent);font-weight:700;margin-bottom:.75rem}
+.ch-rule{width:50px;height:1px;background:var(--accent);margin:0 auto .85rem}
+.ch-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--gold);line-height:1.1;margin-bottom:1.35rem}
+.ch-text{font-family:'Crimson Pro',serif;font-size:.95rem;color:#cdc0a8;line-height:1.85;margin-bottom:1.75rem;text-align:left;background:rgba(255,255,255,.03);border:1px solid var(--border);border-left:3px solid var(--accent);padding:1.1rem 1.35rem;border-radius:0 8px 8px 0}
 .ch-text em{color:var(--gold);font-style:italic}
-.ch-btn{background:linear-gradient(135deg,var(--gold),#a06e18);color:#0d0b08;border:none;border-radius:10px;padding:.85rem 2.25rem;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.ch-btn{background:linear-gradient(135deg,var(--gold),#a06e18);color:#0d0b08;border:none;border-radius:10px;padding:.8rem 2rem;font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;cursor:pointer;transition:transform .15s,box-shadow .15s}
 .ch-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(212,168,64,.4)}
-.ch-skip{background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer;margin-top:1.25rem;display:block;width:100%;text-align:center;text-decoration:underline;font-family:'Crimson Pro',serif}
+.ch-skip{background:none;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;margin-top:1rem;display:block;width:100%;text-align:center;text-decoration:underline;font-family:'Crimson Pro',serif}
 
 /* Final summary */
 .final-summary{background:linear-gradient(135deg,rgba(107,70,193,.1),rgba(200,146,42,.07));border:1px solid rgba(107,70,193,.3);border-radius:14px;padding:1.5rem 1.6rem;margin-top:1.25rem}
@@ -434,6 +435,38 @@ body{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,se
 @keyframes fadeInLine{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .closing-dismiss{background:none;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Crimson Pro',serif;font-size:.85rem;padding:.5rem 1.2rem;cursor:pointer;margin-top:2rem;transition:border-color .2s;opacity:0;animation:fadeInLine .8s 4s ease forwards}
 .closing-dismiss:hover{border-color:var(--gold);color:var(--text)}
+
+/* ── ANSWERING MACHINE ── */
+.answ-wrap{background:var(--s2);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1.25rem}
+.answ-header{display:flex;align-items:center;gap:.85rem;padding:.85rem 1.15rem;border-bottom:1px solid var(--border);background:rgba(155,44,44,.07)}
+.answ-header-icon{font-size:1.5rem;flex-shrink:0}
+.answ-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--err);font-weight:700;margin-bottom:.15rem}
+.answ-title{font-size:.92rem;font-weight:700;color:var(--text)}
+.answ-sub{font-size:.76rem;color:var(--muted);font-style:italic}
+.answ-body{padding:1.35rem 1.5rem}
+.answ-light-row{display:flex;align-items:center;gap:.85rem;margin-bottom:1.25rem;padding:.75rem 1rem;background:var(--s3);border-radius:8px;border:1px solid var(--border)}
+.answ-light{width:14px;height:14px;border-radius:50%;background:#333;box-shadow:0 0 0 3px #222;flex-shrink:0;transition:all .3s}
+.answ-light.blink{animation:lightBlink 1s ease infinite}
+@keyframes lightBlink{0%,100%{background:#9b2c2c;box-shadow:0 0 8px rgba(155,44,44,.8),0 0 0 3px #3a1010}50%{background:#ff4444;box-shadow:0 0 18px rgba(255,68,68,.9),0 0 0 3px #3a1010}}
+.answ-light-text{font-size:.84rem;color:#cdc0a8;font-style:italic;line-height:1.5}
+.answ-light-text b{color:var(--text);font-style:normal}
+.answ-phone{background:#111;border-radius:12px;padding:1.25rem;border:1px solid #2a2a2a;max-width:300px;margin:0 auto}
+.answ-screen{background:#000;border:1px solid #333;border-radius:6px;padding:.75rem 1rem;margin-bottom:.65rem;font-family:'Courier New',monospace;font-size:1.5rem;letter-spacing:.3em;min-height:46px;color:#c8922a;text-align:center;text-shadow:0 0 8px rgba(200,146,42,.5)}
+.answ-hint{font-size:.7rem;color:#444;text-align:center;margin-bottom:1rem;font-family:'Courier New',monospace;letter-spacing:.04em}
+.answ-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.answ-key{height:54px;border-radius:8px;background:radial-gradient(circle at 35% 35%,#3a3a3a,#111);color:#e8dfc8;border:1px solid #3a3a3a;cursor:pointer;font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;transition:all .1s;display:flex;align-items:center;justify-content:center;user-select:none}
+.answ-key:active,.answ-key.pressed{background:radial-gradient(circle at 35% 35%,#555,#222);transform:scale(.94)}
+.answ-key.key-clear{font-family:'Crimson Pro',serif;font-size:.82rem;color:var(--muted);letter-spacing:.05em}
+.answ-key.key-enter{background:radial-gradient(circle at 35% 35%,#3a1a1a,#1a0808);color:#c8922a;border-color:#5a2a2a;font-size:.9rem}
+.answ-key.key-enter:active{background:radial-gradient(circle at 35% 35%,#5a2a2a,#2a1010)}
+.answ-status{margin-top:1rem;min-height:38px;font-size:.83rem;text-align:center;transition:all .3s;padding:.5rem;border-radius:6px}
+.answ-status.idle{color:var(--muted);font-style:italic}
+.answ-status.playing{color:var(--ok);background:rgba(74,124,90,.08);border:1px solid rgba(74,124,90,.2)}
+.answ-status.wrong{color:var(--err);background:rgba(155,44,44,.08);border:1px solid rgba(155,44,44,.2)}
+.answ-status.success{color:var(--gold);background:rgba(212,168,64,.07);border:1px solid rgba(212,168,64,.2)}
+.answ-msg-text{display:none;margin-top:1rem;background:rgba(212,168,64,.05);border:1px solid rgba(212,168,64,.15);border-radius:8px;padding:.85rem 1rem;font-size:.86rem;color:#cdc0a8;line-height:1.75;font-style:italic}
+.answ-msg-text.show{display:block;animation:mcIn .35s ease}
+.answ-msg-speaker{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);font-weight:700;margin-bottom:.5rem;font-style:normal}
 
 @media(max-width:680px){.sidebar{display:none}.content{padding:1rem}.kw-grid{grid-template-columns:1fr}}
 </style>
@@ -580,12 +613,14 @@ body{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,se
 <div id="cliffhanger">
   <div class="ch-bg" id="ch-bg"></div>
   <div class="ch-content">
+    <div class="ch-card">
     <div class="ch-eyebrow" id="ch-eyebrow">END OF MISSION</div>
     <div class="ch-rule"></div>
     <div class="ch-title" id="ch-title"></div>
     <div class="ch-text" id="ch-text"></div>
     <button class="ch-btn" id="ch-btn" onclick="closeCliffhanger()">Continue →</button>
     <button class="ch-skip" onclick="closeCliffhanger()">Skip</button>
+    </div>
   </div>
 </div>
 
@@ -672,9 +707,9 @@ const SESSIONS = [
 // ─── MISSION 1 ───────────────────────────────────────
 {
   num:1, id:'s1', icon:'🏨', title:'The Astoria Hotel',
-  image:'https://images.unsplash.com/photo-1551882547-ff40c63fe2fa?w=700&q=80',
-  imageAlt:'Art deco hotel lobby 1930s',
-  intro:'November 1933. The call comes in at seven in the morning. A woman has disappeared from the Hotel Astoria. A ransom note has arrived. The case is yours, Detective.',
+  image:'https://images.unsplash.com/photo-1534430480872-3498386e7856?w=700&q=80',
+  imageAlt:'New York City 1930s street at night',
+  intro:'New York City. November 1933. The Hotel Astoria, Fifth Avenue — twelve floors of marble and discretion. Whatever happens inside those walls is supposed to stay there. Tonight, something did not.',
   bossMsg:'Eleanor Hartwell. Thirty-four years old. Wife of George Hartwell — railroad money, substantial. Last confirmed sighting: the hotel bar, Tuesday evening. A ransom note came by morning mail. I need you at the Astoria in thirty minutes. Be discreet — the Hartwell family has more lawyers than friends.',
   youtubeId:'',
   videoTitle:'Inspector Morrison — Case Briefing',
@@ -784,8 +819,8 @@ const SESSIONS = [
 // ─── MISSION 2 ───────────────────────────────────────
 {
   num:2, id:'s2', icon:'📋', title:'Voices &amp; Lies',
-  image:'https://images.unsplash.com/photo-1517971053567-8bde93bc6a58?w=700&q=80',
-  imageAlt:'Documents and evidence on a desk',
+  image:'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=700&q=80',
+  imageAlt:'1930s New York City noir rainy street',
   intro:'Three witnesses. Three different stories. Somebody in that hotel is not telling the truth. The lab has also come back with a result on the ransom note — and a name keeps appearing.',
   bossMsg:'Good work on the hotel. Now I need you to go through those three witness statements line by line. Somebody is lying — find the contradiction. And that name on the matchbook — Velvet Imports LLC, Rosa Caruso — I want to know who this person is.',
   youtubeId:'',
@@ -875,8 +910,8 @@ const SESSIONS = [
 // ─── MISSION 3 ───────────────────────────────────────
 {
   num:3, id:'s3', icon:'🎷', title:'The Velvet Room',
-  image:'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=700&q=80',
-  imageAlt:'1930s jazz club atmospheric lighting',
+  image:'https://images.unsplash.com/photo-1445985543470-41fba5c3144a?w=700&q=80',
+  imageAlt:'1930s New York jazz club night',
   intro:'52nd Street. Behind a door with no sign, in a jazz club with no public record of its ownership, the real story of Eleanor Hartwell begins to take shape. And the world is much larger than you thought.',
   bossMsg:'The ransom note paper traces to Velvet Imports LLC — a ghost company registered to a woman named Rosa Caruso. Look into her. Carefully, and through the right channels. Her name has appeared before in files I cannot access anymore. That tells me something.',
   youtubeId:'',
@@ -974,8 +1009,8 @@ const SESSIONS = [
 // ─── MISSION 4 ───────────────────────────────────────
 {
   num:4, id:'s4', icon:'⚖️', title:'The Verdict',
-  image:'https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=700&q=80',
-  imageAlt:'Law books and justice scales',
+  image:'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=700&q=80',
+  imageAlt:'1930s New York courthouse noir',
   intro:'Everything is on the table. The evidence. The lies. The photograph. The recording. There is only one question left: what really happened to Eleanor Hartwell — and what do you do with the answer?',
   bossMsg:'I have read every report you have filed. George Hartwell came to see me this morning — with two lawyers and a man I did not recognise. They used the word "closed" four times in fifteen minutes. I told them we follow the evidence. Before you write your final report, there is one more thing you need to hear.',
   youtubeId:'',
@@ -1065,8 +1100,8 @@ const SESSIONS = [
 // ─── EPILOGUE ───────────────────────────────────────
 {
   num:5, id:'s5', icon:'★', title:'We Know Where You Are',
-  image:'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=700&q=80',
-  imageAlt:'Letter and magnifying glass on dark desk',
+  image:'https://images.unsplash.com/photo-1509023464722-18d996393ca8?w=700&q=80',
+  imageAlt:'1930s New York street rain night',
   intro:'Six months have passed. The case is closed. Filed. Finished. And yet here, on a warm Tuesday morning, something has found its way to your desk. The Falcone family has not forgotten.',
   bossMsg:'I told you the Hartwell case was closed. I stand by that. But if you have received something — and I have a feeling you have — then read it carefully. Think before you act. My door is open. It always has been.',
   youtubeId:'',
@@ -1544,6 +1579,163 @@ function renderVelvetRoomArticle(){
 }
 
 // ══════════════════════════════════════════════════════
+//  ANSWERING MACHINE
+// ══════════════════════════════════════════════════════
+
+// ── CONFIGURE HERE ────────────────────────────────────
+// Set ANSW_CODE to the 4-digit code you give students
+// Set ANSW_AUDIO_URL to the MP3 file URL (or leave '' to use text-to-speech fallback)
+// Set ANSW_MESSAGE_TEXT to Eleanor's message (shown after correct code + used for TTS fallback)
+const ANSW_CODE     = '1933';
+const ANSW_AUDIO_URL = 'https://ncalbet.github.io/Manhattan-affair/1933.mp3';   // e.g. 'https://yourserver.com/eleanor_message.mp3'
+const ANSW_MESSAGE_TEXT = `Eleanor speaking. If you are listening to this, you already know more than is safe.\n\nI am not a victim, Detective. I never was. What I did — what Rosa helped me do — was the only way out. Eleven years is a long time to wait for the right moment.\n\nGeorge knows people in this city. Important people. That is why this had to look like something else entirely.\n\nClose the case. Close it correctly. And be careful — the people George works for do not forgive and they do not forget.\n\nThank you for not looking too hard.\n\nGoodbye.`;
+// ─────────────────────────────────────────────────────
+
+function renderAnsweringMachine(){
+  return `<div class="answ-wrap">
+  <div class="answ-header">
+    <span class="answ-header-icon">📞</span>
+    <div>
+      <div class="answ-label">📼 Answering Machine — Your Home Line</div>
+      <div class="answ-title">You notice it when you get home that evening.</div>
+      <div class="answ-sub">The red light is blinking. Someone left a message.</div>
+    </div>
+  </div>
+  <div class="answ-body">
+    <div class="answ-light-row">
+      <div class="answ-light blink" id="answ-light"></div>
+      <div class="answ-light-text"><b>1 new message.</b> Enter your 4-digit access code to listen.</div>
+    </div>
+    <div class="answ-phone">
+      <div class="answ-screen" id="answ-screen">____</div>
+      <div class="answ-hint">enter your 4-digit code</div>
+      <div class="answ-keypad">
+        ${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="answ-key" onmousedown="answDial(${n})">${n}</button>`).join('')}
+        <button class="answ-key key-clear" onmousedown="answClear()">CLR</button>
+        <button class="answ-key" onmousedown="answDial(0)">0</button>
+        <button class="answ-key key-enter" onmousedown="answEnter()">▶ PLAY</button>
+      </div>
+      <div class="answ-status idle" id="answ-status">Waiting for code…</div>
+    </div>
+    <div class="answ-msg-text" id="answ-msg">
+      <div class="answ-msg-speaker">Eleanor Hartwell — Recorded message</div>
+      <span id="answ-msg-body"></span>
+    </div>
+  </div>
+</div>`;
+}
+
+// Answering machine logic
+let _answInput = '';
+let _answAudio  = null;
+let _answSpeech = null;
+
+function answDial(n){
+  if(_answInput.length >= 4) return;
+  _answInput += String(n);
+  _updateAnswScreen();
+  // Click sound
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = 800 + n*40; g.gain.value = .12;
+    o.start(); g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime+.08);
+    o.stop(ctx.currentTime+.09);
+  } catch(e){}
+}
+
+function answClear(){
+  _answInput = '';
+  _updateAnswScreen();
+  const st = document.getElementById('answ-status');
+  if(st){st.className='answ-status idle';st.textContent='Waiting for code…';}
+  const msg = document.getElementById('answ-msg');
+  if(msg) msg.classList.remove('show');
+  if(_answAudio){_answAudio.pause();_answAudio=null;}
+  if(_answSpeech){speechSynthesis.cancel();_answSpeech=null;}
+}
+
+function _updateAnswScreen(){
+  const el = document.getElementById('answ-screen');
+  if(!el) return;
+  const shown = _answInput + '____'.slice(_answInput.length);
+  el.textContent = shown.replace(/[0-9]/g,'•').replace(/_/g,'_');
+  el.style.letterSpacing = _answInput.length > 0 ? '.4em' : '.3em';
+}
+
+function answEnter(){
+  if(_answInput.length !== 4){
+    const st = document.getElementById('answ-status');
+    if(st){st.className='answ-status wrong';st.textContent='Enter 4 digits first.';}
+    return;
+  }
+  const st  = document.getElementById('answ-status');
+  const msg = document.getElementById('answ-msg');
+  const light = document.getElementById('answ-light');
+
+  if(_answInput !== ANSW_CODE){
+    if(st){st.className='answ-status wrong';st.textContent='Incorrect code. Try again.';}
+    // Error beep
+    try{
+      const ctx = new (window.AudioContext||window.webkitAudioContext)();
+      const o = ctx.createOscillator(); const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = 220; g.gain.value = .2;
+      o.start(); g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime+.3);
+      o.stop(ctx.currentTime+.32);
+    } catch(e){}
+    _answInput = '';
+    setTimeout(()=>_updateAnswScreen(), 600);
+    return;
+  }
+
+  // Correct code
+  if(light) light.classList.remove('blink');
+  if(st){st.className='answ-status playing';st.innerHTML='▶ Playing message… <span style="color:var(--muted);font-size:.78rem">(Eleanor Hartwell)</span>';}
+
+  // Show message text
+  if(msg){
+    const body = document.getElementById('answ-msg-body');
+    if(body) body.innerHTML = ANSW_MESSAGE_TEXT.replace(/\n/g,'<br>');
+    msg.classList.add('show');
+  }
+
+  // Play audio or TTS
+  if(ANSW_AUDIO_URL){
+    _answAudio = new Audio(ANSW_AUDIO_URL);
+    _answAudio.play().catch(()=>_answPlayTTS());
+    _answAudio.onended = ()=>{
+      if(st){st.className='answ-status success';st.textContent='✓ Message played. Evidence logged.';}
+    };
+  } else {
+    _answPlayTTS();
+  }
+  _answInput = '';
+  setTimeout(()=>_updateAnswScreen(), 400);
+}
+
+function _answPlayTTS(){
+  const st = document.getElementById('answ-status');
+  if(!window.speechSynthesis){
+    if(st){st.className='answ-status success';st.textContent='✓ Read the message above.';}
+    return;
+  }
+  speechSynthesis.cancel();
+  _answSpeech = new SpeechSynthesisUtterance(ANSW_MESSAGE_TEXT.replace(/\n/g,' '));
+  _answSpeech.lang = 'en-US'; _answSpeech.pitch = 0.95;
+  _answSpeech.rate = 0.88; _answSpeech.volume = 1;
+  // Try to find a female voice
+  const voices = speechSynthesis.getVoices();
+  const fem = voices.find(v=>v.lang.startsWith('en')&&(v.name.includes('Female')||v.name.includes('Samantha')||v.name.includes('Karen')||v.name.includes('Moira')||v.name.includes('Victoria')));
+  if(fem) _answSpeech.voice = fem;
+  _answSpeech.onend = ()=>{
+    if(st){st.className='answ-status success';st.textContent='✓ Message played. Evidence logged.';}
+  };
+  speechSynthesis.speak(_answSpeech);
+}
+
+// ══════════════════════════════════════════════════════
 //  RENDER ALL SESSIONS
 // ══════════════════════════════════════════════════════
 function renderAllSessions(){
@@ -1672,11 +1864,8 @@ function renderSession(s){
 <p>This offer has a short life, Detective. Everything in this city does.</p>
 <div class="envelope-sig">— R.C.</div>`
     );
-    // Answering machine note
-    h+=`<div class="note-box" style="margin-bottom:1.25rem">
-  📞 <b>Your answering machine light is on.</b> You notice it when you get home that evening. You remember the access code — it's the same one you've used for years. Press play.
-  <br><br><span style="color:var(--muted);font-size:.82rem">⚙️ Answering machine player will be integrated here by your teacher.</span>
-</div>`;
+    // Answering machine — Mission 4
+    h+=renderAnsweringMachine();
   }
 
   if(s.num===5){
