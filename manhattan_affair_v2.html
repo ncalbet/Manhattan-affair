@@ -1088,6 +1088,7 @@ const SESSIONS = [
       {before:'Morrison told the team: "The case is almost closed." → He told the team that the case',verb:'(be)',after:'almost closed.',ans:['was']},
      ]},
     {id:'ex4',type:'decision',title:'The Final Verdict',skill:'ps',pts:5,
+     allBest:true,
      charEmoji:'⚖️',charName:'Your Decision',
      scenario:'You have the recording. You have Hamilton\'s note explaining that Eleanor was an operative placed inside the Falcone family — she married George Hartwell eleven years ago, but her loyalty was always to Rosa Caruso\'s organisation. When George discovered the truth, Eleanor had no choice but to leave immediately. Caruso extracted her. The ransom note bought forty-eight hours. Now you must decide what goes in your final report.',
      instr:'What is your final decision?',
@@ -2210,11 +2211,12 @@ function chooseOption(snum,exid,optIdx){
   ex.options.forEach((_,i)=>{const b=document.getElementById('dec_'+snum+'_'+exid+'_'+i);if(b)b.disabled=true;});
   const chosen=document.getElementById('dec_'+snum+'_'+exid+'_'+optIdx);
   const opt=ex.options[optIdx];
-  if(chosen)chosen.classList.add(opt.best?'chosen-best':'chosen-bad');
-  if(!opt.best){const bi=ex.options.findIndex(o=>o.best);const bb=document.getElementById('dec_'+snum+'_'+exid+'_'+bi);if(bb)bb.classList.add('reveal-best');}
+  const isBest=opt.best||!!ex.allBest;
+  if(chosen)chosen.classList.add(isBest?'chosen-best':'chosen-bad');
+  if(!isBest){const bi=ex.options.findIndex(o=>o.best);const bb=document.getElementById('dec_'+snum+'_'+exid+'_'+bi);if(bb)bb.classList.add('reveal-best');}
   const fb=document.getElementById('decfb_'+snum+'_'+exid);
-  if(fb){fb.className='dec-feedback show '+(opt.best?'good':'bad');
-    fb.innerHTML=(opt.best?'✅':'❌')+' <b>'+(opt.best?'Excellent instinct!':'Not the best call.')+'</b> '+opt.outcome+(opt.best?'<br><b>+'+opt.xp+' Problem Solving XP!</b>':'<br>'+opt.xp+' XP earned.');}
+  if(fb){fb.className='dec-feedback show '+(isBest?'good':'bad');
+    fb.innerHTML=(isBest?'✅':'❌')+' <b>'+(isBest?'Excellent instinct!':'Not the best call.')+'</b> '+opt.outcome+(isBest?'<br><b>+'+opt.xp+' Problem Solving XP!</b>':'<br>'+opt.xp+' XP earned.');}
 
   if(!state.scores[snum])state.scores[snum]=computeMaxScores(s);
   if(!state.scores[snum]._byEx)state.scores[snum]._byEx={};
