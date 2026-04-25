@@ -723,7 +723,7 @@ const SESSIONS = [
   deductionCard:{
     title:'Suspect Board — Mission 1',
     prompt:'Based on what you have seen so far: who do you think is responsible for Eleanor\'s disappearance? Choose a suspect and write 1–2 sentences explaining your theory.',
-    suspects:['George Hartwell','The night receptionist','Rosa Caruso','Someone unknown'],
+    suspects:['George Hartwell','The night receptionist','Inspector Morrison','Someone unknown'],
   },
   theory:`<p>When we report what someone said, we change the verb tense. This is called <strong>backshift</strong>.</p>
 <table class="th-table">
@@ -801,12 +801,12 @@ const SESSIONS = [
      ]},
     {id:'ex5',type:'decision',title:'First Lead: Where Do You Start?',skill:'ps',pts:3,
      charEmoji:'👔',charName:'Inspector Morrison',
-     scenario:'You have two immediate leads. George Hartwell, the husband, is at the hotel and wants to speak to you immediately. But the note left under your door says the night receptionist behaved strangely and made a phone call during his midnight break.',
+     scenario:'You have two immediate leads. George Hartwell, the husband, is at the hotel and wants to speak to you immediately. But a note has been left under your door: a hotel employee says Hartwell was seen behaving strangely in the lobby late last night — long after he claimed to have gone to bed.',
      instr:'As the detective, which lead do you prioritise first?',
      options:[
       {text:'Interview George Hartwell first — he is the husband and has important information.',
        outcome:'Hartwell is cooperative but controlled. Every answer is measured, his lawyer present throughout. Meanwhile, the receptionist finishes his shift and leaves. You have missed your window.',xp:1,best:false},
-      {text:'Track down the receptionist before he leaves and ask about the midnight phone call.',
+      {text:'Track down the night receptionist before he leaves — he was on duty last night and may have seen something.',
        outcome:'Excellent instinct. You catch him before he can compose himself. Under calm questioning, he admits he stepped away for thirty minutes and made a call. He also mentions that Hartwell came down to the lobby at 11:15 PM — something the husband never mentioned. +3 Problem Solving XP.',xp:3,best:true},
       {text:'Contact the press to put public pressure on the kidnappers.',
        outcome:'A serious error. The story runs within the hour. The kidnappers go silent. Hartwell is furious. Never release information to the press in an active case.',xp:0,best:false},
