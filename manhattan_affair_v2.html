@@ -1315,7 +1315,7 @@ function saveProgress(){
   const prog={found:true,name:state.student.name,answers:state.answers,checked:state.checked,
     submitted:state.submitted,scores:state.scores,notebook:state.notebook,
     notebookAnalysis:state.notebookAnalysis,deductions:state.deductions,
-    level:state.level,m4decision:state.m4decision};
+    level:state.level,m4decision:state.m4decision,savedAt:Date.now()};
   try{localStorage.setItem('manhattan2_'+state.student.email,JSON.stringify(prog));}catch(e){}
   debouncedSend(prog);
 }
@@ -1323,17 +1323,24 @@ let _st=null;
 function debouncedSend(prog){clearTimeout(_st);_st=setTimeout(()=>sendProgressToSheets(prog),3000);}
 
 async function loadProgress(email){
-  try{const raw=localStorage.getItem('manhattan2_'+email);if(raw){const d=JSON.parse(raw);if(d&&d.found)return d;}}catch(e){}
-  if(!SHEETS_URL||SHEETS_URL.includes('YOUR_APPS'))return null;
-  try{const res=await fetch(`${SHEETS_URL}?action=load&email=${encodeURIComponent(email)}`);const d=await res.json();if(d&&d.found)return d;}catch(e){}
-  return null;
+  let local=null,remote=null;
+  try{const raw=localStorage.getItem('manhattan2_'+email);if(raw){const d=JSON.parse(raw);if(d&&d.found)local=d;}}catch(e){}
+  if(SHEETS_URL&&!SHEETS_URL.includes('YOUR_APPS')){
+    try{const res=await fetch(`${SHEETS_URL}?action=load&email=${encodeURIComponent(email)}`);const d=await res.json();if(d&&d.found)remote=d;}catch(e){}
+  }
+  if(!local&&!remote)return null;
+  if(!local)return remote;
+  if(!remote)return local;
+  // Both exist — pick whichever was saved most recently
+  return((remote.savedAt||0)>=(local.savedAt||0))?remote:local;
 }
 
 function applyProgress(saved){
   if(saved.level)state.level=saved.level;
   if(saved.m4decision!==undefined&&saved.m4decision!==null)state.m4decision=saved.m4decision;
   ['answers','checked','submitted','scores','notebook','notebookAnalysis','deductions'].forEach(k=>{
-    if(saved[k])Object.keys(saved[k]).forEach(n=>{state[k][n]=saved[k][n]||state[k][n];});
+    if(saved[k]&&typeof saved[k]==='object')
+      Object.keys(saved[k]).forEach(n=>{if(saved[k][n]!==undefined)state[k][n]=saved[k][n];});
   });
 }
 
@@ -1575,7 +1582,7 @@ function renderNowhereMirrorArticle(){
     <div class="np-date">New York City · Friday, 17 November 1933 · Two Cents</div>
     <div class="np-name">THE DAILY MIRROR</div>
   </div>
-  <div class="np-headline">CROSS CASE: POLICE WIDEN INVESTIGATION INTO 52ND STREET LINK</div>
+  <div class="np-headline">HARTWELL CASE: POLICE WIDEN INVESTIGATION INTO 52ND STREET LINK</div>
   <div class="np-sub">Velvet Room manager Rosa Caruso declines to comment · Investigators examine shell company · Eleanor Hartwell missing for three days</div>
   <div class="np-byline">By Grace Hamilton, Crime Correspondent</div>
   <div class="np-body">
